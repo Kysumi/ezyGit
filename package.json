@@ -46,6 +46,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@iconify/icons-ion": "^1.0.7",
+    "@iconify/react": "^1.1.1",
     "@rescripts/cli": "^0.0.13",
     "@rescripts/rescript-env": "^0.0.11",
     "@storybook/addon-actions": "^5.2.4",
@@ -53,11 +56,13 @@
     "@storybook/addons": "^5.2.4",
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.2",
+    "babel-loader": "8.0.0",
     "concurrently": "^5.0.0",
     "electron": "^6.0.12",
     "electron-builder": "^21.2.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.4",
-    "wait-on": "^3.3.0"
+    "wait-on": "^3.3.0",
+    "webpack": "^4.41.2"
   }
 }

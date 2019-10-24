@@ -1,0 +1,9 @@
+.branchNameTag {
+  border-radius: 5px;
+  background: #0570d8;
+  max-width: 150px;
+  min-width: 50px;
+  padding: 5px;
+  color: azure;
+  display: inline-block;
+}
