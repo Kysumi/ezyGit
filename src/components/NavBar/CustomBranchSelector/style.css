@@ -7,3 +7,7 @@
   color: azure;
   display: inline-block;
 }
+
+.branchSelector .branchNameTag {
+  margin-right: 10px;
+}
