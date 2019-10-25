@@ -10,9 +10,9 @@ export const BranchNameTag = () => (
   <BranchNameTagExample branchName={'Example'} />
 );
 
-const selected = ['asdas', 'asdas'];
+const selected = ['master', 'stable'];
 
-const availble = ['asd'];
+const availble = ['bleeding-edge'];
 
 export const BranchSelector = () => (
   <CustomBranchSelector
