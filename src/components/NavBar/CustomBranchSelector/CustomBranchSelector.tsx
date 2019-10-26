@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import BranchNameTag from './BranchNameTag';
 import addCircle from '@iconify/icons-ion/add-circle';
@@ -11,17 +11,30 @@ const BranchTagRenderer = (branches: string[]) => {
   });
 };
 
+const NewButton = (func: any, isOpen: boolean) => {
+  return (
+    <Button
+      minimal={true}
+      onClick={() => {
+        func(!isOpen);
+      }}
+    >
+      <Icon icon={addCircle} width={20} style={{ verticalAlign: 'middle' }} />
+    </Button>
+  );
+};
+
 export const CustomBranchSelector = (props: {
   selectedBranches: string[];
   availableBranches: string[];
 }) => {
+  const [isOpen, setOpen] = useState(false);
   const branches = BranchTagRenderer(props.selectedBranches);
+
   return (
     <div className="branchSelector">
       {branches}
-      <Button minimal={true}>
-        <Icon icon={addCircle} width={20} style={{ verticalAlign: 'middle' }} />
-      </Button>
+      {isOpen ? 'Open' : NewButton(setOpen, isOpen)}
     </div>
   );
 };
