@@ -4,19 +4,25 @@ import BranchNameTag from './BranchNameTag';
 import addCircle from '@iconify/icons-ion/add-circle';
 import './style.css';
 import { Button } from '@blueprintjs/core';
+import BranchSelector, { IBranch } from './BranchSelector';
 
-const BranchTagRenderer = (branches: string[]) => {
-  return branches.map(branch => {
-    return <BranchNameTag branchName={branch} />;
+const BranchTagRenderer = (props: { branches: IBranch[] }) => {
+  const result = props.branches.map(branch => {
+    return <BranchNameTag branchName={branch.name} />;
   });
+
+  return <>{result}</>;
 };
 
-const NewButton = (func: any, isOpen: boolean) => {
+const NewButton = (props: {
+  func: (props: boolean) => void;
+  open: boolean;
+}) => {
   return (
     <Button
       minimal={true}
       onClick={() => {
-        func(!isOpen);
+        props.func(!props.open);
       }}
     >
       <Icon icon={addCircle} width={20} style={{ verticalAlign: 'middle' }} />
@@ -25,16 +31,22 @@ const NewButton = (func: any, isOpen: boolean) => {
 };
 
 export const CustomBranchSelector = (props: {
-  selectedBranches: string[];
-  availableBranches: string[];
+  selectedBranches: IBranch[];
+  availableBranches: IBranch[];
 }) => {
   const [isOpen, setOpen] = useState(false);
-  const branches = BranchTagRenderer(props.selectedBranches);
 
   return (
     <div className="branchSelector">
-      {branches}
-      {isOpen ? 'Open' : NewButton(setOpen, isOpen)}
+      <BranchTagRenderer branches={props.selectedBranches} />
+      {isOpen ? (
+        <div className="branchSelector">
+          <BranchSelector branches={props.availableBranches} />
+          <NewButton func={setOpen} open={isOpen} />
+        </div>
+      ) : (
+        <NewButton func={setOpen} open={isOpen} />
+      )}
     </div>
   );
 };
