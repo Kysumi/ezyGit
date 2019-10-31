@@ -6,10 +6,12 @@
   padding: 5px;
   color: azure;
   display: inline-block;
+  user-select: none;
 }
 
 .branchSelector .branchNameTag {
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .branchSelector {
