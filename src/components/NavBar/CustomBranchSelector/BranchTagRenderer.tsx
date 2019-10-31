@@ -1,7 +1,7 @@
 import React from 'react';
 import { ItemRenderer } from '@blueprintjs/select';
-import { IBranch } from './BranchSelector';
 import { MenuItem } from '@blueprintjs/core';
+import { IBranch } from './BranchSelector';
 
 export const renderBranchTag: ItemRenderer<IBranch> = (
   branch,

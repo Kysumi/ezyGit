@@ -1,6 +1,6 @@
 import React from 'react';
 import { Suggest } from '@blueprintjs/select';
-import renderBranchTag from '../BranchSelector/BranchTagRenderer';
+import renderBranchTag from './BranchTagRenderer';
 
 export interface IBranch {
   name: string;

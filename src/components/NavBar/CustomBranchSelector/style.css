@@ -11,3 +11,7 @@
 .branchSelector .branchNameTag {
   margin-right: 10px;
 }
+
+.branchSelector {
+  display: inline-block;
+}
