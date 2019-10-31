@@ -6,5 +6,5 @@ export default {
 };
 
 export const NavBarDemo = () => {
-  return <NavBar branch={'Example Branch name'} />;
+  return <NavBar branchName={'Example Branch name'} />;
 };
