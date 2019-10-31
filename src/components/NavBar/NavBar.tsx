@@ -8,21 +8,19 @@ import {
   Button,
 } from '@blueprintjs/core';
 import CustomBranchSelector from './CustomBranchSelector/CustomBranchSelector';
+import BranchNameTag from './CustomBranchSelector/BranchNameTag';
 
-interface INavBarProps {
-  branch: string;
-  fecthGitCommit: any;
-}
-
-const NavBar: React.FunctionComponent<INavBarProps> = props => {
-  const { branch } = props;
+const NavBar: React.FunctionComponent<{ branchName: string }> = props => {
+  const { branchName } = props;
 
   return (
     <Navbar fixedToTop={true}>
       <NavbarGroup align={Alignment.LEFT} style={{ width: '70%' }}>
         <NavbarHeading>ezyGit</NavbarHeading>
         <NavbarDivider />
-        <CustomBranchSelector />>
+        Current Branch <BranchNameTag branchName={branchName} />
+        <NavbarDivider />
+        <CustomBranchSelector />
       </NavbarGroup>
       <NavbarGroup align={Alignment.RIGHT}>
         <Button>Settings</Button>
