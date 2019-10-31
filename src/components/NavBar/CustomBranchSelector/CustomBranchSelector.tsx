@@ -37,8 +37,8 @@ export const CustomBranchSelector = (props: {
 
 const mapStateToProps = (state: State) => {
   return {
-    selectedBranches: state.gitDiff,
-    availableBranches: state.gitDiff,
+    selectedBranches: state.selectedBranches,
+    availableBranches: state.availableBranches,
   };
 };
 
