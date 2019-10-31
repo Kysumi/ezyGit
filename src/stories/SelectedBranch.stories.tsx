@@ -1,6 +1,6 @@
 import React from 'react';
 import BranchNameTagExample from '../components/NavBar/CustomBranchSelector/BranchNameTag';
-import CustomBranchSelector from '../components/NavBar/CustomBranchSelector/CustomBranchSelector';
+import { CustomBranchSelector } from '../components/NavBar/CustomBranchSelector/CustomBranchSelector';
 
 export default {
   title: 'Custom Branch Selector',

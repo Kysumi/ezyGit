@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import BranchNameTag from './BranchNameTag';
 import BranchSelector, { IBranch } from './BranchSelector';
 import OpenCloseButton from './OpenCloseButton';
+import { connect } from 'react-redux';
+import { State } from '../../../reducers';
 
 const BranchTagRenderer = (props: { branches: IBranch[] }) => {
   const result = props.branches.map(branch => {
@@ -33,4 +35,11 @@ export const CustomBranchSelector = (props: {
   );
 };
 
-export default CustomBranchSelector;
+const mapStateToProps = (state: State) => {
+  return {
+    selectedBranches: state.gitDiff,
+    availableBranches: state.gitDiff,
+  };
+};
+
+export default connect(mapStateToProps)(CustomBranchSelector);
