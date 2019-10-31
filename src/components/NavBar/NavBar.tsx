@@ -7,7 +7,7 @@ import {
   NavbarHeading,
   Button,
 } from '@blueprintjs/core';
-import { IBranch } from './CustomBranchSelector/BranchSelector';
+import CustomBranchSelector from './CustomBranchSelector/CustomBranchSelector';
 
 interface INavBarProps {
   branch: string;
@@ -22,7 +22,7 @@ const NavBar: React.FunctionComponent<INavBarProps> = props => {
       <NavbarGroup align={Alignment.LEFT} style={{ width: '70%' }}>
         <NavbarHeading>ezyGit</NavbarHeading>
         <NavbarDivider />
-        <BranchSelector />
+        <CustomBranchSelector />>
       </NavbarGroup>
       <NavbarGroup align={Alignment.RIGHT}>
         <Button>Settings</Button>
