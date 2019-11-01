@@ -41,7 +41,7 @@ export default class DiffViewerListItem extends React.Component<
           />
           {fileName}
         </div>
-        <Collapse isOpen={isOpen}>
+        <Collapse isOpen={isOpen} keepChildrenMounted={true}>
           <Diff hunks={hunks} diffType={diffType} oldSource={oldSource} />
         </Collapse>
       </div>
