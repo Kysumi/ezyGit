@@ -2,7 +2,7 @@ import React from 'react';
 import { Collapse, Icon } from '@blueprintjs/core';
 import Diff from './Diff';
 import { IconNames } from '@blueprintjs/icons';
-
+import 'react-diff-view/style/index.css';
 interface IDiffViewerProps {
   oldSource: string;
   diffType: string;
@@ -28,9 +28,7 @@ export default class DiffViewerListItem extends React.Component<
       onClickCollapse,
       isOpen,
     } = this.props;
-    // const { isOpen } = this.state;
 
-    // debugger;
     return (
       <div>
         <div
