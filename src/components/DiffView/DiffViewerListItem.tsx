@@ -35,11 +35,10 @@ export default class DiffViewerListItem extends React.Component<
           className="diff-item-header"
           onClick={() => onClickCollapse(this.props.index)}
         >
-          {isOpen ? (
-            <Icon icon={IconNames.CHEVRON_DOWN} iconSize={Icon.SIZE_LARGE} />
-          ) : (
-            <Icon icon={IconNames.CHEVRON_RIGHT} iconSize={Icon.SIZE_LARGE} />
-          )}
+          <Icon
+            icon={isOpen ? IconNames.CHEVRON_DOWN : IconNames.CHEVRON_RIGHT}
+            iconSize={Icon.SIZE_LARGE}
+          />
           {fileName}
         </div>
         <Collapse isOpen={isOpen}>
