@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { getCollapsedLinesCountBetween } from 'react-diff-view';
 import Unfold from './Unfold';
 
@@ -17,7 +17,7 @@ const UnfoldCollapsed = ({
     }
 
     return (
-      <Fragment>
+      <>
         {collapsedLines > 10 ? (
           <Unfold
             direction="down"
@@ -33,7 +33,7 @@ const UnfoldCollapsed = ({
             onExpand={onExpand}
           />
         )}
-      </Fragment>
+      </>
     );
   }
 

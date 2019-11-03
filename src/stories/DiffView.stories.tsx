@@ -10,7 +10,7 @@ export const DiffDemo = () => {
   const record = {
     modified: 'this is an example',
     original: 'this ia new example showing the diff',
-    path: 'this is the file path :)',
+    path: '/src/app.tsx',
   };
   const [diff] = getGitDifference(record.modified, record.original);
 

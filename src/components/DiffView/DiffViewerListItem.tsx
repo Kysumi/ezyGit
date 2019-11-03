@@ -2,7 +2,9 @@ import React from 'react';
 import { Collapse, Icon } from '@blueprintjs/core';
 import Diff from './Diff';
 import { IconNames } from '@blueprintjs/icons';
+import './header.css';
 import 'react-diff-view/style/index.css';
+
 interface IDiffViewerProps {
   oldSource: string;
   diffType: string;
@@ -32,14 +34,20 @@ export default class DiffViewerListItem extends React.Component<
     return (
       <div>
         <div
-          className="diff-item-header"
           onClick={() => onClickCollapse(this.props.index)}
+          className={'headerContainer'}
         >
-          <Icon
-            icon={isOpen ? IconNames.CHEVRON_DOWN : IconNames.CHEVRON_RIGHT}
-            iconSize={Icon.SIZE_LARGE}
-          />
-          {fileName}
+          <span className={'headerTitle'}>
+            <Icon icon={IconNames.CODE} iconSize={25} />
+            {'  '}
+            <b>{fileName}</b>
+          </span>
+          <span className={'headerCollapseIcon'}>
+            <Icon
+              icon={isOpen ? IconNames.CHEVRON_UP : IconNames.CHEVRON_DOWN}
+              iconSize={25}
+            />
+          </span>
         </div>
         <Collapse isOpen={isOpen} keepChildrenMounted={true}>
           <Diff hunks={hunks} diffType={diffType} oldSource={oldSource} />
