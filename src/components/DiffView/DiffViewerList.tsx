@@ -79,7 +79,13 @@ export class DiffViewerList extends React.Component<IDiffViewerProps, IState> {
 
     return (
       <>
-        <span style={{ display: 'inline-block', fontSize: '15px' }}>
+        <span
+          style={{
+            display: 'inline-block',
+            fontSize: '15px',
+            userSelect: 'none',
+          }}
+        >
           <b>File Changes</b>{' '}
           {gitDiff.length > 0 ? (
             <a onClick={() => this.collapseAll()}>
