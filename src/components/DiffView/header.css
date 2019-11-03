@@ -5,6 +5,7 @@
 
 .headerTitle {
   width: 99%;
+  user-select: none;
 }
 
 .headerCollapseIcon {

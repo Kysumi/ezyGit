@@ -57,16 +57,19 @@ export class DiffViewerList extends React.Component<IDiffViewerProps, IState> {
     const [diff] = getGitDifference(record.modified, record.original);
 
     return (
-      <DiffViewerListItem
-        key={index}
-        hunks={diff.hunks}
-        diffType={diff.type}
-        oldSource={record.original}
-        fileName={record.path}
-        isOpen={this.state.collapsedInt[index]}
-        onClickCollapse={this.onClickCollapse}
-        index={index}
-      />
+      <>
+        <DiffViewerListItem
+          key={index}
+          hunks={diff.hunks}
+          diffType={diff.type}
+          oldSource={record.original}
+          fileName={record.path}
+          isOpen={this.state.collapsedInt[index]}
+          onClickCollapse={this.onClickCollapse}
+          index={index}
+        />
+        <br />
+      </>
     );
   };
 
@@ -75,20 +78,25 @@ export class DiffViewerList extends React.Component<IDiffViewerProps, IState> {
     const { gitDiff } = this.props;
 
     return (
-      <Scrollbars>
-        {gitDiff.length > 0 ? (
-          <Button small onClick={() => this.collapseAll()}>
-            {collapsedAll ? 'Open All' : 'Collapse All'}
-          </Button>
-        ) : null}
+      <>
+        <span style={{ display: 'inline-block', fontSize: '15px' }}>
+          <b>File Changes</b>{' '}
+          {gitDiff.length > 0 ? (
+            <a onClick={() => this.collapseAll()}>
+              {collapsedAll ? 'Expand All' : 'Collapse All'}
+            </a>
+          ) : null}
+        </span>
 
+        <br />
+        <br />
         <ReactList
           itemRenderer={this.renderGitCommit}
           length={gitDiff.length}
           type="variable"
           threshold={5000}
         />
-      </Scrollbars>
+      </>
     );
   }
 }
