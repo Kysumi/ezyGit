@@ -2,15 +2,22 @@ import React from 'react';
 import { GitCommitLog } from '../../git/git';
 import GitCommitDetails from './GitCommitDetails';
 import { GitStatusDetails } from './GitStatusDetails';
+import BranchNameTag from '../NavBar/CustomBranchSelector/BranchNameTag';
+import './style.css';
 
-const GitCommitListItem = (
-  index: number,
-  key: number | string,
-  commit: GitCommitLog,
-  onClickCallback: (oid: string, parent: string) => void
-): any => {
+export interface ICommitListItem {
+  index: number;
+  key: number | string;
+  commit: GitCommitLog;
+  onClickCallback: (oid: string, parent: string) => void;
+}
+
+export const GitCommitListItem = (props: ICommitListItem): any => {
+  const { key, index, commit, onClickCallback } = props;
+
   return (
     <div key={key} className={index % 2 ? 'historyItemEven' : 'historyItemOdd'}>
+      <BranchNameTag branchName={'Example Branch'} />
       {commit.commit
         ? GitCommitDetails(commit.commit, onClickCallback)
         : GitStatusDetails(onClickCallback)}
@@ -18,4 +25,4 @@ const GitCommitListItem = (
   );
 };
 
-export { GitCommitListItem };
+export default GitCommitListItem;

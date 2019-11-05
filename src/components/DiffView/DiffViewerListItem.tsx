@@ -41,7 +41,7 @@ export default class DiffViewerListItem extends React.Component<
             <span className={'headerTitle'}>
               <Icon
                 icon={IconNames.CODE}
-                iconSize={25}
+                iconSize={20}
                 style={{ paddingRight: '10px' }}
               />
               <b>{fileName}</b>
@@ -49,7 +49,7 @@ export default class DiffViewerListItem extends React.Component<
             <span className={'headerCollapseIcon'}>
               <Icon
                 icon={isOpen ? IconNames.CHEVRON_UP : IconNames.CHEVRON_DOWN}
-                iconSize={25}
+                iconSize={20}
               />
             </span>
           </div>
