@@ -1,6 +1,7 @@
 import React from 'react';
 import { CommitDescriptionWithOid } from 'isomorphic-git';
 import moment from 'moment';
+import BranchNameTag from '../NavBar/CustomBranchSelector/BranchNameTag';
 
 export const GitCommitDetails = (
   commit: CommitDescriptionWithOid,
@@ -16,11 +17,17 @@ export const GitCommitDetails = (
         onClickCallback(commit.oid, commit.parent[0]);
       }}
     >
-      <div>{commit.message}</div>
-      <div>
-        <span style={{ width: '50%', display: 'inline-block' }}>
+      <div style={{ display: 'flex' }}>
+        <div style={{ width: '80%' }}>
+          <BranchNameTag branchName={'Example Branch'} />
+        </div>
+        <span style={{ justifyContent: 'flex-end', fontSize: '10px' }}>
           committed {moment(date).fromNow()}
         </span>
+      </div>
+
+      <div>{commit.message}</div>
+      <div>
         <span
           style={{
             textAlign: 'right',

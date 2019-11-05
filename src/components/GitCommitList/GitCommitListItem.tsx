@@ -2,7 +2,6 @@ import React from 'react';
 import { GitCommitLog } from '../../git/git';
 import GitCommitDetails from './GitCommitDetails';
 import { GitStatusDetails } from './GitStatusDetails';
-import BranchNameTag from '../NavBar/CustomBranchSelector/BranchNameTag';
 import './style.css';
 
 export interface ICommitListItem {
@@ -17,7 +16,6 @@ export const GitCommitListItem = (props: ICommitListItem): any => {
 
   return (
     <div key={key} className="gitCommitListItem">
-      <BranchNameTag branchName={'Example Branch'} />
       {commit.commit
         ? GitCommitDetails(commit.commit, onClickCallback)
         : GitStatusDetails(onClickCallback)}
