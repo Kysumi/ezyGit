@@ -16,7 +16,7 @@ export const GitCommitListItem = (props: ICommitListItem): any => {
   const { key, index, commit, onClickCallback } = props;
 
   return (
-    <div key={key} className={index % 2 ? 'historyItemEven' : 'historyItemOdd'}>
+    <div key={key} className="gitCommitListItem">
       <BranchNameTag branchName={'Example Branch'} />
       {commit.commit
         ? GitCommitDetails(commit.commit, onClickCallback)

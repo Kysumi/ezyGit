@@ -1,5 +1,6 @@
 import React from 'react';
 import { CommitDescriptionWithOid } from 'isomorphic-git';
+import moment from 'moment';
 
 export const GitCommitDetails = (
   commit: CommitDescriptionWithOid,
@@ -15,10 +16,10 @@ export const GitCommitDetails = (
         onClickCallback(commit.oid, commit.parent[0]);
       }}
     >
-      <div className="historyItemContent">{commit.message}</div>
-      <div className="historyItemContent">
+      <div>{commit.message}</div>
+      <div>
         <span style={{ width: '50%', display: 'inline-block' }}>
-          {date.toLocaleDateString('en-UK')}
+          committed {moment(date).fromNow()}
         </span>
         <span
           style={{
