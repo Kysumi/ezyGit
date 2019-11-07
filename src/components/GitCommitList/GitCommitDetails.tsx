@@ -2,6 +2,7 @@ import React from 'react';
 import { CommitDescriptionWithOid } from 'isomorphic-git';
 import moment from 'moment';
 import BranchNameTag from '../NavBar/CustomBranchSelector/BranchNameTag';
+import LinesEllipsis from 'react-lines-ellipsis';
 
 export const GitCommitDetails = (
   commit: CommitDescriptionWithOid,
@@ -26,7 +27,13 @@ export const GitCommitDetails = (
         </div>
       </div>
       <div className={'gitCommitHeaderContainer'}>
-        <div>{commit.message}</div>
+        <LinesEllipsis
+          text={commit.message}
+          maxLine="2"
+          ellipsis="..."
+          trimRight
+          basedOn="letters"
+        />
         <div style={{ textAlign: 'right', flex: '2 20%' }}>{author.name}</div>
       </div>
     </div>
