@@ -17,26 +17,17 @@ export const GitCommitDetails = (
         onClickCallback(commit.oid, commit.parent[0]);
       }}
     >
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '80%' }}>
+      <div className={'gitCommitHeaderContainer'}>
+        <div>
           <BranchNameTag branchName={'Example Branch'} />
         </div>
-        <span style={{ justifyContent: 'flex-end', fontSize: '10px' }}>
+        <div style={{ textAlign: 'right', flex: '2 20%' }}>
           committed {moment(date).fromNow()}
-        </span>
+        </div>
       </div>
-
-      <div>{commit.message}</div>
-      <div>
-        <span
-          style={{
-            textAlign: 'right',
-            width: '50%',
-            display: 'inline-block',
-          }}
-        >
-          {author.name}
-        </span>
+      <div className={'gitCommitHeaderContainer'}>
+        <div>{commit.message}</div>
+        <div style={{ textAlign: 'right', flex: '2 20%' }}>{author.name}</div>
       </div>
     </div>
   );

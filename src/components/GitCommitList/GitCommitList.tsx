@@ -2,7 +2,6 @@ import React from 'react';
 import { GitCommitListItem } from './GitCommitListItem';
 import Scrollbars from 'react-custom-scrollbars';
 import ReactList from 'react-list';
-import { AppToaster } from '../Toaster/Toaster';
 import { GitCommitLog } from '../../git/git';
 import { connect } from 'react-redux';
 import { State } from '../../reducers';
@@ -15,13 +14,19 @@ interface ISideListProps {
 
 export const GitCommitList: React.FunctionComponent<ISideListProps> = props => {
   const handleListItemClick = (commitOid: string, parent: string): void => {
-    AppToaster.show({ message: 'GIT COMMIT OID:' + commitOid });
+    // AppToaster.show({ message: 'GIT COMMIT OID:' + commitOid });
     props.loadCommitDiff(commitOid, parent);
   };
 
   const renderGitCommit = (index: number, key: number | string) => {
     const commit = props.data[index];
-    return GitCommitListItem(index, key, commit, handleListItemClick);
+    return (
+      <GitCommitListItem
+        key={key}
+        commit={commit}
+        onClickCallback={handleListItemClick}
+      />
+    );
   };
 
   return (
