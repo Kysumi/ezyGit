@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './styles/App.css';
+import './styles/app.css';
 import NavBar from './components/NavBar/NavBar';
 import { getGitLogAction } from './actions/gitCommitList.action';
 import { getGitDiffAction } from './actions/gitDiff.action';
@@ -97,7 +97,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   loadDefaultCommit: () => dispatch(getGitDiffAction()),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(App);
+export default connect(null, mapDispatchToProps)(App);

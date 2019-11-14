@@ -55,7 +55,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GitCommitList);
+export default connect(mapStateToProps, mapDispatchToProps)(GitCommitList);
