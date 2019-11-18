@@ -18,11 +18,11 @@ export const GitCommitList: React.FunctionComponent<ISideListProps> = props => {
     props.loadCommitDiff(commitOid, parent);
   };
 
-  const renderGitCommit = (index: number, key: number | string) => {
+  const renderGitCommit = (index: number, id: number | string) => {
     const commit = props.data[index];
     return (
       <GitCommitListItem
-        key={key}
+        key={id}
         commit={commit}
         onClickCallback={handleListItemClick}
       />
@@ -30,13 +30,15 @@ export const GitCommitList: React.FunctionComponent<ISideListProps> = props => {
   };
 
   return (
-    <Scrollbars>
-      <ReactList
-        itemRenderer={renderGitCommit}
-        length={props.data.length}
-        type="uniform"
-      />
-    </Scrollbars>
+    <div style={{ marginRight: '1px', height: '100vh' }}>
+      <Scrollbars>
+        <ReactList
+          itemRenderer={renderGitCommit}
+          length={props.data.length}
+          type="variable"
+        />
+      </Scrollbars>
+    </div>
   );
 };
 
@@ -55,4 +57,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(GitCommitList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GitCommitList);
