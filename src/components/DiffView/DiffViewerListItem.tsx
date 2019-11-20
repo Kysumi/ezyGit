@@ -53,8 +53,8 @@ export default class DiffViewerListItem extends React.Component<
               />
             </span>
           </div>
-          <hr />
           <Collapse isOpen={isOpen} keepChildrenMounted={true}>
+            <hr />
             <Diff hunks={hunks} diffType={diffType} oldSource={oldSource} />
           </Collapse>
         </Card>

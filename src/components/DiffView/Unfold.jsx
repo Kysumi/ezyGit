@@ -23,7 +23,7 @@ export default class Unfold extends PureComponent {
       <Decoration {...props}>
         <div onClick={this.expand.bind(this)}>
           <Icon icon={iconType} />
-          &nbsp;Expand hidden {lines} lines
+          &nbsp;<a>Expand hidden {lines} lines</a>
         </div>
       </Decoration>
     );
