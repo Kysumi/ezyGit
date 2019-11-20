@@ -12,10 +12,16 @@ function* requestNewGitLog() {
   let options = { dir: '', depth: 2000 };
   const results = yield git.log(options);
 
+  const currentBranchName = yield git.currentBranch({
+    dir: './',
+    fullname: true,
+  });
+
   const modifiedLog: Array<GitCommitLog> = results.map((commitHistory: any) => {
     return {
       isHistory: true,
       commit: commitHistory,
+      branch: currentBranchName,
     };
   });
 

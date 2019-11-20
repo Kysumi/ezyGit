@@ -60,6 +60,7 @@ export interface GitFileStatus {
 }
 export interface GitCommitLog {
   isHistory: boolean;
+  branch?: string;
   commit?: CommitDescriptionWithOid;
 }
 
@@ -84,34 +85,38 @@ async function getCurrentBranch(gitDir: string): Promise<string | undefined> {
   // }
 }
 
-/**
- * Fetch commits from logged or repository
- * @param size Amount to fetch
- * @param timestamp Commits since time
- */
-async function getGitLog(
-  gitDir: string,
-  size: number = 20,
-  timestamp: number = -1
-): Promise<Array<GitCommitLog>> {
-  let options = { dir: gitDir, depth: size };
+// /**
+//  * Fetch commits from logged or repository
+//  * @param size Amount to fetch
+//  * @param timestamp Commits since time
+//  */
+// async function getGitLog(
+//   gitDir: string,
+//   size: number = 20,
+//   timestamp: number = -1
+// ): Promise<Array<GitCommitLog>> {
+//   let options = { dir: gitDir, depth: size };
 
-  if (timestamp > -1) {
-    Object.assign(options, { since: timestamp });
-  }
-  let requestedLog = await git.log(options);
+//   if (timestamp > -1) {
+//     Object.assign(options, { since: timestamp });
+//   }
+//   let requestedLog = await git.log(options);
+//   const currentBranchName = await getCurrentBranch('./');
 
-  const modifiedLog: Array<GitCommitLog> = requestedLog.map(commitHistory => {
-    return {
-      isHistory: true,
-      commit: commitHistory,
-    };
-  });
+//   console.log(currentBranchName + 'asdasd');
 
-  // Insert blank commit at the start
-  modifiedLog.unshift({ isHistory: false });
-  return modifiedLog;
-}
+//   const modifiedLog: Array<GitCommitLog> = requestedLog.map(commitHistory => {
+//     return {
+//       isHistory: true,
+//       commit: commitHistory,
+//       branch: currentBranchName,
+//     };
+//   });
+
+//   // Insert blank commit at the start
+//   modifiedLog.unshift({ isHistory: false });
+//   return modifiedLog;
+// }
 
 /**
  * Super heavy function to get the status of the whole git.
@@ -403,6 +408,6 @@ export {
   getCurrentCommitChanges,
   getCommitFileDifferences,
   getGitStatus,
-  getGitLog,
+  // getGitLog,
   getCurrentBranch,
 };

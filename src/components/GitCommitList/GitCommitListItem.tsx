@@ -11,11 +11,14 @@ export interface ICommitListItem {
 
 export const GitCommitListItem = (props: ICommitListItem): any => {
   const { commit, onClickCallback } = props;
-
   return (
     <div className="gitCommitListItem">
       {commit.commit
-        ? GitCommitDetails(commit.commit, onClickCallback)
+        ? GitCommitDetails(
+            commit.branch ? commit.branch : 'NO BRANCH!',
+            commit.commit,
+            onClickCallback
+          )
         : GitStatusDetails(onClickCallback)}
     </div>
   );

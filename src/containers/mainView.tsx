@@ -23,10 +23,10 @@ export const MainView = (props: {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-  loadSideListGitLog: () => dispatch(getGitLogAction()),
+  loadSideListGitLog: () => {
+    console.log('asdas');
+    dispatch(getGitLogAction());
+  },
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(MainView);
+export default connect(null, mapDispatchToProps)(MainView);
