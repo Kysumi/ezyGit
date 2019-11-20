@@ -18,10 +18,10 @@ export const MainView = (props: {
 
   return (
     <SplitPane split="vertical" defaultSize="35%" minSize="10%" primary="first">
-      <>
+      <div style={{ paddingRight: '5px' }}>
         <GitCommitList />
-      </>
-      <div>
+      </div>
+      <div style={{ margin: '20px' }}>
         <DiffViewerList />
       </div>
     </SplitPane>

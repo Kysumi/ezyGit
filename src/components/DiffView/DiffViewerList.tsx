@@ -56,7 +56,8 @@ export class DiffViewerList extends React.Component<IDiffViewerProps, IState> {
     const [diff] = getGitDifference(record.modified, record.original);
 
     return (
-      <div key={index}>
+      /** Adding a 1px padding to fix styling on this */
+      <div key={index} style={{ padding: '1px' }}>
         <DiffViewerListItem
           key={index}
           hunks={diff.hunks}
