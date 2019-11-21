@@ -1,6 +1,5 @@
 import React from 'react';
 import { GitCommitListItem } from './GitCommitListItem';
-import Scrollbars from 'react-custom-scrollbars';
 import ReactList from 'react-list';
 import { GitCommitLog } from '../../git/git';
 import { connect } from 'react-redux';
@@ -30,14 +29,13 @@ export const GitCommitList: React.FunctionComponent<ISideListProps> = props => {
   };
 
   return (
-    <div style={{ marginRight: '1px', height: '100vh' }}>
-      <Scrollbars>
-        <ReactList
-          itemRenderer={renderGitCommit}
-          length={props.data.length}
-          type="variable"
-        />
-      </Scrollbars>
+    <div>
+      <ReactList
+        itemRenderer={renderGitCommit}
+        length={props.data.length}
+        type="variable"
+        threshold={100}
+      />
     </div>
   );
 };
@@ -57,7 +55,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GitCommitList);
+export default connect(mapStateToProps, mapDispatchToProps)(GitCommitList);

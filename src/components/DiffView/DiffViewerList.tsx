@@ -5,7 +5,6 @@ import ReactList from 'react-list';
 import DiffViewerListItem from './DiffViewerListItem';
 import { connect } from 'react-redux';
 import { State } from '../../reducers';
-import Scrollbars from 'react-custom-scrollbars';
 
 interface IDiffViewerProps {
   gitDiff: FileStatusChanges[];
@@ -26,7 +25,7 @@ export class DiffViewerList extends React.Component<IDiffViewerProps, IState> {
     const { collapsedInt } = this.state;
     const { gitDiff } = this.props;
 
-    if (collapsedInt.length != gitDiff.length) {
+    if (collapsedInt.length !== gitDiff.length) {
       const defaultState = gitDiff.map(() => true);
       this.setState({ collapsedInt: defaultState, collapsedAll: false });
     }
@@ -78,32 +77,30 @@ export class DiffViewerList extends React.Component<IDiffViewerProps, IState> {
     const { gitDiff } = this.props;
 
     return (
-      <div style={{ marginRight: '1px', height: '100vh' }}>
-        <Scrollbars>
-          <span
-            style={{
-              display: 'inline-block',
-              fontSize: '15px',
-              userSelect: 'none',
-            }}
-          >
-            <b>File Changes</b>{' '}
-            {gitDiff.length > 0 ? (
-              <a onClick={() => this.collapseAll()}>
-                {collapsedAll ? 'Expand All' : 'Collapse All'}
-              </a>
-            ) : null}
-          </span>
+      <div>
+        <span
+          style={{
+            display: 'inline-block',
+            fontSize: '15px',
+            userSelect: 'none',
+          }}
+        >
+          <b>File Changes</b>{' '}
+          {gitDiff.length > 0 ? (
+            <a onClick={() => this.collapseAll()}>
+              {collapsedAll ? 'Expand All' : 'Collapse All'}
+            </a>
+          ) : null}
+        </span>
 
-          <br />
-          <br />
-          <ReactList
-            itemRenderer={this.renderGitCommit}
-            length={gitDiff.length}
-            type="variable"
-            threshold={5000}
-          />
-        </Scrollbars>
+        <br />
+        <br />
+        <ReactList
+          itemRenderer={this.renderGitCommit}
+          length={gitDiff.length}
+          type="variable"
+          threshold={5000}
+        />
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommitDescriptionWithOid, branch } from 'isomorphic-git';
+import { CommitDescriptionWithOid } from 'isomorphic-git';
 import moment from 'moment';
 import BranchNameTag from '../NavBar/CustomBranchSelector/BranchNameTag';
 import LinesEllipsis from 'react-lines-ellipsis';

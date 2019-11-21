@@ -6,6 +6,7 @@ import { getGitLogAction } from '../actions/gitCommitList.action';
 import { connect } from 'react-redux';
 import DiffViewerList from '../components/DiffView/DiffViewerList';
 import { getGitDiffAction } from '../actions/gitDiff.action';
+import Scrollbars from 'react-custom-scrollbars';
 
 export const MainView = (props: {
   left: any;
@@ -18,11 +19,19 @@ export const MainView = (props: {
 
   return (
     <SplitPane split="vertical" defaultSize="35%" minSize="10%" primary="first">
-      <div style={{ paddingRight: '5px' }}>
-        <GitCommitList />
+      <div style={{ height: '100vh' }}>
+        <Scrollbars>
+          <div style={{ marginRight: '5px' }}>
+            <GitCommitList />
+          </div>
+        </Scrollbars>
       </div>
-      <div style={{ margin: '20px' }}>
-        <DiffViewerList />
+      <div style={{ height: '100vh' }}>
+        <Scrollbars>
+          <div style={{ margin: '20px' }}>
+            <DiffViewerList />
+          </div>
+        </Scrollbars>
       </div>
     </SplitPane>
   );
