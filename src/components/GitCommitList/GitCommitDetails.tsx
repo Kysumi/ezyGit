@@ -23,7 +23,7 @@ export const GitCommitDetails = (
         <div>
           <BranchNameTag branchName={branch} />
         </div>
-        <div style={{ textAlign: 'right', flex: '2 20%' }}>
+        <div style={{ textAlign: 'right', flex: '2 50%' }}>
           committed {moment(date).fromNow()}
         </div>
       </div>
