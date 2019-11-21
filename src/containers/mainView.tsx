@@ -29,15 +29,16 @@ export const MainView = (props: {
           defaultSize="35%"
           minSize="10%"
           primary="first"
+          style={{ height: 'calc(100vh - 55px)' }}
         >
-          <div style={{ height: '100vh' }}>
+          <div style={{ height: 'calc(100vh - 55px)' }}>
             <Scrollbars>
               <div style={{ marginRight: '5px' }}>
                 <GitCommitList />
               </div>
             </Scrollbars>
           </div>
-          <div style={{ height: '100vh' }}>
+          <div style={{ height: 'calc(100vh - 55px)' }}>
             <Scrollbars>
               <div style={{ margin: '20px' }}>
                 <DiffViewerList />
