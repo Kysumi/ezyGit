@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { FormClose, Notification } from 'grommet-icons';
+import { FormClose } from 'grommet-icons';
 import {
   Box,
   Button,
   Collapsible,
-  Heading,
   Grommet,
   ResponsiveContext,
   Layer,
 } from 'grommet';
+import { AppBar } from './components/appbar/AppBar';
 
 const theme = {
   global: {
@@ -23,20 +23,6 @@ const theme = {
   },
 };
 
-const AppBar = (props) => (
-  <Box
-    tag="header"
-    direction="row"
-    align="center"
-    justify="between"
-    background="brand"
-    pad={{ left: 'medium', right: 'small', vertical: 'small' }}
-    elevation="medium"
-    style={{ zIndex: '1' }}
-    {...props}
-  />
-);
-
 function App() {
   const [showSidebar, setShowSidebar] = useState(false);
   return (
@@ -44,15 +30,7 @@ function App() {
       <ResponsiveContext.Consumer>
         {(size) => (
           <Box fill>
-            <AppBar>
-              <Heading level="3" margin="none">
-                ezyGit
-              </Heading>
-              <Button
-                icon={<Notification />}
-                onClick={() => setShowSidebar(!showSidebar)}
-              />
-            </AppBar>
+            <AppBar setShowSidebar={setShowSidebar} showSidebar={showSidebar} />
             <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
               <Box flex align="center" justify="center">
                 app body
