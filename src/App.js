@@ -32,15 +32,15 @@ function App() {
         {(size) => (
           <Box fill>
             <AppBar setShowSidebar={setShowSidebar} showSidebar={showSidebar} />
+            <SideBar
+              showSidebar={showSidebar}
+              size={size}
+              setShowSidebar={setShowSidebar}
+            />
             <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
               <Box flex align="center" justify="center">
                 app body
               </Box>
-              <SideBar
-                showSidebar={showSidebar}
-                size={size}
-                setShowSidebar={setShowSidebar}
-              />
             </Box>
           </Box>
         )}
