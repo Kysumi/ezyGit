@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import { FormClose } from 'grommet-icons';
-import {
-  Box,
-  Button,
-  Collapsible,
-  Grommet,
-  ResponsiveContext,
-  Layer,
-} from 'grommet';
+import { Box, Grommet, ResponsiveContext } from 'grommet';
 import { AppBar } from './components/appbar/AppBar';
 import { SideBar } from './components/sidebar/SideBar';
 
