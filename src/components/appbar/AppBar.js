@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heading, Button } from 'grommet';
-import { Notification } from 'grommet-icons';
+import { CaretPrevious, CaretNext } from 'grommet-icons';
 import { NavBar } from './NavBar';
 
 export const AppBar = ({ setShowSidebar, showSidebar }) => {
@@ -10,7 +10,7 @@ export const AppBar = ({ setShowSidebar, showSidebar }) => {
         ezyGit
       </Heading>
       <Button
-        icon={<Notification />}
+        icon={showSidebar ? <CaretPrevious /> : <CaretNext />}
         onClick={() => setShowSidebar(!showSidebar)}
       />
     </NavBar>
