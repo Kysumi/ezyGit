@@ -9,6 +9,7 @@ import {
   Layer,
 } from 'grommet';
 import { AppBar } from './components/appbar/AppBar';
+import { SideBar } from './components/sidebar/SideBar';
 
 const theme = {
   global: {
@@ -35,43 +36,11 @@ function App() {
               <Box flex align="center" justify="center">
                 app body
               </Box>
-              {!showSidebar || size !== 'small' ? (
-                <Collapsible direction="horizontal" open={showSidebar}>
-                  <Box
-                    flex
-                    width="medium"
-                    background="light-2"
-                    elevation="small"
-                    align="center"
-                    justify="center"
-                  >
-                    sidebar
-                  </Box>
-                </Collapsible>
-              ) : (
-                <Layer>
-                  <Box
-                    background="light-2"
-                    tag="header"
-                    justify="end"
-                    align="center"
-                    direction="row"
-                  >
-                    <Button
-                      icon={<FormClose />}
-                      onClick={() => setShowSidebar(false)}
-                    />
-                  </Box>
-                  <Box
-                    fill
-                    background="light-2"
-                    align="center"
-                    justify="center"
-                  >
-                    sidebar
-                  </Box>
-                </Layer>
-              )}
+              <SideBar
+                showSidebar={showSidebar}
+                size={size}
+                setShowSidebar={setShowSidebar}
+              />
             </Box>
           </Box>
         )}
