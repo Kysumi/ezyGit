@@ -4,16 +4,12 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store/Store';
-import { ThemeProvider, CSSReset } from '@chakra-ui/core';
-import customTheme from './theme';
+import '@blueprintjs/core/lib/css/blueprint.css';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={customTheme}>
-        <CSSReset />
-        <App />
-      </ThemeProvider>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

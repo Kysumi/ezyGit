@@ -9,6 +9,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     show: false,
+    webPreferences: { nodeIntegration: true },
   });
 
   const startURL = isDev
