@@ -15,8 +15,6 @@
     "electron-builder": "^22.8.0",
     "electron-is-dev": "^1.2.0",
     "emotion-theming": "^10.0.27",
-    "grommet": "^2.14.0",
-    "grommet-icons": "^4.4.0",
     "re-resizable": "^6.5.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
