@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Resizable } from 're-resizable';
 import { AppBar } from './components/appbar/AppBar';
 import { Box, List, ListItem, ListIcon } from '@chakra-ui/core';
+import { FolderPicker } from './components/folderpicker/FolderPicker';
 
 function App() {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -28,6 +29,7 @@ function App() {
           </ListItem>
         </List>
       </Resizable>
+      <FolderPicker />
     </Box>
   );
 }
