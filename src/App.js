@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Resizable } from 're-resizable';
 import { AppBar } from './components/appbar/AppBar';
-import { FolderPicker } from './components/folderpicker/FolderPicker';
 import { SelectRepo } from './components/selectrepo/SelectRepo';
 
 function App() {

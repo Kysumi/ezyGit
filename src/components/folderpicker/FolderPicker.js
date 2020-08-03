@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 
 const { dialog } = window.require('electron').remote;
 
@@ -17,5 +17,9 @@ const OpenPopUp = () => {
 };
 
 export const FolderPicker = () => {
-  return <Button onClick={OpenPopUp}>Select Git Repo</Button>;
+  return (
+    <Button intent={Intent.PRIMARY} onClick={OpenPopUp}>
+      Select Git Repo
+    </Button>
+  );
 };

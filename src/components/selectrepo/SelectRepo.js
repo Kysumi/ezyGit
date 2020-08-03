@@ -6,24 +6,24 @@ const handleClose = () => {
   console.log('all done');
 };
 
+const style = {
+  left: 'calc(50vw - 200px)',
+  margin: '10vh 0',
+  top: 0,
+  width: '400px',
+};
+
 export const SelectRepo = () => {
   return (
-    <Overlay
-      onClose={handleClose}
-      className={Classes.OVERLAY_SCROLL_CONTAINER}
-      isOpen={true}
-      autoFocus={true}
-      canEscapeKeyClose={true}
-      canOutsideClickClose={true}
-      enforceFocus={true}
-      hasBackdrop={true}
-      usePortal={true}
-      useTallContent={false}
-    >
-      <div className={Classes.CARD + Classes.ELEVATION_4}>
-        Select repo directory
-        <FolderPicker />
+    <Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} isOpen={true}>
+      <div
+        className={Classes.CARD + ' ' + Classes.ELEVATION_4}
+        style={{ backgroundColor: 'white', ...style }}
+      >
+        <h3>Select repo directory</h3>
+
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+          <FolderPicker />
           <Button
             intent={Intent.DANGER}
             onClick={handleClose}
