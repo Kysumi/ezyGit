@@ -17,5 +17,5 @@ const OpenPopUp = () => {
 };
 
 export const FolderPicker = () => {
-  return <Button onClick={OpenPopUp}>Click ME!</Button>;
+  return <Button onClick={OpenPopUp}>Select Git Repo</Button>;
 };
