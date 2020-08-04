@@ -18,6 +18,8 @@ export default slice.reducer;
 // Actions
 const { setFilePath } = slice.actions;
 
+export { setFilePath };
+
 export const setGitRepo = (filePath) => {
   setFilePath(filePath);
 };
