@@ -4,11 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const slice = createSlice({
   name: 'repo',
   initialState: {
-    filePath: null,
+    filePath: '',
   },
   reducers: {
     setFilePath: (state, action) => {
-      state.commits = action.payload;
+      state.filePath = action.payload;
       localStorage.setItem('repoFilePath', action.payload);
     },
   },

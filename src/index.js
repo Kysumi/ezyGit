@@ -11,7 +11,6 @@ import { setFilePath } from './store/Repo';
 
 const shouldShowPopUp = (dispatch) => {
   const filePath = localStorage.getItem('repoFilePath');
-  console.log(filePath);
   if (filePath !== null) {
     store.dispatch(setFilePath(filePath));
   } else {
