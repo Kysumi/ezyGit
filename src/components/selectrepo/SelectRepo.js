@@ -11,6 +11,7 @@ const style = {
   margin: '10vh 0',
   top: 0,
   width: '400px',
+  backgroundColor: 'white',
 };
 
 export const SelectRepo = () => {
@@ -18,7 +19,7 @@ export const SelectRepo = () => {
     <Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} isOpen={true}>
       <div
         className={Classes.CARD + ' ' + Classes.ELEVATION_4}
-        style={{ backgroundColor: 'white', ...style }}
+        style={{ ...style }}
       >
         <h3>Select repo directory</h3>
 
