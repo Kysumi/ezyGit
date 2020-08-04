@@ -9,6 +9,7 @@ const slice = createSlice({
   reducers: {
     setFilePath: (state, action) => {
       state.commits = action.payload;
+      localStorage.setItem('repoFilePath', action.payload);
     },
   },
 });
@@ -19,7 +20,3 @@ export default slice.reducer;
 const { setFilePath } = slice.actions;
 
 export { setFilePath };
-
-export const setGitRepo = (filePath) => {
-  setFilePath(filePath);
-};

@@ -2,6 +2,7 @@ import React from 'react';
 import { Overlay, Classes, Button, Intent } from '@blueprintjs/core';
 import { useDispatch } from 'react-redux';
 import { setFilePath } from '../../store/Repo';
+import { setPopUpVisible } from '../../store/View';
 
 const { dialog } = window.require('electron').remote;
 
@@ -38,7 +39,10 @@ export const SelectRepo = () => {
         style={{ ...style }}
       >
         <div className={Classes.DIALOG_CLOSE_BUTTON}>
-          <Button icon={'cross'}></Button>
+          <Button
+            icon={'cross'}
+            onClick={() => dispatch(setPopUpVisible(false))}
+          ></Button>
         </div>
 
         <div className={Classes.DIALOG_BODY}>
