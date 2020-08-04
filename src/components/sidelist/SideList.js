@@ -7,7 +7,11 @@ export const SideList = () => {
   const { filePath } = useSelector((state) => state.Repo);
 
   if (filePath !== '') {
-    getCommitLog(filePath);
+    getCommitLog(filePath)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.error(err));
   }
 
   return (

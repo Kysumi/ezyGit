@@ -12,10 +12,9 @@ let mainWindow;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    show: false,
-    webPreferences: { nodeIntegration: true },
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   const startURL = isDev
