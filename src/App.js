@@ -1,7 +1,7 @@
 import React from 'react';
 import { Resizable } from 're-resizable';
 import { AppBar } from './components/appbar/AppBar';
-import { SelectRepo } from './components/selectrepo/SelectRepo';
+import SelectRepo from './components/selectrepo/SelectRepo';
 import { useSelector } from 'react-redux';
 
 const App = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Overlay, Classes, Button, Intent } from '@blueprintjs/core';
-import { useDispatch } from 'react-redux';
+import { Overlay, Classes, Button, Intent, Toaster } from '@blueprintjs/core';
+import { connect } from 'react-redux';
 import { setFilePath } from '../../store/Repo';
 import { setPopUpVisible } from '../../store/View';
 
@@ -14,50 +14,85 @@ const style = {
   backgroundColor: 'white',
 };
 
-const OpenPopUp = (dispatch) => {
-  dialog
-    .showOpenDialog({
-      title: 'Select a folder',
-      properties: ['openDirectory'],
-    })
-    .then(({ filePaths }) => {
-      console.log(filePaths);
+class SelectRepo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filePath: '',
+    };
+  }
+  toaster = (ref) => (this.toaster = ref);
 
-      dispatch(setFilePath(filePaths[0]));
+  openPopUp = () => {
+    dialog
+      .showOpenDialog({
+        title: 'Select a folder',
+        properties: ['openDirectory'],
+      })
+      .then(({ filePaths }) => {
+        this.setState({ filePath: filePaths[0] });
+      });
+  };
 
-      // Dispatch redux event here
-    });
+  closePopup = () => {
+    const { filePath } = this.state;
+    const { setFilePath, setPopUpVisible } = this.props;
+
+    if (filePath === '') {
+      this.toaster.show({
+        icon: 'warning-sign',
+        intent: Intent.DANGER,
+        message: 'You must select a directory',
+      });
+    } else {
+      setFilePath(filePath);
+      setPopUpVisible();
+    }
+  };
+
+  render() {
+    const { setPopUpVisible } = this.props;
+
+    return (
+      <Overlay className={Classes.OVERLAY} isOpen={true}>
+        <Toaster ref={this.toaster} />
+        <div
+          className={Classes.CARD + ' ' + Classes.ELEVATION_4}
+          style={{ ...style }}
+        >
+          <div className={Classes.DIALOG_CLOSE_BUTTON}>
+            <Button icon={'cross'} onClick={() => setPopUpVisible()}></Button>
+          </div>
+
+          <div className={Classes.DIALOG_BODY}>
+            <h3>Select repo directory</h3>
+            <Button intent={Intent.PRIMARY} onClick={() => this.openPopUp()}>
+              Select Git Repo
+            </Button>
+            <h5>Current Path: {this.state.filePath}</h5>
+          </div>
+
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Button
+              intent={Intent.SUCCESS}
+              onClick={() => {
+                this.closePopup();
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      </Overlay>
+    );
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setPopUpVisible: () => dispatch(setPopUpVisible(false)),
+    setFilePath: (filePath) => dispatch(setFilePath(filePath)),
+  };
 };
 
-export const SelectRepo = () => {
-  const dispatch = useDispatch();
-
-  return (
-    <Overlay className={Classes.OVERLAY} isOpen={true}>
-      <div
-        className={Classes.CARD + ' ' + Classes.ELEVATION_4}
-        style={{ ...style }}
-      >
-        <div className={Classes.DIALOG_CLOSE_BUTTON}>
-          <Button
-            icon={'cross'}
-            onClick={() => dispatch(setPopUpVisible(false))}
-          ></Button>
-        </div>
-
-        <div className={Classes.DIALOG_BODY}>
-          <h3>Select repo directory</h3>
-          <Button intent={Intent.PRIMARY} onClick={() => OpenPopUp(dispatch)}>
-            Select Git Repo
-          </Button>
-        </div>
-
-        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-          <Button intent={Intent.SUCCESS} onClick={() => {}}>
-            Confirm
-          </Button>
-        </div>
-      </div>
-    </Overlay>
-  );
-};
+export default connect(null, mapDispatchToProps)(SelectRepo);
