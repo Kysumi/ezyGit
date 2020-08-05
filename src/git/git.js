@@ -7,7 +7,7 @@ export const getCommitLog = async (filePath, branch) => {
   return await git.log({
     fs,
     dir: filePath,
-    depth: 5,
+    depth: 500,
     ref: 'restart',
   });
 };

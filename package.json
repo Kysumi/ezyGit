@@ -17,8 +17,10 @@
     "re-resizable": "^6.5.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-list": "^0.8.15",
     "react-redux": "^7.2.1",
     "react-scripts": "3.4.1",
+    "redux-thunk": "^2.3.0",
     "wait-on": "^5.1.0"
   },
   "main": "./electron/main.js",

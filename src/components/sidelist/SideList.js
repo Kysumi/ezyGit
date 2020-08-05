@@ -1,16 +1,32 @@
 import React from 'react';
-import { Navbar } from '@blueprintjs/core';
-import { getCommitLog } from '../../git/git';
 import { useSelector } from 'react-redux';
-
-const item = (commit) => {
-  return <li>{commit.commit.message}</li>;
-};
+import ReactList from 'react-list';
+import { SideListItem } from './SideListItem';
 
 export const SideList = () => {
   const { commits } = useSelector((state) => state.Commit);
+  console.log(commits);
+
+  const renderItem = (index, key) => {
+    return <SideListItem key={key} commit={commits[index].commit} />;
+  };
+
   if (commits !== null) {
-    return <ul>{commits.map(item)}</ul>;
+    return (
+      <div
+        style={{
+          overflow: 'auto',
+          maxHeight: 'calc(100vh - 55px)',
+          minHeight: 'calc(100vh - 55px)',
+        }}
+      >
+        <ReactList
+          itemRenderer={renderItem}
+          length={commits.length}
+          type="uniform"
+        />
+      </div>
+    );
   } else {
     return 'No Commits';
   }
