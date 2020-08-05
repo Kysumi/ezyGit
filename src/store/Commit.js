@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getCommitLog } from '../git/git';
 
 // Slice
 const slice = createSlice({
@@ -22,3 +23,12 @@ export default slice.reducer;
 // Actions
 const { setCommits } = slice.actions;
 export { setCommits };
+
+export const loadCommits = () => async (dispatch, getState) => {
+  const { filePath } = getState().Repo;
+  getCommitLog(filePath)
+    .then((commits) => {
+      dispatch(setCommits(commits));
+    })
+    .catch((error) => console.error(error));
+};

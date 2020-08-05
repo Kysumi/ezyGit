@@ -8,20 +8,13 @@ import '@blueprintjs/core/lib/css/blueprint.css';
 
 import { setPopUpVisible } from './store/View';
 import { setFilePath } from './store/Repo';
-import { getCommitLog } from './git/git';
-import { setCommits } from './store/Commit';
+import { loadCommits } from './store/Commit';
 
 const shouldShowPopUp = (dispatch) => {
   const filePath = localStorage.getItem('repoFilePath');
   if (filePath !== null) {
     store.dispatch(setFilePath(filePath));
-    if (filePath !== '') {
-      getCommitLog(filePath)
-        .then((commits) => {
-          store.dispatch(setCommits(commits));
-        })
-        .catch((err) => console.error(err));
-    }
+    store.dispatch(loadCommits());
   } else {
     store.dispatch(setPopUpVisible(true));
   }
