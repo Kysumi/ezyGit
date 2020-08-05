@@ -1,13 +1,13 @@
 const git = require('isomorphic-git');
 var fs = window.require('fs');
 
-export const getCommitLog = (filePath, branch) => {
+export const getCommitLog = async (filePath, branch) => {
   console.log(filePath);
 
-  return git.log({
+  return await git.log({
     fs,
     dir: filePath,
     depth: 5,
-    ref: 'main',
+    ref: 'restart',
   });
 };

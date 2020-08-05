@@ -8,7 +8,7 @@ const slice = createSlice({
     selectedHash: null,
   },
   reducers: {
-    load: (state, action) => {
+    setCommits: (state, action) => {
       state.commits = action.payload;
     },
     selectHash: (state, action) => {
@@ -20,4 +20,5 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const { load } = slice.actions;
+const { setCommits } = slice.actions;
+export { setCommits };

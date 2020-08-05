@@ -3,21 +3,15 @@ import { Navbar } from '@blueprintjs/core';
 import { getCommitLog } from '../../git/git';
 import { useSelector } from 'react-redux';
 
+const item = (commit) => {
+  return <li>{commit.commit.message}</li>;
+};
+
 export const SideList = () => {
-  const { filePath } = useSelector((state) => state.Repo);
-
-  if (filePath !== '') {
-    getCommitLog(filePath)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.error(err));
+  const { commits } = useSelector((state) => state.Commit);
+  if (commits !== null) {
+    return <ul>{commits.map(item)}</ul>;
+  } else {
+    return 'No Commits';
   }
-
-  return (
-    <ul>
-      <li>Example</li>
-      <li>Testaroo</li>
-    </ul>
-  );
 };
