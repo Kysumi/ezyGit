@@ -3,6 +3,8 @@ import { Overlay, Classes, Button, Intent, Toaster } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { setFilePath } from '../../store/Repo';
 import { setPopUpVisible } from '../../store/View';
+import { getCommitLog } from '../../git/git';
+import { setCommits } from '../../store/Commit';
 
 const { dialog } = window.require('electron').remote;
 
@@ -36,7 +38,7 @@ class SelectRepo extends React.Component {
 
   closePopup = () => {
     const { filePath } = this.state;
-    const { setFilePath, setPopUpVisible } = this.props;
+    const { setFilePath, setPopUpVisible, setCommits } = this.props;
 
     if (filePath === '') {
       this.toaster.show({
@@ -47,6 +49,11 @@ class SelectRepo extends React.Component {
     } else {
       setFilePath(filePath);
       setPopUpVisible();
+      getCommitLog(filePath)
+        .then((commits) => {
+          setCommits(commits);
+        })
+        .catch((err) => console.error(err));
     }
   };
 
@@ -92,6 +99,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setPopUpVisible: () => dispatch(setPopUpVisible(false)),
     setFilePath: (filePath) => dispatch(setFilePath(filePath)),
+    setCommits: (commits) => dispatch(setCommits(commits)),
   };
 };
 
