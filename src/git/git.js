@@ -11,3 +11,11 @@ export const getCommitLog = async (filePath, branch) => {
     ref: 'restart',
   });
 };
+
+export const getCurrentBranch = async (filePath) => {
+  return await git.currentBranch({
+    fs,
+    dir: filePath,
+    fullname: false,
+  });
+};

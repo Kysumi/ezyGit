@@ -6,12 +6,12 @@ import { Provider } from 'react-redux';
 import store from './store/Store';
 import '@blueprintjs/core/lib/css/blueprint.css';
 
-import { setFilePath } from './store/repo/Repo';
-import { loadCommits } from './store/Commit';
+import { setFilePath, loadCommits } from './store/repo/Repo';
 
 const filePath = localStorage.getItem('repoFilePath');
 if (filePath !== null) {
   store.dispatch(setFilePath(filePath));
+
   store.dispatch(loadCommits());
 }
 

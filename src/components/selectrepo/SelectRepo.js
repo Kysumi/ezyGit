@@ -1,8 +1,7 @@
 import React from 'react';
 import { Overlay, Classes, Button, Intent, Toaster } from '@blueprintjs/core';
 import { connect } from 'react-redux';
-import { setFilePath } from '../../store/repo/Repo';
-import { loadCommits } from '../../store/Commit';
+import { setFilePath, loadCommits } from '../../store/repo/Repo';
 
 const { dialog } = window.require('electron').remote;
 

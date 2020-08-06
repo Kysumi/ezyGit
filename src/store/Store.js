@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import Commit from './Commit';
+import View from './view/View';
 import Repo from './repo/Repo';
 
 const reducer = combineReducers({
-  Commit,
   Repo,
+  View,
 });
 
 const store = configureStore({

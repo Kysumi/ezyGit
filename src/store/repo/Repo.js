@@ -1,15 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getCommitLog, getCurrentBranch } from '../../git/git';
 
 // Slice
 const slice = createSlice({
   name: 'repo',
   initialState: {
     filePath: '',
+    commits: null,
+    selectedHash: null,
+    currentBranch: null,
   },
   reducers: {
     setFilePath: (state, action) => {
       state.filePath = action.payload;
       localStorage.setItem('repoFilePath', action.payload);
+    },
+    setCommits: (state, action) => {
+      state.commits = action.payload;
+    },
+    setCurrentBranch: (state, action) => {
+      state.currentBranch = action.payload;
     },
   },
 });
@@ -17,6 +27,24 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const { setFilePath } = slice.actions;
+const { setFilePath, setCommits, setCurrentBranch } = slice.actions;
 
 export { setFilePath };
+
+export const loadCurrentBranch = () => async (dispatch, getState) => {
+  const { filePath } = getState().Repo;
+
+  const branchName = await getCurrentBranch(filePath);
+  dispatch(setCurrentBranch(branchName));
+};
+
+export const loadCommits = () => async (dispatch, getState) => {
+  const { filePath } = getState().Repo;
+
+  try {
+    const commits = await getCommitLog(filePath);
+    dispatch(setCommits(commits));
+  } catch (err) {
+    console.error(err);
+  }
+};
