@@ -6,7 +6,6 @@ import { getCommitsSelector } from '../../store/repo/RepoSelector';
 
 export const SideList = () => {
   const commits = useSelector(getCommitsSelector);
-  console.log(commits);
 
   const renderItem = (index, key) => {
     return <SideListItem key={key} commit={commits[index].commit} />;
