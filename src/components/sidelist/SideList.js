@@ -16,8 +16,8 @@ export const SideList = () => {
       <div
         style={{
           overflow: 'auto',
-          maxHeight: 'calc(100vh - 55px)',
-          minHeight: 'calc(100vh - 55px)',
+          maxHeight: 'calc(100vh - 60px)',
+          minHeight: 'calc(100vh - 60px)',
         }}
       >
         <ReactList

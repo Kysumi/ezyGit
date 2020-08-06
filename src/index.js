@@ -6,21 +6,14 @@ import { Provider } from 'react-redux';
 import store from './store/Store';
 import '@blueprintjs/core/lib/css/blueprint.css';
 
-import { setPopUpVisible } from './store/View';
-import { setFilePath } from './store/Repo';
+import { setFilePath } from './store/repo/Repo';
 import { loadCommits } from './store/Commit';
 
-const shouldShowPopUp = (dispatch) => {
-  const filePath = localStorage.getItem('repoFilePath');
-  if (filePath !== null) {
-    store.dispatch(setFilePath(filePath));
-    store.dispatch(loadCommits());
-  } else {
-    store.dispatch(setPopUpVisible(true));
-  }
-};
-
-shouldShowPopUp();
+const filePath = localStorage.getItem('repoFilePath');
+if (filePath !== null) {
+  store.dispatch(setFilePath(filePath));
+  store.dispatch(loadCommits());
+}
 
 ReactDOM.render(
   <React.StrictMode>

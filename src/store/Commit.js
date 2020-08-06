@@ -26,9 +26,11 @@ export { setCommits };
 
 export const loadCommits = () => async (dispatch, getState) => {
   const { filePath } = getState().Repo;
-  getCommitLog(filePath)
-    .then((commits) => {
-      dispatch(setCommits(commits));
-    })
-    .catch((error) => console.error(error));
+
+  try {
+    const commits = await getCommitLog(filePath);
+    dispatch(setCommits(commits));
+  } catch (err) {
+    console.error(err);
+  }
 };

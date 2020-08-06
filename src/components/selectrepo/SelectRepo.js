@@ -1,8 +1,7 @@
 import React from 'react';
 import { Overlay, Classes, Button, Intent, Toaster } from '@blueprintjs/core';
 import { connect } from 'react-redux';
-import { setFilePath } from '../../store/Repo';
-import { setPopUpVisible } from '../../store/View';
+import { setFilePath } from '../../store/repo/Repo';
 import { loadCommits } from '../../store/Commit';
 
 const { dialog } = window.require('electron').remote;
@@ -47,7 +46,6 @@ class SelectRepo extends React.Component {
       });
     } else {
       setFilePath(filePath);
-      setPopUpVisible();
       loadCommits();
     }
   };
@@ -62,10 +60,6 @@ class SelectRepo extends React.Component {
           className={Classes.CARD + ' ' + Classes.ELEVATION_4}
           style={{ ...style }}
         >
-          <div className={Classes.DIALOG_CLOSE_BUTTON}>
-            <Button icon={'cross'} onClick={() => setPopUpVisible()}></Button>
-          </div>
-
           <div className={Classes.DIALOG_BODY}>
             <h3>Select repo directory</h3>
             <Button intent={Intent.PRIMARY} onClick={() => this.openPopUp()}>
@@ -92,7 +86,6 @@ class SelectRepo extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setPopUpVisible: () => dispatch(setPopUpVisible(false)),
     setFilePath: (filePath) => dispatch(setFilePath(filePath)),
     loadCommits: (commits) => dispatch(loadCommits()),
   };

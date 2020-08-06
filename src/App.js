@@ -4,9 +4,10 @@ import { AppBar } from './components/appbar/AppBar';
 import SelectRepo from './components/selectrepo/SelectRepo';
 import { useSelector } from 'react-redux';
 import { SideList } from './components/sidelist/SideList';
+import { filePathSelector } from './store/repo/RepoSelector';
 
 const App = () => {
-  const { popUpVisible } = useSelector((state) => state.View);
+  const hasFilePath = useSelector(filePathSelector);
 
   return (
     <div style={{ height: '100%' }}>
@@ -18,7 +19,7 @@ const App = () => {
         <SideList />
       </Resizable>
 
-      {popUpVisible ? <SelectRepo /> : null}
+      {hasFilePath ? null : <SelectRepo />}
     </div>
   );
 };
