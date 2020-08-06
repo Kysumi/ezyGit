@@ -35,7 +35,7 @@ class SelectRepo extends React.Component {
 
   closePopup = () => {
     const { filePath } = this.state;
-    const { setFilePath, setPopUpVisible, loadCommits } = this.props;
+    const { setFilePath, loadCommits } = this.props;
 
     if (filePath === '') {
       this.toaster.show({
@@ -50,8 +50,6 @@ class SelectRepo extends React.Component {
   };
 
   render() {
-    const { setPopUpVisible } = this.props;
-
     return (
       <Overlay className={Classes.OVERLAY} isOpen={true}>
         <Toaster ref={this.toaster} />
@@ -86,7 +84,7 @@ class SelectRepo extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setFilePath: (filePath) => dispatch(setFilePath(filePath)),
-    loadCommits: (commits) => dispatch(loadCommits()),
+    loadCommits: () => dispatch(loadCommits()),
   };
 };
 
