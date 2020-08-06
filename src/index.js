@@ -11,7 +11,6 @@ import { setFilePath, loadCommits } from './store/repo/Repo';
 const filePath = localStorage.getItem('repoFilePath');
 if (filePath !== null) {
   store.dispatch(setFilePath(filePath));
-
   store.dispatch(loadCommits());
 }
 

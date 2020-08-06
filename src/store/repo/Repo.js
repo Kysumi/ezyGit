@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getCommitLog, getCurrentBranch } from '../../git/git';
+import { filePathSelector } from './RepoSelector';
 
 // Slice
 const slice = createSlice({
@@ -32,14 +33,14 @@ const { setFilePath, setCommits, setCurrentBranch } = slice.actions;
 export { setFilePath };
 
 export const loadCurrentBranch = () => async (dispatch, getState) => {
-  const { filePath } = getState().Repo;
+  const filePath = filePathSelector(getState());
 
   const branchName = await getCurrentBranch(filePath);
   dispatch(setCurrentBranch(branchName));
 };
 
 export const loadCommits = () => async (dispatch, getState) => {
-  const { filePath } = getState().Repo;
+  const filePath = filePathSelector(getState());
 
   try {
     const commits = await getCommitLog(filePath);
