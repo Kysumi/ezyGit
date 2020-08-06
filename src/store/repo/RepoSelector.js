@@ -11,3 +11,8 @@ export const getCommitsSelector = createSelector(
   repoSelector,
   (repoState) => repoState.commits
 );
+
+export const getBranchNameSelector = createSelector(
+  repoSelector,
+  (repoState) => repoState.currentBranch
+);
