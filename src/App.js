@@ -12,13 +12,9 @@ const App = () => {
   return (
     <div style={{ height: '100%' }}>
       <AppBar />
-      <Resizable
-        defaultSize={{ width: '30%', height: '100%' }}
-        style={{ backgroundColor: 'yellow' }}
-      >
+      <Resizable defaultSize={{ width: '30%', height: '100%' }}>
         <SideList />
       </Resizable>
-
       {hasFilePath ? null : <SelectRepo />}
     </div>
   );
