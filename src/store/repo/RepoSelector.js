@@ -1,4 +1,13 @@
 import { createSelector } from 'reselect';
 
-export const filePathSelector = (state) => state.Repo.filePath;
-export const getCommits = (state) => state.Repo.commits;
+export const repoSelector = (state) => state.Repo;
+
+export const filePathSelector = createSelector(
+  repoSelector,
+  (repoState) => repoState.filePath
+);
+
+export const getCommitsSelector = createSelector(
+  repoSelector,
+  (repoState) => repoState.commits
+);

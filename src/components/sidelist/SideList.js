@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReactList from 'react-list';
 import { SideListItem } from './SideListItem';
-import { getCommits } from '../../store/repo/RepoSelector';
+import { getCommitsSelector } from '../../store/repo/RepoSelector';
 
 export const SideList = () => {
-  const commits = useSelector(getCommits);
+  const commits = useSelector(getCommitsSelector);
   console.log(commits);
 
   const renderItem = (index, key) => {
