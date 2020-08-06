@@ -1,7 +1,7 @@
 import React from 'react';
 import { Overlay, Classes, Button, Intent, Toaster } from '@blueprintjs/core';
 import { connect } from 'react-redux';
-import { setFilePath, loadCommits } from '../../store/repo/Repo';
+import { setFilePath, initialise } from '../../store/repo/Repo';
 
 const { dialog } = window.require('electron').remote;
 
@@ -35,7 +35,7 @@ class SelectRepo extends React.Component {
 
   closePopup = () => {
     const { filePath } = this.state;
-    const { setFilePath, loadCommits } = this.props;
+    const { setFilePath, initialise } = this.props;
 
     if (filePath === '') {
       this.toaster.show({
@@ -45,7 +45,7 @@ class SelectRepo extends React.Component {
       });
     } else {
       setFilePath(filePath);
-      loadCommits();
+      initialise();
     }
   };
 
@@ -84,7 +84,7 @@ class SelectRepo extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setFilePath: (filePath) => dispatch(setFilePath(filePath)),
-    loadCommits: () => dispatch(loadCommits()),
+    initialise: () => dispatch(initialise()),
   };
 };
 
