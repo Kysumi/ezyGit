@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactList from 'react-list';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -8,8 +9,16 @@ class DiffList extends React.Component {
       forceExpandedAllItems: false,
     };
   }
+
+  renderItem() {
+    return <div>new item heh</div>;
+  }
+
   render() {
-    return <div>List BB</div>;
+    const { changes } = this.props;
+    return (
+      <ReactList itemRenderer={this.renderItem} length={10} type="simple" />
+    );
   }
 }
 
