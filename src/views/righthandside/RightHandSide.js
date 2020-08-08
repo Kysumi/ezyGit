@@ -4,6 +4,7 @@ import { CommitMessage } from '../../components/commitmessage/CommitMessage';
 
 const rightHandSideStyle = {
   paddingLeft: '10px',
+  width: '100%',
 };
 
 export const RightHandSide = () => {

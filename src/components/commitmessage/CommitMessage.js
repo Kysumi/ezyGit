@@ -1,5 +1,14 @@
 import React from 'react';
-
-export const CommitMessage = () => {
-  return <div>This is where the commit message will go</div>;
+import { TextArea } from '@blueprintjs/core';
+export const CommitMessage = ({ message, onChange }) => {
+  return (
+    <div>
+      <TextArea
+        fill={true}
+        onChange={onChange}
+        value={message}
+        placeholder={'Commit Message'}
+      />
+    </div>
+  );
 };
