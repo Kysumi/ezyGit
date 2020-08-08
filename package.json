@@ -17,6 +17,7 @@
     "isomorphic-git": "^1.7.4",
     "re-resizable": "^6.5.4",
     "react": "^16.13.1",
+    "react-diff-view": "^2.4.4",
     "react-dom": "^16.13.1",
     "react-list": "^0.8.15",
     "react-redux": "^7.2.1",
