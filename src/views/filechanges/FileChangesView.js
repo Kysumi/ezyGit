@@ -1,20 +1,15 @@
 import React from 'react';
-import DiffList from '../../components/difflist/DiffList';
+import { PendingChangesView } from './PendingChangesView';
+import { CommitedChangesView } from './CommitedChangesView';
+import { useSelector } from 'react-redux';
+import { selectedCommitSelector } from '../../store/view/ViewSelector';
 
 export const FileChangesView = () => {
+  const hasSelectedCommit = useSelector(selectedCommitSelector);
   return (
     <div>
       <h3>File Changes</h3>
-
-      <div>
-        <h5>Working Changes</h5>
-        <DiffList />
-      </div>
-
-      <div>
-        <h5>Untracked Files</h5>
-        <DiffList />
-      </div>
+      {hasSelectedCommit ? <CommitedChangesView /> : <PendingChangesView />}
     </div>
   );
 };
