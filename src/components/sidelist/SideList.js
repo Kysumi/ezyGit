@@ -17,7 +17,6 @@ export const SideList = () => {
     const onClick = () => {
       dispatch(selectHash(commit.oid));
     };
-    console.log(selectedCommit, commit.oid, commit);
     return (
       <SideListItem
         key={key}
