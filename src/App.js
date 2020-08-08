@@ -3,8 +3,13 @@ import { Resizable } from 're-resizable';
 import { AppBar } from './components/appbar/AppBar';
 import SelectRepo from './components/selectrepo/SelectRepo';
 import { useSelector } from 'react-redux';
-import { SideList } from './components/sidelist/SideList';
+import { CommitList } from './components/commitlist/CommitList';
 import { filePathSelector } from './store/repo/RepoSelector';
+import { RightHandSide } from './views/righthandside/RightHandSide';
+
+const contentStyle = {
+  display: 'flex',
+};
 
 const App = () => {
   const hasFilePath = useSelector(filePathSelector);
@@ -12,9 +17,14 @@ const App = () => {
   return (
     <div style={{ height: '100%' }}>
       <AppBar />
-      <Resizable defaultSize={{ width: '30%', height: '100%' }}>
-        <SideList />
-      </Resizable>
+
+      <div style={contentStyle}>
+        <Resizable defaultSize={{ width: '30%', height: '100%' }}>
+          <CommitList />
+        </Resizable>
+        <RightHandSide />
+      </div>
+
       {hasFilePath ? null : <SelectRepo />}
     </div>
   );

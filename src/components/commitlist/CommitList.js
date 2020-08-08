@@ -1,12 +1,18 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactList from 'react-list';
-import { SideListItem } from './SideListItem';
+import { CommitListItem } from './CommitListItem';
 import { getCommitsSelector } from '../../store/repo/RepoSelector';
 import { selectedCommitSelector } from '../../store/view/ViewSelector';
 import { selectHash } from '../../store/view/View';
 
-export const SideList = () => {
+const listStyle = {
+  overflow: 'auto',
+  maxHeight: 'calc(100vh - 60px)',
+  minHeight: 'calc(100vh - 60px)',
+};
+
+export const CommitList = () => {
   const commits = useSelector(getCommitsSelector);
   const selectedCommit = useSelector(selectedCommitSelector);
 
@@ -18,7 +24,7 @@ export const SideList = () => {
       dispatch(selectHash(commit.oid));
     };
     return (
-      <SideListItem
+      <CommitListItem
         key={key}
         isSelected={selectedCommit === commit.oid}
         commit={commit.commit}
@@ -29,13 +35,7 @@ export const SideList = () => {
 
   if (commits !== null) {
     return (
-      <div
-        style={{
-          overflow: 'auto',
-          maxHeight: 'calc(100vh - 60px)',
-          minHeight: 'calc(100vh - 60px)',
-        }}
-      >
+      <div style={listStyle}>
         <ReactList
           itemRenderer={renderItem}
           length={commits.length}
