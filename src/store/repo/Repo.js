@@ -8,7 +8,6 @@ const slice = createSlice({
   initialState: {
     filePath: '',
     commits: null,
-    selectedHash: null,
     currentBranch: null,
   },
   reducers: {

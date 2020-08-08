@@ -1,14 +1,31 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ReactList from 'react-list';
 import { SideListItem } from './SideListItem';
 import { getCommitsSelector } from '../../store/repo/RepoSelector';
+import { selectedCommitSelector } from '../../store/view/ViewSelector';
+import { selectHash } from '../../store/view/View';
 
 export const SideList = () => {
   const commits = useSelector(getCommitsSelector);
+  const selectedCommit = useSelector(selectedCommitSelector);
+
+  const dispatch = useDispatch();
 
   const renderItem = (index, key) => {
-    return <SideListItem key={key} commit={commits[index].commit} />;
+    const commit = commits[index];
+    const onClick = () => {
+      dispatch(selectHash(commit.oid));
+    };
+    console.log(selectedCommit, commit.oid, commit);
+    return (
+      <SideListItem
+        key={key}
+        isSelected={selectedCommit === commit.oid}
+        commit={commit.commit}
+        onClick={onClick}
+      />
+    );
   };
 
   if (commits !== null) {
