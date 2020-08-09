@@ -113,6 +113,8 @@ export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
     dir: gitDir,
     trees: [git.TREE({ ref: commitHash1 }), git.TREE({ ref: commitHash2 })],
     map: async (filePath, [A, B]) => {
+      // TODO handle removals and addtions
+
       // ignore directories
       if (await isDirectory(filePath, A, B)) {
         return;
