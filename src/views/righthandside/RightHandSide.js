@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileChangesView } from '../fileChanges/FileChangesView';
+import { FileChangesView } from './fileChanges/FileChangesView';
 import { CommitMessage } from '../../components/commitMessage/CommitMessage';
 
 const rightHandSideStyle = {

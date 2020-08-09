@@ -1,12 +1,12 @@
 import React from 'react';
-import DiffList from '../../components/diffList/DiffList';
-import { getFileStateChanges, getPreviousCommits } from '../../git/git';
+import DiffList from '../../../components/diffList/DiffList';
+import { getFileStateChanges, getPreviousCommits } from '../../../git/git';
 import { useSelector } from 'react-redux';
 import {
   filePathSelector,
   getCommitsSelector,
   getBranchNameSelector,
-} from '../../store/repo/RepoSelector';
+} from '../../../store/repo/RepoSelector';
 
 export const PendingChangesView = () => {
   const filePath = useSelector(filePathSelector);
