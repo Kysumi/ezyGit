@@ -5,7 +5,7 @@ import { stringToColour } from '../../helper/stringToColor';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
 const classNames = require('classnames');
 
-export const CommitListItem = ({ id, isSelected, commit, onClick }) => {
+export const CommitListItem = ({ isSelected, commit, onClick }) => {
   const color = stringToColour(useSelector(getBranchNameSelector));
 
   const style = {
@@ -17,7 +17,7 @@ export const CommitListItem = ({ id, isSelected, commit, onClick }) => {
   };
 
   return (
-    <div key={id} className={Classes.CARD} style={style} onClick={onClick}>
+    <div className={Classes.CARD} style={style} onClick={onClick}>
       <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
         {commit.committer.name}
       </Text>

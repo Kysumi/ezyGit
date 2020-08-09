@@ -5,7 +5,7 @@ import { stringToColour } from '../../helper/stringToColor';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
 const classNames = require('classnames');
 
-export const PendingCommitItem = ({ id, isSelected, onClick }) => {
+export const PendingCommitItem = ({ isSelected, onClick }) => {
   const color = stringToColour(useSelector(getBranchNameSelector));
 
   const style = {
@@ -17,7 +17,7 @@ export const PendingCommitItem = ({ id, isSelected, onClick }) => {
   };
 
   return (
-    <div key={id} className={Classes.CARD} style={style} onClick={onClick}>
+    <div className={Classes.CARD} style={style} onClick={onClick}>
       <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
         Amount of pending file changes goes here
       </Text>

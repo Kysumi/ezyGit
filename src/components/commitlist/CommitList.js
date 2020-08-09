@@ -28,7 +28,7 @@ export const CommitList = () => {
     if (commit.oid == null) {
       return (
         <PendingCommitItem
-          id={key}
+          key={key}
           isSelected={selectedCommit === commit.oid}
           onClick={onClick}
         />
@@ -36,7 +36,7 @@ export const CommitList = () => {
     } else {
       return (
         <CommitListItem
-          id={key}
+          key={key}
           isSelected={selectedCommit === commit.oid}
           commit={commit.commit}
           onClick={onClick}
