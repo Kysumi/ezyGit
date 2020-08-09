@@ -1,11 +1,11 @@
 import React from 'react';
 import { Resizable } from 're-resizable';
-import { AppBar } from './components/appbar/AppBar';
-import SelectRepo from './components/selectrepo/SelectRepo';
+import { AppBar } from './components/appBar/AppBar';
+import SelectRepo from './components/selectRepo/SelectRepo';
 import { useSelector } from 'react-redux';
 import { CommitList } from './components/commitlist/CommitList';
 import { filePathSelector } from './store/repo/RepoSelector';
-import { RightHandSide } from './views/righthandside/RightHandSide';
+import { RightHandSide } from './views/rightHandSide/RightHandSide';
 
 const contentStyle = {
   display: 'flex',
