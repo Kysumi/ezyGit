@@ -2,9 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactList from 'react-list';
 import { CommitListItem } from './CommitListItem';
-import { getCommitsSelector } from '../../store/repo/RepoSelector';
+import { getCommitListItems } from '../../store/repo/RepoSelector';
 import { selectedCommitSelector } from '../../store/view/ViewSelector';
 import { selectHash } from '../../store/view/View';
+import { PendingCommitItem } from './PendingCommitItem';
 
 const listStyle = {
   overflow: 'auto',
@@ -13,7 +14,7 @@ const listStyle = {
 };
 
 export const CommitList = () => {
-  const commits = useSelector(getCommitsSelector);
+  const commits = useSelector(getCommitListItems);
   const selectedCommit = useSelector(selectedCommitSelector);
 
   const dispatch = useDispatch();
@@ -23,17 +24,28 @@ export const CommitList = () => {
     const onClick = () => {
       dispatch(selectHash(commit.oid));
     };
-    return (
-      <CommitListItem
-        key={key}
-        isSelected={selectedCommit === commit.oid}
-        commit={commit.commit}
-        onClick={onClick}
-      />
-    );
+
+    if (commit.oid == null) {
+      return (
+        <PendingCommitItem
+          id={key}
+          isSelected={selectedCommit === commit.oid}
+          onClick={onClick}
+        />
+      );
+    } else {
+      return (
+        <CommitListItem
+          id={key}
+          isSelected={selectedCommit === commit.oid}
+          commit={commit.commit}
+          onClick={onClick}
+        />
+      );
+    }
   };
 
-  if (commits !== null) {
+  if (commits.length !== 1) {
     return (
       <div style={listStyle}>
         <ReactList

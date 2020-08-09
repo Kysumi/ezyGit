@@ -6,3 +6,8 @@ export const selectedCommitSelector = createSelector(
   viewSelector,
   (viewState) => viewState.selectedHash
 );
+
+export const pendingCommitMessageSelector = createSelector(
+  viewSelector,
+  (viewState) => viewState.pendingCommitMessage
+);

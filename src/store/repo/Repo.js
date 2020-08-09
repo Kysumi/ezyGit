@@ -7,7 +7,7 @@ const slice = createSlice({
   name: 'repo',
   initialState: {
     filePath: '',
-    commits: null,
+    commits: [],
     currentBranch: null,
   },
   reducers: {
