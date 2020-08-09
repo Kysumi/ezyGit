@@ -13,7 +13,7 @@ const style = {
   backgroundColor: 'white',
 };
 
-class SelectRepo extends React.Component {
+class SelectRepoPopUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,4 +88,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SelectRepo);
+export default connect(null, mapDispatchToProps)(SelectRepoPopUp);

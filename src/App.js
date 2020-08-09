@@ -1,7 +1,7 @@
 import React from 'react';
 import { Resizable } from 're-resizable';
 import { AppBar } from './components/appBar/AppBar';
-import SelectRepo from './components/selectRepo/SelectRepo';
+import SelectRepoPopUp from './components/selectRepoPopUp/SelectRepoPopUp';
 import { useSelector } from 'react-redux';
 import { CommitList } from './components/commitlist/CommitList';
 import { filePathSelector } from './store/repo/RepoSelector';
@@ -25,7 +25,7 @@ const App = () => {
         <RightHandSide />
       </div>
 
-      {hasFilePath ? null : <SelectRepo />}
+      {hasFilePath ? null : <SelectRepoPopUp />}
     </div>
   );
 };
