@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactList from 'react-list';
 import { DiffListItem } from './DiffListItem';
 
@@ -7,28 +7,37 @@ class DiffList extends React.Component {
     super(props);
 
     this.state = {
+      width: 0,
       forcedOpenState: false,
     };
   }
 
   renderItem = (index, key) => {
     const { items } = this.props;
-    const { forcedOpenState } = this.state;
+    const { forcedOpenState, width } = this.state;
 
     const diff = items[index];
 
     return (
       <div key={key}>
-        <DiffListItem forcedOpenState={forcedOpenState} diff={diff} />
+        <DiffListItem
+          forcedOpenState={forcedOpenState}
+          diff={diff}
+          viewStyle={width > 1000 ? 'split' : 'unified'}
+        />
       </div>
     );
   };
+
+  componentDidMount() {
+    this.setState({ width: this.divRef.clientWidth });
+  }
 
   render() {
     const { items } = this.props;
 
     return (
-      <div>
+      <div ref={(element) => (this.divRef = element)}>
         {items ? (
           <ReactList
             itemRenderer={this.renderItem}

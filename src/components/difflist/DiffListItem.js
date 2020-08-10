@@ -3,6 +3,12 @@ import { parseDiff, Diff, Hunk } from 'react-diff-view';
 import { diffLines, formatLines } from 'unidiff';
 import { Collapse, Button, Icon } from '@blueprintjs/core';
 
+const buttonStyle = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-start',
+};
+
 /**
  * Gets the difference between the two strings in a format for the
  * react-diff-view lib
@@ -18,7 +24,7 @@ const getGitDifference = (originalText, changedText) => {
   return diff;
 };
 
-export const DiffListItem = ({ forcedOpenState, diff }) => {
+export const DiffListItem = ({ forcedOpenState, diff, viewStyle }) => {
   const [isOpen, setOpen] = useState(true);
   const parsedDiff = getGitDifference(diff.aFileContents, diff.bFileContents);
   const icon = isOpen ? 'chevron-up' : 'chevron-down';
@@ -28,13 +34,13 @@ export const DiffListItem = ({ forcedOpenState, diff }) => {
       <Button
         onClick={() => setOpen(!isOpen)}
         minimal={true}
-        style={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}
+        style={buttonStyle}
       >
         <Icon icon={icon} />
       </Button>
       <Collapse isOpen={isOpen}>
         <Diff
-          viewType="split"
+          viewType={viewStyle}
           diffType={parsedDiff.type}
           hunks={parsedDiff.hunks}
         >
