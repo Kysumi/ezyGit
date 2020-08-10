@@ -87,17 +87,6 @@ const readContentsFromHash = async (hash, gitDir) => {
   return new TextDecoder().decode(blob);
 };
 
-export const getPreviousCommits = async (branchName, filePath, index) => {
-  const depth = index + 1;
-  const commits = await getCommitLog(filePath, branchName, depth);
-  const oids = commits.map((commit) => commit.oid);
-
-  return {
-    targetHash: oids[depth - 1],
-    previousHash: oids[depth],
-  };
-};
-
 export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
   return git.walk({
     fs,

@@ -2,13 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getCommitLog,
   getCurrentBranch,
-  getPreviousCommits,
   getFileStateChanges,
 } from '../../git/git';
 import {
   filePathSelector,
   getBranchNameSelector,
   getCommitIndexByHashSelector,
+  getCommitsSelector,
 } from './RepoSelector';
 
 // Slice
@@ -70,14 +70,18 @@ export const loadCommits = () => async (dispatch, getState) => {
 
 export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
   const filePath = filePathSelector(getState());
-  const branchName = getBranchNameSelector(getState());
+
+  // getting the hashes for the desired diff
   const index = getCommitIndexByHashSelector(getState());
-  console.log(index);
-  const hashes = await getPreviousCommits(branchName, filePath, index);
+  const commits = getCommitsSelector(getState());
+  const oids = commits.map((commit) => commit.oid);
+
+  const targetHash = oids[index - 1];
+  const previousHash = oids[index];
 
   const fileChanges = await getFileStateChanges(
-    hashes.targetHash,
-    hashes.previousHash,
+    targetHash,
+    previousHash,
     filePath
   );
 
