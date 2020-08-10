@@ -45,3 +45,8 @@ export const getBranchNameSelector = createSelector(
   repoSelector,
   (repoState) => repoState.currentBranch
 );
+
+export const getCurrentBranchDiffs = createSelector(
+  repoSelector,
+  (repoState) => repoState.currentBranchDiffs
+);

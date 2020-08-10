@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCommitLog, getCurrentBranch } from '../../git/git';
+import {
+  getCommitLog,
+  getCurrentBranch,
+  getPreviousCommits,
+  getFileStateChanges,
+} from '../../git/git';
 import { filePathSelector, getBranchNameSelector } from './RepoSelector';
 
 // Slice
@@ -9,6 +14,7 @@ const slice = createSlice({
     filePath: '',
     commits: [],
     currentBranch: null,
+    currentBranchDiffs: null,
   },
   reducers: {
     setFilePath: (state, action) => {
@@ -21,13 +27,21 @@ const slice = createSlice({
     setCurrentBranch: (state, action) => {
       state.currentBranch = action.payload;
     },
+    setCurrentDiffs: (state, action) => {
+      state.currentBranchDiffs = action.payload;
+    },
   },
 });
 
 export default slice.reducer;
 
 // Actions
-const { setFilePath, setCommits, setCurrentBranch } = slice.actions;
+const {
+  setFilePath,
+  setCommits,
+  setCurrentBranch,
+  setCurrentDiffs,
+} = slice.actions;
 
 export { setFilePath };
 
@@ -50,7 +64,23 @@ export const loadCommits = () => async (dispatch, getState) => {
   }
 };
 
+export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
+  const filePath = filePathSelector(getState());
+  const branchName = getBranchNameSelector(getState());
+
+  const hashes = await getPreviousCommits(branchName, filePath);
+
+  const fileChanges = await getFileStateChanges(
+    hashes.targetHash,
+    hashes.previousHash,
+    filePath
+  );
+
+  dispatch(setCurrentDiffs(fileChanges));
+};
+
 export const initialise = () => async (dispatch, getState) => {
   await dispatch(loadCurrentBranch());
   await dispatch(loadCommits());
+  await dispatch(loadDiffBetweenCommits());
 };

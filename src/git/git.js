@@ -1,9 +1,11 @@
-import { diffLines, formatLines } from 'unidiff';
-import { parseDiff } from 'react-diff-view';
 const git = require('isomorphic-git');
-
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
+
+const FILE_EQUAL = 'equal';
+const FILE_MODIFIED = 'modified';
+const FILE_ADDED = 'added';
+const FILE_REMOVED = 'removed';
 
 /**
  * Returns the previous commits from the provided branch
@@ -35,20 +37,6 @@ export const getCurrentBranch = async (filePath) => {
 };
 
 /**
- * Gets the difference between the two strings in a format for the
- * react-diff-view lib
- *
- * @param {string} originalText
- * @param {string} changedText
- */
-export const getGitDifference = (originalText, changedText) => {
-  const diffText = formatLines(diffLines(originalText, changedText), {
-    context: 3,
-  });
-  return parseDiff(diffText, { nearbySequences: 'zip' });
-};
-
-/**
  * Helper function.
  *
  * This is used to check is a particular diff is a directory change
@@ -70,15 +58,15 @@ const isDirectory = async (filePath, a, b) => {
 };
 
 const getModifacationType = async (A, B, Aoid, Boid) => {
-  let type = 'equal';
+  let type = FILE_EQUAL;
   if (Aoid !== Boid) {
-    type = 'modify';
+    type = FILE_MODIFIED;
   }
   if (Aoid === undefined) {
-    type = 'add';
+    type = FILE_ADDED;
   }
   if (Boid === undefined) {
-    type = 'remove';
+    type = FILE_REMOVED;
   }
   if (Aoid === undefined && Boid === undefined) {
     console.log('Something weird happened:');
@@ -104,8 +92,8 @@ export const getPreviousCommits = async (branchName, filePath) => {
   const oids = commits.map((commit) => commit.oid);
 
   return {
-    targetHash: oids[0],
-    previousHash: oids[1],
+    targetHash: oids[1],
+    previousHash: oids[0],
   };
 };
 
@@ -126,6 +114,11 @@ export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
       const bHash = await B.oid();
 
       const modificationType = await getModifacationType(A, B, aHash, bHash);
+
+      // We only want files that have been changed
+      if (modificationType === FILE_EQUAL) {
+        return;
+      }
 
       const aFileContents = await readContentsFromHash(aHash, gitDir);
       const bFileContents = await readContentsFromHash(bHash, gitDir);
