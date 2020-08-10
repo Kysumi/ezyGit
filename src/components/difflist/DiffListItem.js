@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { parseDiff, Diff, Hunk } from 'react-diff-view';
 import { diffLines, formatLines } from 'unidiff';
-import { Collapse, Button, Icon } from '@blueprintjs/core';
+import { Collapse, Button, Icon, Text } from '@blueprintjs/core';
 
 const buttonStyle = {
   width: '100%',
@@ -31,12 +31,13 @@ export const DiffListItem = ({ forcedOpenState, diff, viewStyle }) => {
 
   return (
     <div>
-      <Button
-        onClick={() => setOpen(!isOpen)}
-        minimal={true}
-        style={buttonStyle}
-      >
-        <Icon icon={icon} />
+      <Button onClick={() => setOpen(!isOpen)} style={buttonStyle}>
+        <div style={buttonStyle}>
+          <Icon icon={icon} />
+          <Text>
+            <b>{diff.filePath}</b>
+          </Text>
+        </div>
       </Button>
       <Collapse isOpen={isOpen}>
         <Diff
