@@ -1,7 +1,9 @@
 import { diffLines, formatLines } from 'unidiff';
 import { parseDiff } from 'react-diff-view';
 const git = require('isomorphic-git');
-var fs = window.require('fs');
+
+const remote = window.require('electron').remote;
+const fs = remote.require('fs');
 
 /**
  * Returns the previous commits from the provided branch
