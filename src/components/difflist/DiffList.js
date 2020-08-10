@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import ReactList from 'react-list';
 import { DiffListItem } from './DiffListItem';
 

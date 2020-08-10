@@ -1,5 +1,8 @@
 import { createSelector } from 'reselect';
-import { pendingCommitMessageSelector } from '../view/ViewSelector';
+import {
+  pendingCommitMessageSelector,
+  selectedCommitSelector,
+} from '../view/ViewSelector';
 
 export const repoSelector = (state) => state.Repo;
 
@@ -49,4 +52,10 @@ export const getBranchNameSelector = createSelector(
 export const getCurrentBranchDiffs = createSelector(
   repoSelector,
   (repoState) => repoState.currentBranchDiffs
+);
+
+export const getCommitIndexByHashSelector = createSelector(
+  getCommitListItems,
+  selectedCommitSelector,
+  (commitList, hash) => commitList.findIndex((item) => item.oid === hash)
 );

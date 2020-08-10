@@ -6,6 +6,7 @@ import { getCommitListItems } from '../../store/repo/RepoSelector';
 import { selectedCommitSelector } from '../../store/view/ViewSelector';
 import { selectHash } from '../../store/view/View';
 import { PendingCommitItem } from './PendingCommitItem';
+import { loadDiffBetweenCommits } from '../../store/repo/Repo';
 
 const listStyle = {
   overflow: 'auto',
@@ -23,6 +24,7 @@ export const CommitList = () => {
     const commit = commits[index];
     const onClick = () => {
       dispatch(selectHash(commit.oid));
+      dispatch(loadDiffBetweenCommits());
     };
 
     if (commit.oid == null) {

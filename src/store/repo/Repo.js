@@ -5,7 +5,11 @@ import {
   getPreviousCommits,
   getFileStateChanges,
 } from '../../git/git';
-import { filePathSelector, getBranchNameSelector } from './RepoSelector';
+import {
+  filePathSelector,
+  getBranchNameSelector,
+  getCommitIndexByHashSelector,
+} from './RepoSelector';
 
 // Slice
 const slice = createSlice({
@@ -67,8 +71,9 @@ export const loadCommits = () => async (dispatch, getState) => {
 export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
   const filePath = filePathSelector(getState());
   const branchName = getBranchNameSelector(getState());
-
-  const hashes = await getPreviousCommits(branchName, filePath);
+  const index = getCommitIndexByHashSelector(getState());
+  console.log(index);
+  const hashes = await getPreviousCommits(branchName, filePath, index);
 
   const fileChanges = await getFileStateChanges(
     hashes.targetHash,

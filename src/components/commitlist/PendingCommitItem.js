@@ -21,7 +21,7 @@ export const PendingCommitItem = ({ isSelected, onClick }) => {
       <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
         Amount of pending file changes goes here
       </Text>
-      <Text ellipsize={true}>Pending Commit</Text>
+      <Text ellipsize={true}>Pending Changes</Text>
     </div>
   );
 };

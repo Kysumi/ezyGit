@@ -87,13 +87,14 @@ const readContentsFromHash = async (hash, gitDir) => {
   return new TextDecoder().decode(blob);
 };
 
-export const getPreviousCommits = async (branchName, filePath) => {
-  const commits = await getCommitLog(filePath, branchName, 2);
+export const getPreviousCommits = async (branchName, filePath, index) => {
+  const depth = index + 1;
+  const commits = await getCommitLog(filePath, branchName, depth);
   const oids = commits.map((commit) => commit.oid);
 
   return {
-    targetHash: oids[1],
-    previousHash: oids[0],
+    targetHash: oids[depth - 1],
+    previousHash: oids[depth],
   };
 };
 
