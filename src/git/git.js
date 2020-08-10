@@ -77,6 +77,49 @@ const getModifacationType = async (A, B, Aoid, Boid) => {
   return type;
 };
 
+// The HEAD status is either absent (0) or present (1).
+// The WORKDIR status is either absent (0), identical to HEAD (1), or different from HEAD (2).
+// The STAGE status is either absent (0), identical to HEAD (1), identical to WORKDIR (2), or different from WORKDIR (3).
+
+const unstagedChanges = (matrix) => {
+  const FILE = 0,
+    WORKDIR = 2,
+    STAGE = 3;
+
+  const fileNames = matrix
+    .filter((row) => row[WORKDIR] !== row[STAGE])
+    .map((row) => row);
+
+  console.log(fileNames);
+
+  return fileNames;
+};
+
+// const untrackedFiles = (matrix) => {
+//   const fileNames = matrix
+//     .filter((row) => row[HEAD] === 0 && row[STAGE] === 0)
+//     .map((row) => row[FILE]);
+
+//   return fileNames;
+// };
+
+export const getGitStatus = async (filePath) => {
+  let status = await git.statusMatrix({
+    fs,
+    dir: filePath,
+    // filter: () => true, // all files
+  });
+
+  // console.log(status);
+
+  const result = {
+    unstagedChanges: unstagedChanges(status),
+    // untrackedFiles: untrackedFiles(status),
+  };
+
+  // console.log(result);
+};
+
 const readContentsFromHash = async (hash, gitDir) => {
   const { blob } = await git.readBlob({
     fs,

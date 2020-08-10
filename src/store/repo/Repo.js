@@ -3,6 +3,7 @@ import {
   getCommitLog,
   getCurrentBranch,
   getFileStateChanges,
+  getGitStatus,
 } from '../../git/git';
 import {
   filePathSelector,
@@ -73,6 +74,12 @@ export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
 
   // getting the hashes for the desired diff
   const index = getCommitIndexByHashSelector(getState());
+
+  // Debugging for now
+  if (index === 0) {
+    await getGitStatus(filePath);
+  }
+
   const commits = getCommitsSelector(getState());
   const oids = commits.map((commit) => commit.oid);
 
