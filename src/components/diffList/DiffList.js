@@ -17,7 +17,6 @@ class DiffList extends React.Component {
     const { forcedOpenState, width } = this.state;
 
     const diff = items[index];
-    console.log(diff);
     return (
       <div key={key}>
         <DiffListItem

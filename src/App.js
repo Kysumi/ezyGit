@@ -3,7 +3,7 @@ import { AppBar } from './components/appBar/AppBar';
 import SelectRepoPopUp from './components/selectRepoPopUp/SelectRepoPopUp';
 import { useSelector } from 'react-redux';
 import { filePathSelector } from './store/repo/RepoSelector';
-import { RightHandSide } from './views/rightHandSide/RightHandSide';
+import RightHandSide from './views/rightHandSide/RightHandSide';
 import { LeftHandSide } from './views/leftHandSide/LestHandSide';
 
 const contentStyle = {

@@ -3,6 +3,7 @@ import {
   pendingCommitMessageSelector,
   selectedCommitSelector,
 } from '../view/ViewSelector';
+import { commit } from 'isomorphic-git';
 
 export const repoSelector = (state) => state.Repo;
 
@@ -63,4 +64,10 @@ export const getCommitIndexByHashSelector = createSelector(
   getCommitListItems,
   selectedCommitSelector,
   (commitList, hash) => commitList.findIndex((item) => item.oid === hash)
+);
+
+export const getSelectedCommitDetails = createSelector(
+  getCommitIndexByHashSelector,
+  getCommitsSelector,
+  (commitIndex, commits) => commits[commitIndex].commit
 );

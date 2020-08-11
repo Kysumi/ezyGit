@@ -1,13 +1,13 @@
 import React from 'react';
 import { TextArea } from '@blueprintjs/core';
-export const CommitMessage = ({ message, onChange }) => {
+export const CommitMessage = ({ message, disabled }) => {
   return (
     <div>
       <TextArea
         fill={true}
-        onChange={onChange}
         value={message}
         placeholder={'Commit Message'}
+        disabled={disabled}
       />
     </div>
   );

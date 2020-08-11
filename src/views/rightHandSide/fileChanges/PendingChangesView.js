@@ -13,17 +13,15 @@ export const PendingChangesView = () => {
   return (
     <div>
       <div>
-        <h5>Working Changes</h5>
+        <h4>Working Changes</h4>
         <DiffList items={diffs} />
       </div>
-
       <div>
-        <h5>Staged Changes</h5>
+        <h4>Staged Changes</h4>
         {/* <DiffList items={diffs} /> */}
       </div>
-
       <div>
-        <h5>Untracked Files</h5>
+        <h4>Untracked Files</h4>
         <DiffList items={pendingFiles} />
       </div>
     </div>
