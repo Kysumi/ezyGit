@@ -4,6 +4,7 @@ import {
   getCurrentBranch,
   getFileStateChanges,
   getGitStatus,
+  loadFileContentsFromPath,
 } from '../../git/git';
 import {
   filePathSelector,
@@ -20,6 +21,9 @@ const slice = createSlice({
     commits: [],
     currentBranch: null,
     currentBranchDiffs: null,
+
+    // Pending changes
+    untrackedFiles: null,
   },
   reducers: {
     setFilePath: (state, action) => {
@@ -35,6 +39,9 @@ const slice = createSlice({
     setCurrentDiffs: (state, action) => {
       state.currentBranchDiffs = action.payload;
     },
+    setUntrackedFiles: (state, action) => {
+      state.untrackedFiles = action.payload;
+    },
   },
 });
 
@@ -46,6 +53,7 @@ const {
   setCommits,
   setCurrentBranch,
   setCurrentDiffs,
+  setUntrackedFiles,
 } = slice.actions;
 
 export { setFilePath };
@@ -69,6 +77,21 @@ export const loadCommits = () => async (dispatch, getState) => {
   }
 };
 
+export const loadPendingDiff = () => async (dispatch, getState) => {
+  const gitDir = filePathSelector(getState());
+  const pendingChanges = await getGitStatus(gitDir);
+  console.log(pendingChanges);
+  const changedFileContents = await Promise.all(
+    pendingChanges.unstagedChanges.map(async (filePath) => {
+      return await loadFileContentsFromPath(gitDir, filePath[0]);
+    })
+  );
+
+  console.log(changedFileContents);
+
+  await dispatch(setUntrackedFiles(pendingChanges.untrackedFiles));
+};
+
 export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
   const filePath = filePathSelector(getState());
 
@@ -77,7 +100,8 @@ export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
 
   // Debugging for now
   if (index === 0) {
-    await getGitStatus(filePath);
+    await dispatch(loadPendingDiff());
+    return;
   }
 
   const commits = getCommitsSelector(getState());
@@ -92,7 +116,7 @@ export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
     filePath
   );
 
-  dispatch(setCurrentDiffs(fileChanges));
+  await dispatch(setCurrentDiffs(fileChanges));
 };
 
 export const initialise = () => async (dispatch, getState) => {

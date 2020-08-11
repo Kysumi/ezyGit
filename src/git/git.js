@@ -96,6 +96,7 @@ const getModifacationType = async (A, B) => {
 // The WORKDIR status is either absent (0), identical to HEAD (1), or different from HEAD (2).
 // The STAGE status is either absent (0), identical to HEAD (1), identical to WORKDIR (2), or different from WORKDIR (3).
 const FILE = 0,
+  HEAD = 1,
   WORKDIR = 2,
   STAGE = 3;
 
@@ -104,36 +105,26 @@ const unstagedChanges = (matrix) => {
     .filter((row) => row[WORKDIR] !== row[STAGE])
     .map((row) => row);
 
-  console.log(fileNames);
+  return fileNames;
+};
+
+const untrackedFiles = (matrix) => {
+  const fileNames = matrix
+    .filter((row) => row[HEAD] === 0 && row[STAGE] === 0)
+    .map((row) => row[FILE]);
 
   return fileNames;
 };
 
-// const untrackedFiles = (matrix) => {
-//   const fileNames = matrix
-//     .filter((row) => row[HEAD] === 0 && row[STAGE] === 0)
-//     .map((row) => row[FILE]);
-
-//   return fileNames;
-// };
-
 export const getGitStatus = async (filePath) => {
   const matrix = await git.statusMatrix({ dir: filePath, fs });
-  const diff = await git.status({
-    fs,
-    dir: filePath,
-    filepath: '.vscode/launch.json',
-  });
-  console.log(diff);
-
-  console.log(matrix);
 
   const result = {
-    unstagedChanges: unstagedChanges(matrix),
-    // untrackedFiles: untrackedFiles(status),
+    unstagedChanges: await unstagedChanges(matrix),
+    untrackedFiles: await untrackedFiles(matrix),
   };
 
-  // console.log(result);
+  return result;
 };
 
 const readContentsFromHash = async (hash, gitDir) => {
@@ -144,6 +135,12 @@ const readContentsFromHash = async (hash, gitDir) => {
   });
 
   return new TextDecoder().decode(blob);
+};
+
+export const loadFileContentsFromPath = async (gitDir, filePath) => {
+  const contents = fs.readFileSync(gitDir + '/' + filePath);
+
+  return new TextDecoder().decode(contents);
 };
 
 /**
