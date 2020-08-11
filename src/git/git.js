@@ -95,12 +95,11 @@ const getModifacationType = async (A, B) => {
 // The HEAD status is either absent (0) or present (1).
 // The WORKDIR status is either absent (0), identical to HEAD (1), or different from HEAD (2).
 // The STAGE status is either absent (0), identical to HEAD (1), identical to WORKDIR (2), or different from WORKDIR (3).
+const FILE = 0,
+  WORKDIR = 2,
+  STAGE = 3;
 
 const unstagedChanges = (matrix) => {
-  const FILE = 0,
-    WORKDIR = 2,
-    STAGE = 3;
-
   const fileNames = matrix
     .filter((row) => row[WORKDIR] !== row[STAGE])
     .map((row) => row);
@@ -119,16 +118,18 @@ const unstagedChanges = (matrix) => {
 // };
 
 export const getGitStatus = async (filePath) => {
-  let status = await git.statusMatrix({
+  const matrix = await git.statusMatrix({ dir: filePath, fs });
+  const diff = await git.status({
     fs,
     dir: filePath,
-    // filter: () => true, // all files
+    filepath: '.vscode/launch.json',
   });
+  console.log(diff);
 
-  // console.log(status);
+  console.log(matrix);
 
   const result = {
-    unstagedChanges: unstagedChanges(status),
+    unstagedChanges: unstagedChanges(matrix),
     // untrackedFiles: untrackedFiles(status),
   };
 
