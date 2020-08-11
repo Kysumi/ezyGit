@@ -9,11 +9,17 @@ import {
 export const PendingChangesView = () => {
   const diffs = useSelector(getCurrentBranchDiffs);
   const pendingFiles = useSelector(getUntrackedFilesSelector);
+
   return (
     <div>
       <div>
         <h5>Working Changes</h5>
         <DiffList items={diffs} />
+      </div>
+
+      <div>
+        <h5>Staged Changes</h5>
+        {/* <DiffList items={diffs} /> */}
       </div>
 
       <div>
