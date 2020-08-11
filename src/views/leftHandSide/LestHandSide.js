@@ -1,6 +1,6 @@
 import React from 'react';
 import { Resizable } from 're-resizable';
-import { CommitList } from '../../components/commitlist/CommitList';
+import { CommitList } from '../../components/commitList/CommitList';
 
 export const LeftHandSide = () => {
   return (
