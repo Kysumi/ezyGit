@@ -80,16 +80,28 @@ export const loadCommits = () => async (dispatch, getState) => {
 export const loadPendingDiff = () => async (dispatch, getState) => {
   const gitDir = filePathSelector(getState());
   const pendingChanges = await getGitStatus(gitDir);
-  console.log(pendingChanges);
+
   const changedFileContents = await Promise.all(
     pendingChanges.unstagedChanges.map(async (filePath) => {
       return await loadFileContentsFromPath(gitDir, filePath[0]);
     })
   );
 
-  console.log(changedFileContents);
+  const unTrackedFiles = await Promise.all(
+    pendingChanges.untrackedFiles.map(async (filePath) => {
+      const contents = await loadFileContentsFromPath(gitDir, filePath);
+      return {
+        filePath: `/${filePath}`,
+        modificationType: 'added',
+        aHash: '',
+        bHash: '',
+        aFileContents: '',
+        bFileContents: contents,
+      };
+    })
+  );
 
-  await dispatch(setUntrackedFiles(pendingChanges.untrackedFiles));
+  await dispatch(setUntrackedFiles(unTrackedFiles));
 };
 
 export const loadDiffBetweenCommits = () => async (dispatch, getState) => {

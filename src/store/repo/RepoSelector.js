@@ -54,6 +54,11 @@ export const getCurrentBranchDiffs = createSelector(
   (repoState) => repoState.currentBranchDiffs
 );
 
+export const getUntrackedFilesSelector = createSelector(
+  repoSelector,
+  (repoState) => repoState.untrackedFiles
+);
+
 export const getCommitIndexByHashSelector = createSelector(
   getCommitListItems,
   selectedCommitSelector,

@@ -1,10 +1,15 @@
 import React from 'react';
 import DiffList from '../../../components/diffList/DiffList';
 import { useSelector } from 'react-redux';
-import { getCurrentBranchDiffs } from '../../../store/repo/RepoSelector';
+import {
+  getCurrentBranchDiffs,
+  getUntrackedFilesSelector,
+} from '../../../store/repo/RepoSelector';
 
 export const PendingChangesView = () => {
   const diffs = useSelector(getCurrentBranchDiffs);
+  const pendingFiles = useSelector(getUntrackedFilesSelector);
+
   return (
     <div>
       <div>
@@ -14,7 +19,7 @@ export const PendingChangesView = () => {
 
       <div>
         <h5>Untracked Files</h5>
-        <DiffList />
+        <DiffList items={pendingFiles} />
       </div>
     </div>
   );
