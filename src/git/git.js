@@ -50,14 +50,29 @@ const isDirectory = async (filePath, a, b) => {
     return true;
   }
 
-  if ((await a.type()) === 'tree' || (await b.type()) === 'tree') {
+  if (a !== null && (await a.type()) === 'tree') {
+    return true;
+  }
+
+  if (b !== null && (await b.type()) === 'tree') {
     return true;
   }
 
   return false;
 };
 
-const getModifacationType = async (A, B, Aoid, Boid) => {
+const getModifacationType = async (A, B) => {
+  if (A === null) {
+    return FILE_REMOVED;
+  }
+
+  if (B === null) {
+    return FILE_ADDED;
+  }
+
+  const Aoid = await A.oid();
+  const Boid = await B.oid();
+
   let type = FILE_EQUAL;
   if (Aoid !== Boid) {
     type = FILE_MODIFIED;
@@ -130,6 +145,38 @@ const readContentsFromHash = async (hash, gitDir) => {
   return new TextDecoder().decode(blob);
 };
 
+/**
+ * Get the file contents from the file from specific commit
+ *
+ * @param {import('isomorphic-git').WalkerEntry} walker
+ * @param {string} gitDir
+ */
+const loadFileContents = async (walker, gitDir) => {
+  if (walker === null) {
+    return {
+      hash: '',
+      contents: '',
+    };
+  }
+
+  const hash = await walker.oid();
+  const contents = await readContentsFromHash(hash, gitDir);
+
+  return {
+    hash,
+    contents,
+  };
+};
+
+/**
+ * Gets the state of the file changes
+ *
+ * @param {string} commitHash1
+ * @param {string} commitHash2
+ * @param {string} gitDir
+ *
+ * @returns {object}
+ */
 export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
   return git.walk({
     fs,
@@ -143,26 +190,23 @@ export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
         return;
       }
 
-      const aHash = await A.oid();
-      const bHash = await B.oid();
-
-      const modificationType = await getModifacationType(A, B, aHash, bHash);
+      const modificationType = await getModifacationType(A, B);
 
       // We only want files that have been changed
       if (modificationType === FILE_EQUAL) {
         return;
       }
 
-      const aFileContents = await readContentsFromHash(aHash, gitDir);
-      const bFileContents = await readContentsFromHash(bHash, gitDir);
+      const newChanges = await loadFileContents(B, gitDir);
+      const originFile = await loadFileContents(A, gitDir);
 
       return {
         filePath: `/${filePath}`,
         modificationType,
-        aHash,
-        bHash,
-        aFileContents,
-        bFileContents,
+        aHash: newChanges.hash,
+        bHash: originFile.hash,
+        aFileContents: newChanges.contents,
+        bFileContents: originFile.contents,
       };
     },
   });
