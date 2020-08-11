@@ -27,7 +27,6 @@ const mapStateToProps = (state) => {
   const selectedCommitHash = selectedCommitSelector(state);
 
   if (selectedCommitHash) {
-    console.log(selectedCommitHash);
     const commit = getSelectedCommitDetails(state);
     message = commit.message;
   }
