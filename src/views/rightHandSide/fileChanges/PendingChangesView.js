@@ -9,7 +9,6 @@ import {
 export const PendingChangesView = () => {
   const diffs = useSelector(getCurrentBranchDiffs);
   const pendingFiles = useSelector(getUntrackedFilesSelector);
-
   return (
     <div>
       <div>

@@ -127,12 +127,21 @@ export const getGitStatus = async (filePath) => {
   return result;
 };
 
-const readContentsFromHash = async (hash, gitDir) => {
-  const { blob } = await git.readBlob({
+export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
+  let config = {
     fs,
     dir: gitDir,
     oid: hash,
-  });
+  };
+
+  if (filePath) {
+    config = {
+      ...config,
+      filepath: filePath,
+    };
+  }
+
+  const { blob } = await git.readBlob(config);
 
   return new TextDecoder().decode(blob);
 };

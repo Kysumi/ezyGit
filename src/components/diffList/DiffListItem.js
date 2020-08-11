@@ -53,3 +53,5 @@ export const DiffListItem = ({ forcedOpenState, diff, viewStyle }) => {
     </div>
   );
 };
+
+export default React.memo(DiffListItem);

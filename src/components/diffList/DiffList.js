@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactList from 'react-list';
-import { DiffListItem } from './DiffListItem';
+import DiffListItem from './DiffListItem';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class DiffList extends React.Component {
     const { forcedOpenState, width } = this.state;
 
     const diff = items[index];
-
+    console.log(diff);
     return (
       <div key={key}>
         <DiffListItem

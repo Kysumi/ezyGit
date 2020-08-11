@@ -5,6 +5,7 @@ import {
   getFileStateChanges,
   getGitStatus,
   loadFileContentsFromPath,
+  readContentsFromHash,
 } from '../../git/git';
 import {
   filePathSelector,
@@ -79,16 +80,38 @@ export const loadCommits = () => async (dispatch, getState) => {
 
 export const loadPendingDiff = () => async (dispatch, getState) => {
   const gitDir = filePathSelector(getState());
-  const pendingChanges = await getGitStatus(gitDir);
+  const { unstagedChanges, untrackedFiles } = await getGitStatus(gitDir);
+  const commitHash = getCommitsSelector(getState())[1];
 
   const changedFileContents = await Promise.all(
-    pendingChanges.unstagedChanges.map(async (filePath) => {
-      return await loadFileContentsFromPath(gitDir, filePath[0]);
-    })
+    unstagedChanges
+      .filter((item) => {
+        return !untrackedFiles.includes(item[0]);
+      })
+      .map(async (item) => {
+        const newFileChanges = await loadFileContentsFromPath(gitDir, item[0]);
+
+        // Because we are looking at pending changes we won't have a commit hash.
+        // So we will use the first hash from the store
+        const commitedState = await readContentsFromHash(
+          commitHash.oid,
+          gitDir,
+          item[0]
+        );
+
+        return {
+          filePath: `/${item[0]}`,
+          modificationType: 'added',
+          aHash: '',
+          bHash: '',
+          aFileContents: commitedState,
+          bFileContents: newFileChanges,
+        };
+      })
   );
 
   const unTrackedFiles = await Promise.all(
-    pendingChanges.untrackedFiles.map(async (filePath) => {
+    untrackedFiles.map(async (filePath) => {
       const contents = await loadFileContentsFromPath(gitDir, filePath);
       return {
         filePath: `/${filePath}`,
@@ -102,6 +125,7 @@ export const loadPendingDiff = () => async (dispatch, getState) => {
   );
 
   await dispatch(setUntrackedFiles(unTrackedFiles));
+  await dispatch(setCurrentDiffs(changedFileContents));
 };
 
 export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
