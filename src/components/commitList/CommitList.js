@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import ReactList from 'react-list';
 import { CommitListItem } from './CommitListItem';
 import { getCommitListItems } from '../../store/repo/RepoSelector';
-import { selectedCommitSelector } from '../../store/view/ViewSelector';
-import { selectHash } from '../../store/view/View';
+import { getSelectdCommitHashSelector } from '../../store/view/ViewSelector';
+import { selectCommit } from '../../store/view/View';
 import { PendingCommitItem } from './PendingCommitItem';
 import { loadDiffBetweenCommits } from '../../store/repo/Repo';
 
@@ -16,14 +16,14 @@ const listStyle = {
 
 export const CommitList = () => {
   const commits = useSelector(getCommitListItems);
-  const selectedCommit = useSelector(selectedCommitSelector);
+  const selectedHash = useSelector(getSelectdCommitHashSelector);
 
   const dispatch = useDispatch();
 
   const renderItem = (index, key) => {
     const commit = commits[index];
     const onClick = () => {
-      dispatch(selectHash(commit.oid));
+      dispatch(selectCommit(commit));
       dispatch(loadDiffBetweenCommits());
     };
 
@@ -31,7 +31,7 @@ export const CommitList = () => {
       return (
         <PendingCommitItem
           key={key}
-          isSelected={selectedCommit === commit.oid}
+          isSelected={selectedHash === commit.oid}
           onClick={onClick}
         />
       );
@@ -39,7 +39,7 @@ export const CommitList = () => {
       return (
         <CommitListItem
           key={key}
-          isSelected={selectedCommit === commit.oid}
+          isSelected={selectedHash === commit.oid}
           commit={commit.commit}
           onClick={onClick}
         />

@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
 import {
   pendingCommitMessageSelector,
-  selectedCommitSelector,
+  getSelectedCommitSelector,
 } from '../view/ViewSelector';
-import { commit } from 'isomorphic-git';
 
 export const repoSelector = (state) => state.Repo;
 
@@ -62,12 +61,12 @@ export const getUntrackedFilesSelector = createSelector(
 
 export const getCommitIndexByHashSelector = createSelector(
   getCommitListItems,
-  selectedCommitSelector,
-  (commitList, hash) => commitList.findIndex((item) => item.oid === hash)
-);
+  getSelectedCommitSelector,
+  (commitList, selectedCommit) => {
+    if (selectedCommit == null) {
+      return 0;
+    }
 
-export const getSelectedCommitDetails = createSelector(
-  getCommitIndexByHashSelector,
-  getCommitsSelector,
-  (commitIndex, commits) => commits[commitIndex].commit
+    return commitList.findIndex((item) => item.oid === selectedCommit.oid);
+  }
 );

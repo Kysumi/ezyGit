@@ -2,9 +2,20 @@ import { createSelector } from 'reselect';
 
 export const viewSelector = (state) => state.View;
 
-export const selectedCommitSelector = createSelector(
+export const getSelectedCommitSelector = createSelector(
   viewSelector,
-  (viewState) => viewState.selectedHash
+  (viewState) => viewState.selectedCommit
+);
+
+export const getSelectdCommitHashSelector = createSelector(
+  getSelectedCommitSelector,
+  (selectedCommit) => {
+    if (selectedCommit === null) {
+      return null;
+    }
+
+    return selectedCommit.oid;
+  }
 );
 
 export const pendingCommitMessageSelector = createSelector(

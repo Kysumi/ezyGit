@@ -2,8 +2,7 @@ import React from 'react';
 import { FileChangesView } from './fileChanges/FileChangesView';
 import { CommitMessage } from '../../components/commitMessage/CommitMessage';
 import { connect } from 'react-redux';
-import { getSelectedCommitDetails } from '../../store/repo/RepoSelector';
-import { selectedCommitSelector } from '../../store/view/ViewSelector';
+import { getSelectedCommitSelector } from '../../store/view/ViewSelector';
 
 const rightHandSideStyle = {
   padding: '10px',
@@ -24,11 +23,10 @@ export const RightHandSide = ({ message }) => {
 
 const mapStateToProps = (state) => {
   let message = '';
-  const selectedCommitHash = selectedCommitSelector(state);
+  const selectedCommit = getSelectedCommitSelector(state);
 
-  if (selectedCommitHash) {
-    const commit = getSelectedCommitDetails(state);
-    message = commit.message;
+  if (selectedCommit) {
+    message = selectedCommit.commit.message;
   }
 
   return {

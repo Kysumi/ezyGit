@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const slice = createSlice({
   name: 'view',
   initialState: {
-    selectedHash: null,
+    selectedCommit: null,
     pendingCommitMessage: null,
   },
   reducers: {
-    selectHash: (state, action) => {
-      state.selectedHash = action.payload;
+    selectCommit: (state, action) => {
+      state.selectedCommit = action.payload;
     },
     setPendingCommitMessage: (state, action) => {
       state.pendingCommitMessage = action.payload;
@@ -18,4 +18,4 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const { selectHash, setPendingCommitMessage } = slice.actions;
+export const { selectCommit, setPendingCommitMessage } = slice.actions;

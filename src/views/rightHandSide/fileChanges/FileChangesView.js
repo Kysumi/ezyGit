@@ -2,10 +2,10 @@ import React from 'react';
 import { PendingChangesView } from './PendingChangesView';
 import { CommitedChangesView } from './CommitedChangesView';
 import { useSelector } from 'react-redux';
-import { selectedCommitSelector } from '../../../store/view/ViewSelector';
+import { getSelectedCommitSelector } from '../../../store/view/ViewSelector';
 
 export const FileChangesView = () => {
-  const hasSelectedCommit = useSelector(selectedCommitSelector);
+  const hasSelectedCommit = useSelector(getSelectedCommitSelector);
   return (
     <div>
       <h3>File Changes</h3>
