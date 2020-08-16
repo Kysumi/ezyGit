@@ -25,6 +25,7 @@ const slice = createSlice({
 
     // Pending changes
     untrackedFiles: null,
+    stagedFiles: null,
   },
   reducers: {
     setFilePath: (state, action) => {
@@ -43,6 +44,9 @@ const slice = createSlice({
     setUntrackedFiles: (state, action) => {
       state.untrackedFiles = action.payload;
     },
+    setStagedFiles: (state, action) => {
+      state.stagedFiles = action.payload;
+    },
   },
 });
 
@@ -55,6 +59,7 @@ const {
   setCurrentBranch,
   setCurrentDiffs,
   setUntrackedFiles,
+  setStagedFiles,
 } = slice.actions;
 
 export { setFilePath };
@@ -80,52 +85,17 @@ export const loadCommits = () => async (dispatch, getState) => {
 
 export const loadPendingDiff = () => async (dispatch, getState) => {
   const gitDir = filePathSelector(getState());
-  const { unstagedChanges, untrackedFiles } = await getGitStatus(gitDir);
   const commitHash = getCommitsSelector(getState())[1];
 
-  const changedFileContents = await Promise.all(
-    unstagedChanges
-      .filter((item) => {
-        return !untrackedFiles.includes(item[0]);
-      })
-      .map(async (item) => {
-        const newFileChanges = await loadFileContentsFromPath(gitDir, item[0]);
+  const {
+    untrackedFileContents,
+    unstagedFileContents,
+    stagedFileContents,
+  } = await getGitStatus(gitDir, commitHash.oid);
 
-        // Because we are looking at pending changes we won't have a commit hash.
-        // So we will use the first hash from the store
-        const commitedState = await readContentsFromHash(
-          commitHash.oid,
-          gitDir,
-          item[0]
-        );
-
-        return {
-          filePath: `/${item[0]}`,
-          modificationType: 'added',
-          aHash: '',
-          bHash: '',
-          aFileContents: commitedState,
-          bFileContents: newFileChanges,
-        };
-      })
-  );
-
-  const unTrackedFiles = await Promise.all(
-    untrackedFiles.map(async (filePath) => {
-      const contents = await loadFileContentsFromPath(gitDir, filePath);
-      return {
-        filePath: `/${filePath}`,
-        modificationType: 'added',
-        aHash: '',
-        bHash: '',
-        aFileContents: '',
-        bFileContents: contents,
-      };
-    })
-  );
-
-  await dispatch(setUntrackedFiles(unTrackedFiles));
-  await dispatch(setCurrentDiffs(changedFileContents));
+  await dispatch(setUntrackedFiles(untrackedFileContents));
+  await dispatch(setCurrentDiffs(unstagedFileContents));
+  await dispatch(setStagedFiles(stagedFileContents));
 };
 
 export const loadDiffBetweenCommits = () => async (dispatch, getState) => {

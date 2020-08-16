@@ -100,28 +100,100 @@ const FILE = 0,
   WORKDIR = 2,
   STAGE = 3;
 
-const unstagedChanges = (matrix) => {
-  const fileNames = matrix
+const getUnStagedFilePaths = (matrix) => {
+  const filePath = matrix
     .filter((row) => row[WORKDIR] !== row[STAGE])
-    .map((row) => row);
+    .map((row) => row[FILE]);
 
-  return fileNames;
+  return filePath;
 };
 
-const untrackedFiles = (matrix) => {
-  const fileNames = matrix
+const getUntrackedFilePaths = (matrix) => {
+  const filePath = matrix
+    // Filtering to only files that are not in the head and not staged
     .filter((row) => row[HEAD] === 0 && row[STAGE] === 0)
     .map((row) => row[FILE]);
 
-  return fileNames;
+  return filePath;
 };
 
-export const getGitStatus = async (filePath) => {
-  const matrix = await git.statusMatrix({ dir: filePath, fs });
+const getStagedFilePaths = (matrix) => {
+  const filePath = matrix
+    .filter((row) => row[STAGE] === 3 || row[STAGE] === 2)
+    .map((row) => row[FILE]);
+
+  return filePath;
+};
+
+const loadFiles = async (filePaths, gitDir, commitHash) => {
+  const fileDiffs = await Promise.all(
+    filePaths.map(async (filePath) => {
+      const newFileChanges = await loadFileContentsFromPath(gitDir, filePath);
+
+      // Because we are looking at pending changes we won't have a commit hash.
+      // So we will use the first hash from the store
+      const commitedState = await readContentsFromHash(
+        commitHash,
+        gitDir,
+        filePath
+      );
+
+      return {
+        filePath: `/${filePath}`,
+        modificationType: 'added',
+        aHash: '',
+        bHash: '',
+        aFileContents: commitedState,
+        bFileContents: newFileChanges,
+      };
+    })
+  );
+
+  return fileDiffs;
+};
+
+const loadUntrackedFilesContents = async (untrackedFilePaths, gitDir) => {
+  const unTrackedFiles = await Promise.all(
+    untrackedFilePaths.map(async (filePath) => {
+      const contents = await loadFileContentsFromPath(gitDir, filePath);
+      return {
+        filePath: `/${filePath}`,
+        modificationType: 'added',
+        aHash: '',
+        bHash: '',
+        aFileContents: '',
+        bFileContents: contents,
+      };
+    })
+  );
+
+  return unTrackedFiles;
+};
+
+export const getGitStatus = async (gitDir, commitHash) => {
+  const matrix = await git.statusMatrix({ dir: gitDir, fs });
+
+  const unstagedChanges = getUnStagedFilePaths(matrix);
+  const untrackedFiles = getUntrackedFilePaths(matrix);
+  const stagedFiles = getStagedFilePaths(matrix);
+
+  const unstagedFileContents = await loadFiles(
+    unstagedChanges.filter((filePath) => !untrackedFiles.includes(filePath)),
+    gitDir,
+    commitHash
+  );
+
+  const stagedFileContents = await loadFiles(stagedFiles, gitDir, commitHash);
+
+  const untrackedFileContents = await loadUntrackedFilesContents(
+    untrackedFiles,
+    gitDir
+  );
 
   const result = {
-    unstagedChanges: await unstagedChanges(matrix),
-    untrackedFiles: await untrackedFiles(matrix),
+    unstagedFileContents,
+    untrackedFileContents,
+    stagedFileContents,
   };
 
   return result;

@@ -59,6 +59,11 @@ export const getUntrackedFilesSelector = createSelector(
   (repoState) => repoState.untrackedFiles
 );
 
+export const getStagedFilesSelector = createSelector(
+  repoSelector,
+  (repoState) => repoState.stagedFiles
+);
+
 export const getCommitIndexByHashSelector = createSelector(
   getCommitListItems,
   getSelectedCommitSelector,
