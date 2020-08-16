@@ -7,6 +7,11 @@ export const getSelectedCommitSelector = createSelector(
   (viewState) => viewState.selectedCommit
 );
 
+export const hasSelectedCommitSelector = createSelector(
+  viewSelector,
+  (viewState) => viewState.selectedCommit.oid !== null
+);
+
 export const getSelectdCommitHashSelector = createSelector(
   getSelectedCommitSelector,
   (selectedCommit) => {

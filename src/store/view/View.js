@@ -3,8 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 const slice = createSlice({
   name: 'view',
   initialState: {
-    selectedCommit: null,
-    pendingCommitMessage: null,
+    selectedCommit: {
+      oid: null,
+      commit: {
+        message: '',
+        committer: {
+          name: null,
+          email: null,
+        },
+      },
+    },
+    pendingCommitMessage: '',
   },
   reducers: {
     selectCommit: (state, action) => {

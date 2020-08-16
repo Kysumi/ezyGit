@@ -22,15 +22,10 @@ export const RightHandSide = ({ message }) => {
 };
 
 const mapStateToProps = (state) => {
-  let message = '';
   const selectedCommit = getSelectedCommitSelector(state);
 
-  if (selectedCommit) {
-    message = selectedCommit.commit.message;
-  }
-
   return {
-    message,
+    message: selectedCommit.commit.message,
   };
 };
 
