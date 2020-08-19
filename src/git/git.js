@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
@@ -170,6 +171,71 @@ const loadUntrackedFilesContents = async (untrackedFilePaths, gitDir) => {
   return unTrackedFiles;
 };
 
+export const getStagedFileContents = async (gitDir, stagedFilePaths) => {
+  const output = await git.walk({
+    fs,
+    dir: gitDir,
+    trees: [git.STAGE()],
+    map: async (filePath, [A]) => {
+      if (stagedFilePaths.includes(filePath)) {
+        const contents = await readContentsFromHash(await A.oid(), gitDir);
+
+        return {
+          filePath: `/${filePath}`,
+          contents,
+        };
+      }
+    },
+  });
+
+  return output;
+};
+
+const linkUpStagedFileContents = async (
+  stagedFileContents,
+  unstagedFileContents,
+  gitDir,
+  commitHash
+) => {
+  console.log(stagedFileContents, unstagedFileContents);
+  return await Promise.all(
+    stagedFileContents.map(async ({ filePath, contents }) => {
+      const unstagedFile = _.find(unstagedFileContents, {
+        filePath: filePath,
+      });
+
+      if (unstagedFile) {
+        // console.log(unstagedFile);
+
+        return {
+          filePath,
+          modificationType: 'added',
+          aHash: '',
+          bHash: '',
+          aFileContents: unstagedFile.aFileContents,
+          bFileContents: contents,
+        };
+      }
+
+      const commitedState = await readContentsFromHash(
+        commitHash,
+        gitDir,
+        filePath
+      );
+
+      console.log(commitedState);
+      return {
+        filePath,
+        modificationType: 'added',
+        aHash: '',
+        bHash: '',
+        aFileContents: commitedState,
+        bFileContents: contents,
+      };
+    })
+  );
+};
+
 export const getGitStatus = async (gitDir, commitHash) => {
   const matrix = await git.statusMatrix({ dir: gitDir, fs });
 
@@ -183,7 +249,15 @@ export const getGitStatus = async (gitDir, commitHash) => {
     commitHash
   );
 
-  const stagedFileContents = await loadFiles(stagedFiles, gitDir, commitHash);
+  const stagedFileContents = await getStagedFileContents(gitDir, stagedFiles);
+
+  const linkedStagedContents = await linkUpStagedFileContents(
+    stagedFileContents,
+    unstagedFileContents,
+    gitDir
+  );
+
+  console.log(linkedStagedContents);
 
   const untrackedFileContents = await loadUntrackedFilesContents(
     untrackedFiles,
@@ -193,7 +267,7 @@ export const getGitStatus = async (gitDir, commitHash) => {
   const result = {
     unstagedFileContents,
     untrackedFileContents,
-    stagedFileContents,
+    stagedFileContents: linkedStagedContents,
   };
 
   return result;
