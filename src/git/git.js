@@ -1,4 +1,7 @@
-import { loadStagedDetails } from './stagedFiles';
+import {
+  loadStagedDetails,
+  mapWorkingChangesToStagedChanges,
+} from './stagedFiles';
 
 const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
@@ -195,7 +198,7 @@ export const getGitStatus = async (gitDir, commitHash) => {
   const stagedFileContents = await loadStagedDetails(
     gitDir,
     stagedFiles,
-    unstagedFileContents
+    commitHash
   );
 
   const untrackedFileContents = await loadUntrackedFilesContents(
@@ -204,7 +207,10 @@ export const getGitStatus = async (gitDir, commitHash) => {
   );
 
   const result = {
-    unstagedFileContents,
+    unstagedFileContents: mapWorkingChangesToStagedChanges(
+      stagedFileContents,
+      unstagedFileContents
+    ),
     untrackedFileContents,
     stagedFileContents,
   };
