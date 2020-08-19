@@ -92,35 +92,35 @@ const getModifacationType = async (A, B) => {
   return type;
 };
 
-// The HEAD status is either absent (0) or present (1).
-// The WORKDIR status is either absent (0), identical to HEAD (1), or different from HEAD (2).
-// The STAGE status is either absent (0), identical to HEAD (1), identical to WORKDIR (2), or different from WORKDIR (3).
-const FILE = 0,
-  HEAD = 1,
-  WORKDIR = 2,
-  STAGE = 3;
+// The HEAD_INDEX status is either absent (0) or present (1).
+// The WORKDIR_INDEX status is either absent (0), identical to HEAD_INDEX (1), or different from HEAD_INDEX (2).
+// The STAGE_INDEX status is either absent (0), identical to HEAD_INDEX (1), identical to WORKDIR_INDEX (2), or different from WORKDIR_INDEX (3).
+const FILE_INDEX = 0,
+  HEAD_INDEX = 1,
+  WORKDIR_INDEX = 2,
+  STAGE_INDEX = 3;
 
 const getUnStagedFilePaths = (matrix) => {
   const filePath = matrix
-    .filter((row) => row[WORKDIR] !== row[STAGE])
-    .map((row) => row[FILE]);
+    .filter((row) => row[WORKDIR_INDEX] !== row[STAGE_INDEX])
+    .map((row) => row[FILE_INDEX]);
 
   return filePath;
 };
 
 const getUntrackedFilePaths = (matrix) => {
   const filePath = matrix
-    // Filtering to only files that are not in the head and not staged
-    .filter((row) => row[HEAD] === 0 && row[STAGE] === 0)
-    .map((row) => row[FILE]);
+    // Filtering to only files that are not in the HEAD_INDEX and not staged
+    .filter((row) => row[HEAD_INDEX] === 0 && row[STAGE_INDEX] === 0)
+    .map((row) => row[FILE_INDEX]);
 
   return filePath;
 };
 
 const getStagedFilePaths = (matrix) => {
   const filePath = matrix
-    .filter((row) => row[STAGE] === 3 || row[STAGE] === 2)
-    .map((row) => row[FILE]);
+    .filter((row) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2)
+    .map((row) => row[FILE_INDEX]);
 
   return filePath;
 };
