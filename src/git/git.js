@@ -134,11 +134,18 @@ const loadFiles = async (filePaths, gitDir, commitHash) => {
 
       // Because we are looking at pending changes we won't have a commit hash.
       // So we will use the first hash from the store
-      const commitedState = await readContentsFromHash(
-        commitHash,
-        gitDir,
-        filePath
-      );
+      let commitedState = '';
+      try {
+        commitedState = await readContentsFromHash(
+          commitHash,
+          gitDir,
+          filePath
+        );
+      } catch {
+        console.log(
+          `failed to load the commited verions of ${filePath}. This is likely because it was committed in the previous commit`
+        );
+      }
 
       return {
         filePath: `/${filePath}`,
