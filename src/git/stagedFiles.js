@@ -57,37 +57,18 @@ const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
 };
 
 /**
- * Will load the previous committed state of the file
- *
- * @param {*} stagedFileContents
- * @param {*} gitDir
- * @param {*} commitHash
- */
-const mapStagedContentToUnstagedContent = async (
-  stagedFileContents,
-  gitDir,
-  commitHash
-) => {
-  const mapStagedContentToUnstaged = async (staged) => {
-    return await loadContentsFromPreviousCommit(staged, commitHash, gitDir);
-  };
-
-  return await Promise.all(stagedFileContents.map(mapStagedContentToUnstaged));
-};
-
-/**
  * Loads the staged file contents
  *
  * @param {string} gitDir
  * @param {Array} stagedFiles
  */
-export const loadStagedDetails = async (gitDir, stagedFiles, commmitHash) => {
+export const loadStagedDetails = async (gitDir, stagedFiles, commitHash) => {
   const stagedFileContents = await getStagedFileContents(gitDir, stagedFiles);
 
-  const linkedStagedContents = await mapStagedContentToUnstagedContent(
-    stagedFileContents,
-    gitDir,
-    commmitHash
+  const linkedStagedContents = await Promise.all(
+    stagedFileContents.map(async (staged) => {
+      return await loadContentsFromPreviousCommit(staged, commitHash, gitDir);
+    })
   );
 
   return linkedStagedContents;
