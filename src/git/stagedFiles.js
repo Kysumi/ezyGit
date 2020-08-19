@@ -5,6 +5,12 @@ const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
 
+/**
+ * Helper function that loads the contents of all of the staged files
+ *
+ * @param {string} gitDir
+ * @param {Array} stagedFilePaths
+ */
 const getStagedFileContents = async (gitDir, stagedFilePaths) => {
   const map = async (filePath, [A]) => {
     if (stagedFilePaths.includes(filePath)) {
@@ -25,11 +31,19 @@ const getStagedFileContents = async (gitDir, stagedFilePaths) => {
   });
 };
 
+/**
+ * Loads the contents of a file from the hash
+ *
+ * @param {Object} staged
+ * @param {string} commitHash
+ * @param {string} gitDir
+ */
 const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
+  console.log(staged.filePath);
   const commitedState = await readContentsFromHash(
     commitHash,
     gitDir,
-    staged.filePath
+    staged.filePath.replace('/', '')
   );
 
   return {
@@ -42,58 +56,58 @@ const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
   };
 };
 
+/**
+ * Will load the previous committed state of the file
+ *
+ * @param {*} stagedFileContents
+ * @param {*} gitDir
+ * @param {*} commitHash
+ */
 const mapStagedContentToUnstagedContent = async (
   stagedFileContents,
-  unstagedFileContents,
   gitDir,
   commitHash
 ) => {
   const mapStagedContentToUnstaged = async (staged) => {
-    //{ filePath, contents }
-    const unstagedFile = _.find(unstagedFileContents, {
-      filePath: staged.filePath,
-    });
-
-    if (unstagedFile) {
-      return {
-        filePath: staged.filePath,
-        modificationType: 'added',
-        aHash: '',
-        bHash: '',
-        aFileContents: unstagedFile.aFileContents,
-        bFileContents: staged.contents,
-      };
-    }
-
     return await loadContentsFromPreviousCommit(staged, commitHash, gitDir);
   };
 
   return await Promise.all(stagedFileContents.map(mapStagedContentToUnstaged));
 };
 
-export const loadStagedDetails = async (
-  gitDir,
-  stagedFiles,
-  unstagedFileContents
-) => {
+/**
+ * Loads the staged file contents
+ *
+ * @param {string} gitDir
+ * @param {Array} stagedFiles
+ */
+export const loadStagedDetails = async (gitDir, stagedFiles, commmitHash) => {
   const stagedFileContents = await getStagedFileContents(gitDir, stagedFiles);
 
   const linkedStagedContents = await mapStagedContentToUnstagedContent(
     stagedFileContents,
-    unstagedFileContents,
-    gitDir
+    gitDir,
+    commmitHash
   );
 
   return linkedStagedContents;
 };
 
+/**
+ * Will move the workingFileContents comparison from the previously
+ * committed state of the file to compare against the currently staged
+ * state.
+ *
+ * @param {Array} stagedFileContents
+ * @param {Array} workingFileContents
+ *
+ * @returns {Array}
+ */
 export const mapWorkingChangesToStagedChanges = (
   stagedFileContents,
   workingFileContents
 ) => {
   const newWorkingChanges = workingFileContents.map((workingChanges) => {
-    console.log(workingChanges);
-
     const stagedChanges = _.find(stagedFileContents, {
       filePath: workingChanges.filePath,
     });
