@@ -86,3 +86,28 @@ export const loadStagedDetails = async (
 
   return linkedStagedContents;
 };
+
+export const mapWorkingChangesToStagedChanges = (
+  stagedFileContents,
+  workingFileContents
+) => {
+  const newWorkingChanges = workingFileContents.map((workingChanges) => {
+    console.log(workingChanges);
+
+    const stagedChanges = _.find(stagedFileContents, {
+      filePath: workingChanges.filePath,
+    });
+
+    if (stagedChanges) {
+      return {
+        ...workingChanges,
+        aFileContents: stagedChanges.bFileContents,
+        aHash: stagedFileContents.bHash,
+      };
+    }
+
+    return workingChanges;
+  });
+
+  return newWorkingChanges;
+};
