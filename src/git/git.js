@@ -152,6 +152,8 @@ export const getGitStatus = async (gitDir, commitHash) => {
  * @param {string} hash
  * @param {string} gitDir
  * @param {string|null} filePath
+ *
+ * @return {Promise<string>}
  */
 export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
   let config = {
@@ -177,6 +179,8 @@ export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
  *
  * @param {string} gitDir The filePath to the repo
  * @param {string} filePath The path to the file relative to the gitDir
+ *
+ * @return {Promise<string>}
  */
 export const loadWorkingFileChanges = async (gitDir, filePath) => {
   const contents = fs.readFileSync(gitDir + '/' + filePath);
