@@ -5,7 +5,7 @@ import { CommitListItem } from './CommitListItem';
 import { getCommitListItems } from '../../store/repo/RepoSelector';
 import { getSelectdCommitHashSelector } from '../../store/view/ViewSelector';
 import { selectCommit } from '../../store/view/View';
-import { PendingCommitItem } from './PendingCommitItem';
+import PendingCommitItem from './PendingCommitItem';
 import { loadDiffBetweenCommits } from '../../store/repo/Repo';
 
 const listStyle = {

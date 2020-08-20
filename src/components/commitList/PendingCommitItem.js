@@ -1,13 +1,19 @@
 import React from 'react';
 import { Classes, Text } from '@blueprintjs/core';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { stringToColour } from '../../helper/stringToColor';
-import { getBranchNameSelector } from '../../store/repo/RepoSelector';
+import {
+  getBranchNameSelector,
+  getStagedFilesCount,
+} from '../../store/repo/RepoSelector';
 const classNames = require('classnames');
 
-export const PendingCommitItem = ({ isSelected, onClick }) => {
-  const color = stringToColour(useSelector(getBranchNameSelector));
-
+export const PendingCommitItem = ({
+  isSelected,
+  onClick,
+  stagedChangesCount,
+  color,
+}) => {
   const style = {
     margin: '5px',
     boxShadow: '10px 20px 32px -5px rgba(194,190,194,1)',
@@ -19,9 +25,18 @@ export const PendingCommitItem = ({ isSelected, onClick }) => {
   return (
     <div className={Classes.CARD} style={style} onClick={onClick}>
       <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
-        Amount of pending file changes goes here
+        {stagedChangesCount ? `(${stagedChangesCount}) Staged Changes` : null}
       </Text>
       <Text ellipsize={true}>Pending Changes</Text>
     </div>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    stagedChangesCount: getStagedFilesCount(state),
+    color: stringToColour(getBranchNameSelector(state)),
+  };
+};
+
+export default connect(mapStateToProps)(PendingCommitItem);

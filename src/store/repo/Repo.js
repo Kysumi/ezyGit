@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  getCommitLog,
-  getCurrentBranch,
-  getGitStatus,
-  loadFileContentsFromPath,
-  readContentsFromHash,
-} from '../../git/git';
+import { getCommitLog, getCurrentBranch, getGitStatus } from '../../git/git';
 import {
   filePathSelector,
   getBranchNameSelector,
@@ -25,7 +19,8 @@ const slice = createSlice({
 
     // Pending changes
     untrackedFiles: null,
-    stagedFiles: null,
+    stagedFiles: [],
+    pendingChangesCount: 0,
   },
   reducers: {
     setFilePath: (state, action) => {

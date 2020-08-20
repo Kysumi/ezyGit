@@ -75,3 +75,8 @@ export const getCommitIndexByHashSelector = createSelector(
     return commitList.findIndex((item) => item.oid === selectedCommit.oid);
   }
 );
+
+export const getStagedFilesCount = createSelector(
+  getStagedFilesSelector,
+  (stagedFiles) => stagedFiles.length
+);
