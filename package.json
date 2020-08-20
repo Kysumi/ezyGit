@@ -22,7 +22,7 @@
     "react-dom": "^16.13.1",
     "react-list": "^0.8.15",
     "react-redux": "^7.2.1",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.3",
     "redux-thunk": "^2.3.0",
     "unidiff": "^1.0.2",
     "wait-on": "^5.1.0"
