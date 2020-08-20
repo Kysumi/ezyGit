@@ -4,9 +4,8 @@ import ReactList from 'react-list';
 import { CommitListItem } from './CommitListItem';
 import { getCommitListItems } from '../../store/repo/RepoSelector';
 import { getSelectdCommitHashSelector } from '../../store/view/ViewSelector';
-import { selectCommit } from '../../store/view/View';
+import { handleSelectingCommit } from '../../store/view/View';
 import PendingCommitItem from './PendingCommitItem';
-import { loadDiffBetweenCommits } from '../../store/repo/Repo';
 
 const listStyle = {
   overflow: 'auto',
@@ -23,8 +22,7 @@ export const CommitList = () => {
   const renderItem = (index, key) => {
     const commit = commits[index];
     const onClick = () => {
-      dispatch(selectCommit(commit));
-      dispatch(loadDiffBetweenCommits());
+      dispatch(handleSelectingCommit(commit));
     };
 
     if (commit.oid == null) {

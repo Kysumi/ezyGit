@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { loadDiffBetweenCommits, clearCurrentDiffState } from '../repo/Repo';
 
 const slice = createSlice({
   name: 'view',
@@ -27,4 +28,14 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const { selectCommit, setPendingCommitMessage } = slice.actions;
+const { selectCommit } = slice.actions;
+
+export const handleSelectingCommit = (commitDetails) => async (
+  dispatch,
+  getState
+) => {
+  dispatch(selectCommit(commitDetails));
+  // Doing this so that while loading the differences it shows nothing.
+  await dispatch(clearCurrentDiffState());
+  await dispatch(loadDiffBetweenCommits());
+};

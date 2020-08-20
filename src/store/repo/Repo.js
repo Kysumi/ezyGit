@@ -59,6 +59,10 @@ const {
 
 export { setFilePath };
 
+export const clearCurrentDiffState = () => async (dispatch, getState) => {
+  dispatch(setCurrentDiffs([]));
+};
+
 export const loadCurrentBranch = () => async (dispatch, getState) => {
   const filePath = filePathSelector(getState());
 
