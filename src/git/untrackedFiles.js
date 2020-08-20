@@ -12,8 +12,8 @@ export const loadUntrackedFilesContents = async (
         modificationType: 'added',
         aHash: '',
         bHash: '',
-        aFileContents: '',
-        bFileContents: contents,
+        afterFileState: '',
+        beforeFileState: contents,
       };
     })
   );

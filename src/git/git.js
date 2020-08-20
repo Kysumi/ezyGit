@@ -108,8 +108,8 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
         modificationType: 'added',
         aHash: '',
         bHash: '',
-        aFileContents: commitedState,
-        bFileContents: newFileChanges,
+        afterFileState: commitedState,
+        beforeFileState: newFileChanges,
       };
     })
   );

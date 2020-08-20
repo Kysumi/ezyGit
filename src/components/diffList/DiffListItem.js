@@ -26,7 +26,10 @@ const getGitDifference = (originalText, changedText) => {
 
 export const DiffListItem = ({ forcedOpenState, diff, viewStyle }) => {
   const [isOpen, setOpen] = useState(true);
-  const parsedDiff = getGitDifference(diff.aFileContents, diff.bFileContents);
+  const parsedDiff = getGitDifference(
+    diff.afterFileState,
+    diff.beforeFileState
+  );
   const icon = isOpen ? 'chevron-up' : 'chevron-down';
 
   return (

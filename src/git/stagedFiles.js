@@ -50,8 +50,8 @@ const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
     modificationType: 'added',
     aHash: '',
     bHash: '',
-    aFileContents: commitedState,
-    bFileContents: staged.contents,
+    afterFileState: commitedState,
+    beforeFileState: staged.contents,
   };
 };
 
@@ -95,7 +95,7 @@ export const mapWorkingChangesToStagedChanges = (
     if (stagedChanges) {
       return {
         ...workingChanges,
-        aFileContents: stagedChanges.bFileContents,
+        afterFileState: stagedChanges.beforeFileState,
         aHash: stagedFileContents.bHash,
       };
     }
