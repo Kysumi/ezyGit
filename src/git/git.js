@@ -77,7 +77,7 @@ const getStagedFilePaths = (matrix) => {
 const loadFiles = async (filePaths, gitDir, commitHash) => {
   const fileDiffs = await Promise.all(
     filePaths.map(async (filePath) => {
-      const newFileChanges = await loadFileContentsFromPath(gitDir, filePath);
+      const newFileChanges = await loadWorkingFileChanges(gitDir, filePath);
 
       // Because we are looking at pending changes we won't have a commit hash.
       // So we will use the first hash from the store
@@ -111,7 +111,7 @@ const loadFiles = async (filePaths, gitDir, commitHash) => {
 const loadUntrackedFilesContents = async (untrackedFilePaths, gitDir) => {
   const unTrackedFiles = await Promise.all(
     untrackedFilePaths.map(async (filePath) => {
-      const contents = await loadFileContentsFromPath(gitDir, filePath);
+      const contents = await loadWorkingFileChanges(gitDir, filePath);
       return {
         filePath: `/${filePath}`,
         modificationType: 'added',
@@ -162,6 +162,14 @@ export const getGitStatus = async (gitDir, commitHash) => {
   return result;
 };
 
+/**
+ * Reads the contents of a file from the OID hash or from a combonation
+ * of the filePath and commit hash
+ *
+ * @param {string} hash
+ * @param {string} gitDir
+ * @param {string|null} filePath
+ */
 export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
   let config = {
     fs,
@@ -181,7 +189,13 @@ export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
   return new TextDecoder().decode(blob);
 };
 
-export const loadFileContentsFromPath = async (gitDir, filePath) => {
+/**
+ * Reads the contents of a file at the filePath provided
+ *
+ * @param {string} gitDir The filePath to the repo
+ * @param {string} filePath The path to the file relative to the gitDir
+ */
+export const loadWorkingFileChanges = async (gitDir, filePath) => {
   const contents = fs.readFileSync(gitDir + '/' + filePath);
 
   return new TextDecoder().decode(contents);
