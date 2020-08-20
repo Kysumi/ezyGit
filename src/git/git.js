@@ -267,7 +267,7 @@ const loadFileContents = async (walker, gitDir) => {
 };
 
 /**
- * Gets the state of the file changes
+ * Gets the state of the file changes between two commits
  *
  * @param {string} commitHash1
  * @param {string} commitHash2
@@ -276,36 +276,38 @@ const loadFileContents = async (walker, gitDir) => {
  * @returns {object}
  */
 export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
+  const map = async (filePath, [before, after]) => {
+    // TODO handle removals and addtions.
+
+    // ignore directories
+    if (await isDirectory(filePath, before, after)) {
+      return;
+    }
+
+    const modificationType = await getModifacationType(after, after);
+
+    // We only want files that have been changed
+    if (modificationType === FILE_EQUAL) {
+      return;
+    }
+
+    const afterFileState = await loadFileContents(after, gitDir);
+    const beforeFileState = await loadFileContents(before, gitDir);
+
+    return {
+      filePath: `/${filePath}`,
+      modificationType,
+      aHash: afterFileState.hash,
+      bHash: beforeFileState.hash,
+      aFileContents: afterFileState.contents,
+      bFileContents: beforeFileState.contents,
+    };
+  };
+
   return git.walk({
     fs,
     dir: gitDir,
     trees: [git.TREE({ ref: commitHash1 }), git.TREE({ ref: commitHash2 })],
-    map: async (filePath, [A, B]) => {
-      // TODO handle removals and addtions.
-
-      // ignore directories
-      if (await isDirectory(filePath, A, B)) {
-        return;
-      }
-
-      const modificationType = await getModifacationType(A, B);
-
-      // We only want files that have been changed
-      if (modificationType === FILE_EQUAL) {
-        return;
-      }
-
-      const newChanges = await loadFileContents(B, gitDir);
-      const originFile = await loadFileContents(A, gitDir);
-
-      return {
-        filePath: `/${filePath}`,
-        modificationType,
-        aHash: newChanges.hash,
-        bHash: originFile.hash,
-        aFileContents: newChanges.contents,
-        bFileContents: originFile.contents,
-      };
-    },
+    map,
   });
 };
