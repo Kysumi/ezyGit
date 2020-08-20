@@ -36,7 +36,10 @@ class DiffList extends React.Component {
     const { items } = this.props;
 
     return (
-      <div ref={(element) => (this.divRef = element)}>
+      <div
+        ref={(element) => (this.divRef = element)}
+        style={{ backgroundColor: '#ffffff' }}
+      >
         {items ? (
           <ReactList
             itemRenderer={this.renderItem}

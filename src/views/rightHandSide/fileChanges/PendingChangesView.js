@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DiffList from '../../../components/diffList/DiffList';
 import { useSelector } from 'react-redux';
 import {
@@ -6,6 +6,35 @@ import {
   getUntrackedFilesSelector,
   getStagedFilesSelector,
 } from '../../../store/repo/RepoSelector';
+import { Collapse, Button, Icon, Text } from '@blueprintjs/core';
+
+const buttonStyle = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-start',
+};
+
+const DiffCollection = ({ title, diffs }) => {
+  const [isOpen, setOpen] = useState(true);
+
+  const icon = isOpen ? 'chevron-up' : 'chevron-down';
+
+  return (
+    <div>
+      <Button onClick={() => setOpen(!isOpen)} style={buttonStyle}>
+        <div style={buttonStyle}>
+          <Icon icon={icon} />
+          <Text>{title}</Text>
+        </div>
+      </Button>
+      <Collapse isOpen={isOpen} keepChildrenMounted={true}>
+        <div style={{ paddingLeft: '10px', backgroundColor: '#e6eaed' }}>
+          <DiffList items={diffs} />
+        </div>
+      </Collapse>
+    </div>
+  );
+};
 
 export const PendingChangesView = () => {
   const diffs = useSelector(getCurrentBranchDiffs);
@@ -14,18 +43,9 @@ export const PendingChangesView = () => {
 
   return (
     <div>
-      <div>
-        <h4>Working Changes</h4>
-        <DiffList items={diffs} />
-      </div>
-      <div>
-        <h4>Staged Changes</h4>
-        <DiffList items={stagedFiles} />
-      </div>
-      <div>
-        <h4>Untracked Files</h4>
-        <DiffList items={pendingFiles} />
-      </div>
+      <DiffCollection title={'Working Changes'} diffs={diffs} />
+      <DiffCollection title={'Staged Changes'} diffs={stagedFiles} />
+      <DiffCollection title={'Untracked Files'} diffs={pendingFiles} />
     </div>
   );
 };
