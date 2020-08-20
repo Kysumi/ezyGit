@@ -7,10 +7,10 @@ const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
 
-const FILE_EQUAL = 'equal';
-const FILE_MODIFIED = 'modified';
-const FILE_ADDED = 'added';
-const FILE_REMOVED = 'removed';
+export const FILE_EQUAL = 'equal';
+export const FILE_MODIFIED = 'modified';
+export const FILE_ADDED = 'added';
+export const FILE_REMOVED = 'removed';
 
 /**
  * Returns the previous commits from the provided branch
@@ -41,69 +41,13 @@ export const getCurrentBranch = async (filePath) => {
   });
 };
 
-/**
- * Helper function.
- *
- * This is used to check is a particular diff is a directory change
- *
- * @param {string} filePath
- * @param {import('isomorphic-git').WalkerEntry} a
- * @param {import('isomorphic-git').WalkerEntry} b
- */
-const isDirectory = async (filePath, a, b) => {
-  if (filePath === '.') {
-    return true;
-  }
-
-  if (a !== null && (await a.type()) === 'tree') {
-    return true;
-  }
-
-  if (b !== null && (await b.type()) === 'tree') {
-    return true;
-  }
-
-  return false;
-};
-
-const getModifacationType = async (A, B) => {
-  if (A === null) {
-    return FILE_REMOVED;
-  }
-
-  if (B === null) {
-    return FILE_ADDED;
-  }
-
-  const Aoid = await A.oid();
-  const Boid = await B.oid();
-
-  let type = FILE_EQUAL;
-  if (Aoid !== Boid) {
-    type = FILE_MODIFIED;
-  }
-  if (Aoid === undefined) {
-    type = FILE_ADDED;
-  }
-  if (Boid === undefined) {
-    type = FILE_REMOVED;
-  }
-  if (Aoid === undefined && Boid === undefined) {
-    console.log('Something weird happened:');
-    console.log(A);
-    console.log(B);
-  }
-
-  return type;
-};
-
 // The HEAD_INDEX status is either absent (0) or present (1).
 // The WORKDIR_INDEX status is either absent (0), identical to HEAD_INDEX (1), or different from HEAD_INDEX (2).
 // The STAGE_INDEX status is either absent (0), identical to HEAD_INDEX (1), identical to WORKDIR_INDEX (2), or different from WORKDIR_INDEX (3).
-const FILE_INDEX = 0,
-  HEAD_INDEX = 1,
-  WORKDIR_INDEX = 2,
-  STAGE_INDEX = 3;
+export const FILE_INDEX = 0;
+export const HEAD_INDEX = 1;
+export const WORKDIR_INDEX = 2;
+export const STAGE_INDEX = 3;
 
 const getUnStagedFilePaths = (matrix) => {
   const filePath = matrix
@@ -241,73 +185,4 @@ export const loadFileContentsFromPath = async (gitDir, filePath) => {
   const contents = fs.readFileSync(gitDir + '/' + filePath);
 
   return new TextDecoder().decode(contents);
-};
-
-/**
- * Get the file contents from the file from specific commit
- *
- * @param {import('isomorphic-git').WalkerEntry} walker
- * @param {string} gitDir
- */
-const loadFileContents = async (walker, gitDir) => {
-  if (walker === null) {
-    return {
-      hash: '',
-      contents: '',
-    };
-  }
-
-  const hash = await walker.oid();
-  const contents = await readContentsFromHash(hash, gitDir);
-
-  return {
-    hash,
-    contents,
-  };
-};
-
-/**
- * Gets the state of the file changes between two commits
- *
- * @param {string} commitHash1
- * @param {string} commitHash2
- * @param {string} gitDir
- *
- * @returns {object}
- */
-export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
-  const map = async (filePath, [before, after]) => {
-    // TODO handle removals and addtions.
-
-    // ignore directories
-    if (await isDirectory(filePath, before, after)) {
-      return;
-    }
-
-    const modificationType = await getModifacationType(after, after);
-
-    // We only want files that have been changed
-    if (modificationType === FILE_EQUAL) {
-      return;
-    }
-
-    const afterFileState = await loadFileContents(after, gitDir);
-    const beforeFileState = await loadFileContents(before, gitDir);
-
-    return {
-      filePath: `/${filePath}`,
-      modificationType,
-      aHash: afterFileState.hash,
-      bHash: beforeFileState.hash,
-      aFileContents: afterFileState.contents,
-      bFileContents: beforeFileState.contents,
-    };
-  };
-
-  return git.walk({
-    fs,
-    dir: gitDir,
-    trees: [git.TREE({ ref: commitHash1 }), git.TREE({ ref: commitHash2 })],
-    map,
-  });
 };

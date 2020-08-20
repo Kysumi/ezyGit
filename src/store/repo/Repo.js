@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getCommitLog,
   getCurrentBranch,
-  getFileStateChanges,
   getGitStatus,
   loadFileContentsFromPath,
   readContentsFromHash,
@@ -13,6 +12,7 @@ import {
   getCommitIndexByHashSelector,
   getCommitsSelector,
 } from './RepoSelector';
+import { getFileStateChanges } from '../../git/committedFiles';
 
 // Slice
 const slice = createSlice({
