@@ -131,8 +131,6 @@ export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
     return {
       filePath: `/${filePath}`,
       modificationType,
-      aHash: afterFileState.hash,
-      bHash: beforeFileState.hash,
       afterFileState: afterFileState.contents,
       beforeFileState: beforeFileState.contents,
     };

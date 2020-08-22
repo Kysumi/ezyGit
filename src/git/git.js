@@ -19,7 +19,7 @@ export const FILE_REMOVED = 'removed';
  * @param {string} filePath
  * @param {string} branch
  */
-export const getCommitLog = async (filePath, branch, depth = 500) => {
+export const getCommitLog = async (filePath, branch, depth = 50) => {
   return await git.log({
     fs,
     dir: filePath,
@@ -106,8 +106,6 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
       return {
         filePath: `/${filePath}`,
         modificationType: 'added',
-        aHash: '',
-        bHash: '',
         afterFileState: commitedState,
         beforeFileState: newFileChanges,
       };

@@ -10,8 +10,6 @@ export const loadUntrackedFilesContents = async (
       return {
         filePath: `/${filePath}`,
         modificationType: 'added',
-        aHash: '',
-        bHash: '',
         afterFileState: '',
         beforeFileState: contents,
       };
