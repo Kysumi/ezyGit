@@ -16,19 +16,19 @@ const fs = remote.require('fs');
  * This is used to check is a particular diff is a directory change
  *
  * @param {string} filePath
- * @param {import('isomorphic-git').WalkerEntry} a
- * @param {import('isomorphic-git').WalkerEntry} b
+ * @param {import('isomorphic-git').WalkerEntry} before
+ * @param {import('isomorphic-git').WalkerEntry} after
  */
-const isDirectory = async (filePath, a, b) => {
+const isDirectory = async (filePath, before, after) => {
   if (filePath === '.') {
     return true;
   }
 
-  if (a !== null && (await a.type()) === 'tree') {
+  if (before !== null && (await before.type()) === 'tree') {
     return true;
   }
 
-  if (b !== null && (await b.type()) === 'tree') {
+  if (after !== null && (await after.type()) === 'tree') {
     return true;
   }
 
