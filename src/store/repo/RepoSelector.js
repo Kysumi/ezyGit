@@ -6,7 +6,7 @@ import {
 
 export const repoSelector = (state) => state.Repo;
 
-export const filePathSelector = createSelector(
+export const gitDirectorySelector = createSelector(
   repoSelector,
   (repoState) => repoState.filePath
 );

@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar } from './components/appBar/AppBar';
 import SelectRepoPopUp from './components/selectRepoPopUp/SelectRepoPopUp';
 import { useSelector } from 'react-redux';
-import { filePathSelector } from './store/repo/RepoSelector';
+import { gitDirectorySelector } from './store/repo/RepoSelector';
 import RightHandSide from './views/rightHandSide/RightHandSide';
 import { LeftHandSide } from './views/leftHandSide/LestHandSide';
 
@@ -11,7 +11,7 @@ const contentStyle = {
 };
 
 const App = () => {
-  const hasFilePath = useSelector(filePathSelector);
+  const hasFilePath = useSelector(gitDirectorySelector);
 
   return (
     <div style={{ height: '100%' }}>

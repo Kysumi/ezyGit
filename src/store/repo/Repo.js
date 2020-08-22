@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getCommitLog, getCurrentBranch, getGitStatus } from '../../git/git';
 import {
-  filePathSelector,
+  gitDirectorySelector,
   getBranchNameSelector,
   getCommitIndexByHashSelector,
   getCommitsSelector,
@@ -64,14 +64,14 @@ export const clearCurrentDiffState = () => async (dispatch, getState) => {
 };
 
 export const loadCurrentBranch = () => async (dispatch, getState) => {
-  const filePath = filePathSelector(getState());
+  const filePath = gitDirectorySelector(getState());
 
   const branchName = await getCurrentBranch(filePath);
   dispatch(setCurrentBranch(branchName));
 };
 
 export const loadCommits = () => async (dispatch, getState) => {
-  const filePath = filePathSelector(getState());
+  const filePath = gitDirectorySelector(getState());
   const branchName = getBranchNameSelector(getState());
 
   try {
@@ -83,7 +83,7 @@ export const loadCommits = () => async (dispatch, getState) => {
 };
 
 export const loadPendingDiff = () => async (dispatch, getState) => {
-  const gitDir = filePathSelector(getState());
+  const gitDir = gitDirectorySelector(getState());
   const commitHash = getCommitsSelector(getState())[1];
 
   const {
@@ -98,7 +98,7 @@ export const loadPendingDiff = () => async (dispatch, getState) => {
 };
 
 export const loadDiffBetweenCommits = () => async (dispatch, getState) => {
-  const filePath = filePathSelector(getState());
+  const filePath = gitDirectorySelector(getState());
 
   // getting the hashes for the desired diff
   const index = getCommitIndexByHashSelector(getState());
