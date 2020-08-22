@@ -8,11 +8,6 @@ const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
 
-export const FILE_EQUAL = 'equal';
-export const FILE_MODIFIED = 'modified';
-export const FILE_ADDED = 'added';
-export const FILE_REMOVED = 'removed';
-
 /**
  * Returns the previous commits from the provided branch
  *

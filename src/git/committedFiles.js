@@ -1,14 +1,13 @@
-import {
-  FILE_REMOVED,
-  FILE_EQUAL,
-  FILE_ADDED,
-  FILE_MODIFIED,
-  readContentsFromHash,
-} from './git';
+import { readContentsFromHash } from './git';
 
 const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
+
+const FILE_EQUAL = 'equal';
+const FILE_MODIFIED = 'modified';
+const FILE_ADDED = 'added';
+const FILE_REMOVED = 'removed';
 
 /**
  * Helper function.
