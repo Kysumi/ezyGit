@@ -1,0 +1,26 @@
+BROWSER=none
+
+
+
+https://isomorphic-git.org/docs/en/walk -- this should havethe power bb for the index walking
+
+
+example 3 is interesting
+
+let path = require('path')
+// Only examine files in the directory `cwd`
+let cwd = 'src/app'
+async function map (filepath, [head, workdir, stage]) {
+  if (
+    // don't skip the root directory
+    head.fullpath !== '.' &&
+    // return true for 'src' and 'src/app'
+    !cwd.startsWith(filepath) &&
+    // return true for 'src/app/*'
+    path.dirname(filepath) !== cwd
+  ) {
+    return null
+  } else {
+    return filepath
+  }
+}

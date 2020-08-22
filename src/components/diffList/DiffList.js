@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactList from 'react-list';
 import DiffListItem from './DiffListItem';
+import { StageButton } from './buttons/StageButton';
+import { DiscardButton } from './buttons/DiscardButton';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -8,22 +10,23 @@ class DiffList extends React.Component {
 
     this.state = {
       width: 0,
-      forcedOpenState: false,
     };
   }
 
   renderItem = (index, key) => {
     const { items } = this.props;
-    const { forcedOpenState, width } = this.state;
+    const { width } = this.state;
 
     const diff = items[index];
     return (
       <div key={key}>
         <DiffListItem
-          forcedOpenState={forcedOpenState}
           diff={diff}
           viewStyle={width > 1000 ? 'split' : 'unified'}
-        />
+        >
+          <StageButton />
+          <DiscardButton />
+        </DiffListItem>
       </div>
     );
   };
