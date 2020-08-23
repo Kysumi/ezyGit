@@ -156,8 +156,8 @@ export const stageFileThunk = (filePath) => async (dispatch, getState) => {
   );
 
   dispatch(setCurrentDiffs(newState));
-  // move that file we filtered out into the staged array
 
+  // move that file we filtered out into the staged array
   const newStagedDetails = _.find(previousState, {
     filePath: filePath,
   });
