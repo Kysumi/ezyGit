@@ -110,6 +110,16 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
   return fileDiffs;
 };
 
+export const stageFile = async (gitDir, filePath) => {
+  try {
+    await git.add({ fs, dir: gitDir, filepath: filePath });
+    return true;
+  } catch (e) {
+    console.log(`Something went wrong trying to stage ${filePath}`, e);
+    return false;
+  }
+};
+
 /**
  * Loads the contents of the untracked files in the git directory
  *
