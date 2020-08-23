@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Intent } from '@blueprintjs/core';
 
-export const DiscardButton = ({ onClick }) => {
+export const UnstageButton = ({ onClick }) => {
   return (
     <Button
-      text="Discard"
-      intent={Intent.DANGER}
+      text="Unstage"
+      intent={Intent.WARNING}
       onClick={onClick}
       style={{ margin: '5px' }}
     />
