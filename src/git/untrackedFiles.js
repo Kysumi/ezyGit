@@ -8,7 +8,7 @@ export const loadUntrackedFilesContents = async (
     untrackedFilePaths.map(async (filePath) => {
       const contents = await loadWorkingFileChanges(gitDir, filePath);
       return {
-        filePath: `/${filePath}`,
+        filePath: filePath,
         modificationType: 'added',
         afterFileState: '',
         beforeFileState: contents,

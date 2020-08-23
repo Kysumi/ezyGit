@@ -128,7 +128,7 @@ export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
     const beforeFileState = await loadFileContents(before, gitDir);
 
     return {
-      filePath: `/${filePath}`,
+      filePath: filePath,
       modificationType,
       afterFileState: afterFileState.contents,
       beforeFileState: beforeFileState.contents,

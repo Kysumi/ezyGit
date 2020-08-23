@@ -17,7 +17,7 @@ const getStagedFileContents = async (gitDir, stagedFilePaths) => {
       const contents = await readContentsFromHash(await A.oid(), gitDir);
 
       return {
-        filePath: `/${filePath}`,
+        filePath: filePath,
         contents,
       };
     }
@@ -42,7 +42,7 @@ const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
   const commitedState = await readContentsFromHash(
     commitHash,
     gitDir,
-    staged.filePath.replace('/', '')
+    staged.filePath
   );
 
   return {

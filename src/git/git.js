@@ -99,7 +99,7 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
       }
 
       return {
-        filePath: `/${filePath}`,
+        filePath: filePath,
         modificationType: 'added',
         afterFileState: commitedState,
         beforeFileState: newFileChanges,
