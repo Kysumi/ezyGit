@@ -14,7 +14,7 @@ const buttonStyle = {
   justifyContent: 'flex-start',
 };
 
-const DiffCollection = ({ title, diffs }) => {
+const DiffCollection = ({ title, diffs, diffType }) => {
   const [isOpen, setOpen] = useState(true);
 
   const icon = isOpen ? 'chevron-up' : 'chevron-down';
@@ -29,7 +29,7 @@ const DiffCollection = ({ title, diffs }) => {
       </Button>
       <Collapse isOpen={isOpen} keepChildrenMounted={true}>
         <div style={{ paddingLeft: '10px', backgroundColor: '#e6eaed' }}>
-          <DiffList items={diffs} />
+          <DiffList items={diffs} diffType={diffType} />
         </div>
       </Collapse>
     </div>
@@ -43,9 +43,21 @@ export const PendingChangesView = () => {
 
   return (
     <div>
-      <DiffCollection title={'Working Changes'} diffs={diffs} />
-      <DiffCollection title={'Staged Changes'} diffs={stagedFiles} />
-      <DiffCollection title={'Untracked Files'} diffs={pendingFiles} />
+      <DiffCollection
+        title={'Working Changes'}
+        diffs={diffs}
+        diffType={'working'}
+      />
+      <DiffCollection
+        title={'Staged Changes'}
+        diffs={stagedFiles}
+        diffType={'staged'}
+      />
+      <DiffCollection
+        title={'Untracked Files'}
+        diffs={pendingFiles}
+        diffType={'untracked'}
+      />
     </div>
   );
 };

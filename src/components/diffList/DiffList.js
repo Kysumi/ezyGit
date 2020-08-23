@@ -5,6 +5,8 @@ import { StageButton } from './buttons/StageButton';
 import { DiscardButton } from './buttons/DiscardButton';
 import { connect } from 'react-redux';
 import { stageFileThunk } from '../../store/repo/Repo';
+import { UnstageButton } from './buttons/UnstageButton';
+import { DeleteButton } from './buttons/DeleteButton';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -15,8 +17,51 @@ class DiffList extends React.Component {
     };
   }
 
+  workingChangesButtons = (filePath) => {
+    const { stageFile } = this.props;
+    return (
+      <>
+        <StageButton onClick={() => stageFile(filePath)} />
+        <DiscardButton onClick={() => console.log('Clicked Discard Button')} />
+      </>
+    );
+  };
+
+  stagedChangesButtons = (filePath) => {
+    return (
+      <>
+        <UnstageButton onClick={() => console.log('Unstaged button clicked')} />
+      </>
+    );
+  };
+
+  untrackedFilesButtons = (filePath) => {
+    const { stageFile } = this.props;
+    return (
+      <>
+        <StageButton onClick={() => stageFile(filePath)} />
+        <DeleteButton onClick={() => console.log('Unstaged button clicked')} />
+      </>
+    );
+  };
+
+  getButtons = (filePath) => {
+    const { diffType } = this.props;
+
+    switch (diffType) {
+      case 'working':
+        return this.workingChangesButtons(filePath);
+      case 'staged':
+        return this.stagedChangesButtons(filePath);
+      case 'untracked':
+        return this.untrackedFilesButtons(filePath);
+      default:
+        throw 'Unsupported diff type was provided';
+    }
+  };
+
   renderItem = (index, key) => {
-    const { items, stageFile } = this.props;
+    const { items } = this.props;
     const { width } = this.state;
 
     const diff = items[index];
@@ -27,10 +72,7 @@ class DiffList extends React.Component {
           diff={diff}
           viewStyle={width > 1000 ? 'split' : 'unified'}
         >
-          <StageButton onClick={() => stageFile(diff.filePath)} />
-          <DiscardButton
-            onClick={() => console.log('Clicked Discard Button')}
-          />
+          {this.getButtons(diff.filePath)}
         </DiffListItem>
       </div>
     );
