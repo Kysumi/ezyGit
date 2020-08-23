@@ -39,11 +39,19 @@ const getStagedFileContents = async (gitDir, stagedFilePaths) => {
  * @param {string} gitDir
  */
 const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
-  const commitedState = await readContentsFromHash(
-    commitHash,
-    gitDir,
-    staged.filePath
-  );
+  let commitedState = '';
+  try {
+    commitedState = await readContentsFromHash(
+      commitHash,
+      gitDir,
+      staged.filePath
+    );
+  } catch (e) {
+    console.log(
+      'Failed to load previously committed state. This is likely due to it being a new file',
+      e
+    );
+  }
 
   return {
     filePath: staged.filePath,
