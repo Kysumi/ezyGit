@@ -3,6 +3,8 @@ import ReactList from 'react-list';
 import DiffListItem from './DiffListItem';
 import { StageButton } from './buttons/StageButton';
 import { DiscardButton } from './buttons/DiscardButton';
+import { connect } from 'react-redux';
+import { stageFileThunk } from '../../store/repo/Repo';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -14,18 +16,21 @@ class DiffList extends React.Component {
   }
 
   renderItem = (index, key) => {
-    const { items } = this.props;
+    const { items, stageFile } = this.props;
     const { width } = this.state;
 
     const diff = items[index];
+
     return (
       <div key={key}>
         <DiffListItem
           diff={diff}
           viewStyle={width > 1000 ? 'split' : 'unified'}
         >
-          <StageButton />
-          <DiscardButton />
+          <StageButton onClick={() => stageFile(diff.filePath)} />
+          <DiscardButton
+            onClick={() => console.log('Clicked Discard Button')}
+          />
         </DiffListItem>
       </div>
     );
@@ -55,4 +60,10 @@ class DiffList extends React.Component {
   }
 }
 
-export default DiffList;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stageFile: (filePath) => dispatch(stageFileThunk(filePath)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(DiffList);
