@@ -4,7 +4,7 @@ import { Button } from '@blueprintjs/core';
 export const DiscardButton = ({ onClick }) => {
   return (
     <Button
-      text="Stage"
+      text="Discard"
       intent="danger"
       onClick={onClick}
       style={{ margin: '5px' }}
