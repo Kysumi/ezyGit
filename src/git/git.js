@@ -132,6 +132,14 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
   return fileDiffs;
 };
 
+/**
+ * Will stage the file AKA add into the git index.
+ *
+ * @param  {string} gitDir
+ * @param  {string} filePath
+ *
+ * @return {bool}
+ */
 export const stageFile = async (gitDir, filePath) => {
   try {
     await git.add({ fs, dir: gitDir, filepath: filePath });
@@ -141,8 +149,6 @@ export const stageFile = async (gitDir, filePath) => {
     return false;
   }
 };
-
-// banana
 
 /**
  * Loads the contents of the untracked files in the git directory
