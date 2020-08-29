@@ -45,6 +45,13 @@ export const HEAD_INDEX = 1;
 export const WORKDIR_INDEX = 2;
 export const STAGE_INDEX = 3;
 
+/**
+ * Creates an array of the filePaths to files that currently have
+ * uncommitted changes in them
+ *
+ * @param  {Array}
+ * @return {Array}
+ */
 const getWorkingFilePaths = (matrix) => {
   const filePath = matrix
     .filter((row) => row[WORKDIR_INDEX] !== row[STAGE_INDEX])
@@ -53,6 +60,13 @@ const getWorkingFilePaths = (matrix) => {
   return filePath;
 };
 
+/**
+ * Creates an array of the filePaths to files that are currently
+ * untracked
+ *
+ * @param  {Array}
+ * @return {Array}
+ */
 const getUntrackedFilePaths = (matrix) => {
   const filePath = matrix
     // Filtering to only files that are not in the HEAD_INDEX and not staged
@@ -62,6 +76,14 @@ const getUntrackedFilePaths = (matrix) => {
   return filePath;
 };
 
+/**
+ * Creates an array of the filePaths to files that are currently
+ * staged
+ *
+ * @param  {Array} matrix
+ *
+ * @return {Array}
+ */
 const getStagedFilePaths = (matrix) => {
   const filePath = matrix
     .filter((row) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2)
@@ -119,6 +141,8 @@ export const stageFile = async (gitDir, filePath) => {
     return false;
   }
 };
+
+// banana
 
 /**
  * Loads the contents of the untracked files in the git directory
