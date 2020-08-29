@@ -1,13 +1,8 @@
 import React from 'react';
-import { Button } from '@blueprintjs/core';
+import { ConfirmationButton } from './ConfirmationButton';
 
 export const DeleteButton = ({ onClick }) => {
   return (
-    <Button
-      text="Delete"
-      intent="danger"
-      onClick={onClick}
-      style={{ margin: '5px' }}
-    />
+    <ConfirmationButton onClick={onClick} intent={'danger'} text={'Delete'} />
   );
 };
