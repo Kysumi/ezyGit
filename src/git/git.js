@@ -138,7 +138,7 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
  * @param  {string} gitDir
  * @param  {string} filePath
  *
- * @return {bool}
+ * @return {Promise<boolean>}
  */
 export const stageFile = async (gitDir, filePath) => {
   try {
@@ -146,6 +146,16 @@ export const stageFile = async (gitDir, filePath) => {
     return true;
   } catch (e) {
     console.log(`Something went wrong trying to stage ${filePath}`, e);
+    return false;
+  }
+};
+
+export const deleteFile = async (gitDir, filePath) => {
+  try {
+    fs.unlinkSync(`${gitDir}/${filePath}`);
+    return true;
+  } catch (e) {
+    console.log(`Something went wrong attempting to delete ${filePath}`, e);
     return false;
   }
 };

@@ -4,9 +4,10 @@ import DiffListItem from './DiffListItem';
 import { StageButton } from './buttons/StageButton';
 import { DiscardButton } from './buttons/DiscardButton';
 import { connect } from 'react-redux';
-import { stageFileThunk } from '../../store/repo/Repo';
 import { UnstageButton } from './buttons/UnstageButton';
 import { DeleteButton } from './buttons/DeleteButton';
+import { stageFileThunk } from '../../store/repo/buttonThunks/stageFile';
+import { deleteFileThunk } from '../../store/repo/buttonThunks/deleteFile';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -36,11 +37,11 @@ class DiffList extends React.Component {
   };
 
   untrackedFilesButtons = (filePath) => {
-    const { stageFile } = this.props;
+    const { stageFile, deleteFile } = this.props;
     return (
       <>
         <StageButton onClick={() => stageFile(filePath)} />
-        <DeleteButton onClick={() => console.log('Unstaged button clicked')} />
+        <DeleteButton onClick={() => deleteFile(filePath)} />
       </>
     );
   };
@@ -105,6 +106,7 @@ class DiffList extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     stageFile: (filePath) => dispatch(stageFileThunk(filePath)),
+    deleteFile: (filePath) => dispatch(deleteFileThunk(filePath)),
   };
 };
 
