@@ -111,7 +111,7 @@ const mapDispatchToProps = (dispatch) => {
     stageFile: (filePath) => dispatch(stageFileThunk(filePath)),
     deleteFile: (filePath) => dispatch(deleteFileThunk(filePath)),
     unstageFile: (filePath) => dispatch(unstageFileThunk(filePath)),
-    discrardFile: (filePath) => dispatch(discardFileThunk(filePath)),
+    discardFile: (filePath) => dispatch(discardFileThunk(filePath)),
   };
 };
 
