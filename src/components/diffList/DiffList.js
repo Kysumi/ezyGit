@@ -9,6 +9,7 @@ import { DeleteButton } from './buttons/DeleteButton';
 import { stageFileThunk } from '../../store/repo/buttonThunks/stageFile';
 import { deleteFileThunk } from '../../store/repo/buttonThunks/deleteFile';
 import { unstageFileThunk } from '../../store/repo/buttonThunks/unstageFile';
+import { discardFileThunk } from '../../store/repo/buttonThunks/discardFile';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class DiffList extends React.Component {
     return (
       <>
         <StageButton onClick={() => stageFile(filePath)} />
-        <DiscardButton onClick={() => console.log('Clicked Discard Button')} />
+        <DiscardButton onClick={() => discardFileThunk(filePath)} />
       </>
     );
   };
@@ -110,6 +111,7 @@ const mapDispatchToProps = (dispatch) => {
     stageFile: (filePath) => dispatch(stageFileThunk(filePath)),
     deleteFile: (filePath) => dispatch(deleteFileThunk(filePath)),
     unstageFile: (filePath) => dispatch(unstageFileThunk(filePath)),
+    discrardFile: (filePath) => dispatch(discardFileThunk(filePath)),
   };
 };
 

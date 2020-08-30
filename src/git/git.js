@@ -151,6 +151,15 @@ export const stageFile = async (gitDir, filePath) => {
   }
 };
 
+export const discardFile = async (gitDir, filePath) => {
+  await git.checkout({
+    fs,
+    dir: gitDir,
+    force: true,
+    filepaths: [filePath],
+  });
+};
+
 export const unstageFile = async (gitDir, filePath) => {
   try {
     await git.remove({ fs, dir: gitDir, filepath: filePath });
