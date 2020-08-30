@@ -1,12 +1,6 @@
-import {
-  gitDirectorySelector,
-  getCurrentBranchDiffs,
-  getStagedFilesSelector,
-} from '../RepoSelector';
+import { gitDirectorySelector } from '../RepoSelector';
 import { stageFile } from '../../../git/git';
-import { setCurrentDiffs, setStagedFiles } from '../Repo';
-
-const _ = require('lodash');
+import { loadPendingDiff } from '../Repo';
 
 export const stageFileThunk = (filePath) => async (dispatch, getState) => {
   const result = await stageFile(gitDirectorySelector(getState()), filePath);
@@ -16,21 +10,5 @@ export const stageFileThunk = (filePath) => async (dispatch, getState) => {
     return;
   }
 
-  // get the current file changes and remove the file just staged and set the new state
-  const previousState = getCurrentBranchDiffs(getState());
-
-  const newState = _.filter(
-    previousState,
-    (item) => item.filePath !== filePath
-  );
-
-  dispatch(setCurrentDiffs(newState));
-
-  // move that file we filtered out into the staged array
-  const newStagedDetails = _.find(previousState, {
-    filePath: filePath,
-  });
-  const stagedState = getStagedFilesSelector(getState());
-
-  dispatch(setStagedFiles([...stagedState, newStagedDetails]));
+  dispatch(loadPendingDiff());
 };
