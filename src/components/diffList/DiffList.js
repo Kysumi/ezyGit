@@ -8,6 +8,7 @@ import { UnstageButton } from './buttons/UnstageButton';
 import { DeleteButton } from './buttons/DeleteButton';
 import { stageFileThunk } from '../../store/repo/buttonThunks/stageFile';
 import { deleteFileThunk } from '../../store/repo/buttonThunks/deleteFile';
+import { unstageFileThunk } from '../../store/repo/buttonThunks/unstageFile';
 
 class DiffList extends React.Component {
   constructor(props) {
@@ -29,9 +30,10 @@ class DiffList extends React.Component {
   };
 
   stagedChangesButtons = (filePath) => {
+    const { unstageFile } = this.props;
     return (
       <>
-        <UnstageButton onClick={() => console.log('Unstaged button clicked')} />
+        <UnstageButton onClick={() => unstageFile(filePath)} />
       </>
     );
   };
@@ -107,6 +109,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     stageFile: (filePath) => dispatch(stageFileThunk(filePath)),
     deleteFile: (filePath) => dispatch(deleteFileThunk(filePath)),
+    unstageFile: (filePath) => dispatch(unstageFileThunk(filePath)),
   };
 };
 
