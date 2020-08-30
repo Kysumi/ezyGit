@@ -12,8 +12,6 @@ const buttonStyle = {
   width: '100%',
   display: 'flex',
   justifyContent: 'flex-start',
-  marginRight: '10px',
-  marginLeft: '10px',
   alignContent: 'center',
 };
 
@@ -21,7 +19,6 @@ const spacerStyle = {
   width: '2px',
   backgroundColor: '#767A76',
   marginRight: '10px',
-  marginLeft: '10px',
 };
 
 const horizontalStyle = {
