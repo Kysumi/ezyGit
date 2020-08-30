@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Collapse, Icon, Text } from '@blueprintjs/core';
+import { Collapse, Icon } from '@blueprintjs/core';
 
 const containerStyle = {
   boxShadow: '2px 2px 9px 0px rgba(50, 50, 50, 0.4)',
   borderRadius: '5px',
+  backgroundColor: '#ffffff',
+  marginBottom: '6px',
 };
 
 const buttonStyle = {
@@ -12,7 +14,6 @@ const buttonStyle = {
   justifyContent: 'flex-start',
   marginRight: '10px',
   marginLeft: '10px',
-  marginTop: '10px',
   alignContent: 'center',
 };
 
@@ -39,20 +40,22 @@ export const CollapseHeader = ({ title, children }) => {
   const icon = isOpen ? 'chevron-down' : 'chevron-right';
 
   return (
-    <div style={containerStyle}>
-      <div onClick={() => setOpen(!isOpen)} style={buttonStyle}>
-        <div style={{ padding: '10px' }}>
-          <Icon icon={icon} iconSize={24} color={'#647C90'} />
+    <div style={{ backgroundColor: '#e6eaed' }}>
+      <div style={containerStyle}>
+        <div onClick={() => setOpen(!isOpen)} style={buttonStyle}>
+          <div style={{ padding: '10px' }}>
+            <Icon icon={icon} iconSize={24} color={'#647C90'} />
+          </div>
+          <div style={spacerStyle} />
+          <span style={titleStyle}>
+            <b>{title}</b>
+          </span>
         </div>
-        <div style={spacerStyle} />
-        <span style={titleStyle}>
-          <b>{title}</b>
-        </span>
+        {isOpen ? <div style={horizontalStyle} /> : null}
+        <Collapse isOpen={isOpen} keepChildrenMounted={true}>
+          {children}
+        </Collapse>
       </div>
-      {isOpen ? <div style={horizontalStyle} /> : null}
-      <Collapse isOpen={isOpen} keepChildrenMounted={true}>
-        {children}
-      </Collapse>
     </div>
   );
 };
