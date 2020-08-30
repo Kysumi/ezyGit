@@ -110,8 +110,6 @@ const loadFileContents = async (walker, gitDir) => {
  */
 export const getFileStateChanges = async (commitHash1, commitHash2, gitDir) => {
   const map = async (filePath, [before, after]) => {
-    // TODO handle removals and addtions.
-
     // ignore directories
     if (await isDirectory(filePath, before, after)) {
       return;
