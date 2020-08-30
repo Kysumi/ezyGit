@@ -150,6 +150,16 @@ export const stageFile = async (gitDir, filePath) => {
   }
 };
 
+export const unstageFile = async (gitDir, filePath) => {
+  try {
+    await git.remove({ fs, dir: gitDir, filepath: filePath });
+    return true;
+  } catch (e) {
+    console.log(`Something went wrong trying to unstage ${filePath}`, e);
+    return false;
+  }
+};
+
 export const deleteFile = async (gitDir, filePath) => {
   try {
     fs.unlinkSync(`${gitDir}/${filePath}`);
