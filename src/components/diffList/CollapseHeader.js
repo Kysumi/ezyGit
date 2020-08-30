@@ -33,9 +33,16 @@ const horizontalStyle = {
 const titleStyle = {
   display: 'flex',
   alignItems: 'center',
+  width: '100%',
 };
 
-export const CollapseHeader = ({ title, children }) => {
+const rightButtonsStyle = {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  width: '30%',
+};
+
+export const CollapseHeader = ({ title, children, rightButtons = null }) => {
   const [isOpen, setOpen] = useState(true);
   const icon = isOpen ? 'chevron-down' : 'chevron-right';
 
@@ -50,6 +57,7 @@ export const CollapseHeader = ({ title, children }) => {
           <span style={titleStyle}>
             <b>{title}</b>
           </span>
+          <div style={rightButtonsStyle}>{rightButtons}</div>
         </div>
         {isOpen ? <div style={horizontalStyle} /> : null}
         <Collapse isOpen={isOpen} keepChildrenMounted={true}>
