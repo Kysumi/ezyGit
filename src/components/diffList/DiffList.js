@@ -21,11 +21,11 @@ class DiffList extends React.Component {
   }
 
   workingChangesButtons = (filePath) => {
-    const { stageFile } = this.props;
+    const { stageFile, discardFile } = this.props;
     return (
       <>
         <StageButton onClick={() => stageFile(filePath)} />
-        <DiscardButton onClick={() => discardFileThunk(filePath)} />
+        <DiscardButton onClick={() => discardFile(filePath)} />
       </>
     );
   };
