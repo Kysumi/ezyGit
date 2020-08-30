@@ -7,6 +7,7 @@ import { loadUntrackedFilesContents } from './untrackedFiles';
 const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
+const _ = require('lodash');
 
 /**
  * Returns the previous commits from the provided branch
@@ -170,46 +171,23 @@ export const deleteFile = async (gitDir, filePath) => {
   }
 };
 
-/**
- * Loads the contents of the untracked files in the git directory
- *
- * @param {Array} matrix
- * @param {string} gitDir
- */
-const getUntrackedFiles = async (matrix, gitDir) => {
-  const filePaths = getUntrackedFilePaths(matrix);
+export const getFilePathsSplitByStatus = async (gitDir) => {
+  const matrix = await git.statusMatrix({ dir: gitDir, fs });
 
-  const untrackedFileContents = await loadUntrackedFilesContents(
-    filePaths,
-    gitDir
-  );
-
-  return untrackedFileContents;
-};
-
-/**
- * Loads the content of the "working" changes in the git directory
- *
- * @param {Array} matrix
- * @param {string} gitDir
- * @param {string} commitHash
- */
-const getWorkingFiles = async (matrix, gitDir, commitHash) => {
-  const filePaths = getWorkingFilePaths(matrix);
-
+  const untracked = getUntrackedFilePaths(matrix);
   // Removing duplicate entries from untracked files as they are picked up by
   // isomorphic-git as a working change as well
-  const removedDuplicates = filePaths.filter(
-    (filePath) => !getUntrackedFilePaths(matrix).includes(filePath)
+  const working = _.filter(
+    getWorkingFilePaths(matrix),
+    (filePath) => !untracked.includes(filePath)
   );
 
-  const workingFileContents = await loadWorkingFileContents(
-    removedDuplicates,
-    gitDir,
-    commitHash
-  );
-
-  return workingFileContents;
+  return {
+    staged: getStagedFilePaths(matrix),
+    unstaged: getUntrackedFilePaths(matrix),
+    working,
+    untracked,
+  };
 };
 
 /**
@@ -219,23 +197,24 @@ const getWorkingFiles = async (matrix, gitDir, commitHash) => {
  * @param {string} commitHash
  */
 export const getGitStatus = async (gitDir, commitHash) => {
-  const matrix = await git.statusMatrix({ dir: gitDir, fs });
+  const filesPaths = await getFilePathsSplitByStatus(gitDir);
 
-  const stagedFiles = await getStagedFilePaths(matrix);
-  const workingFileContents = await getWorkingFiles(matrix, gitDir, commitHash);
-
-  const stagedFileContents = await loadStagedDetails(
-    gitDir,
-    stagedFiles,
-    commitHash
-  );
+  const [
+    workingFileContents,
+    stagedFileContents,
+    untrackedFileContents,
+  ] = await Promise.all([
+    loadWorkingFileContents(filesPaths.working, gitDir, commitHash),
+    loadStagedDetails(gitDir, filesPaths.staged, commitHash),
+    loadUntrackedFilesContents(filesPaths.untracked, gitDir),
+  ]);
 
   const result = {
     unstagedFileContents: mapWorkingChangesToStagedChanges(
       stagedFileContents,
       workingFileContents
     ),
-    untrackedFileContents: await getUntrackedFiles(matrix, gitDir),
+    untrackedFileContents,
     stagedFileContents,
   };
 
