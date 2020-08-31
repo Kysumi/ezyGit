@@ -8,6 +8,7 @@ export const CommitMessage = ({ message, disabled }) => {
         value={message}
         placeholder={'Commit Message'}
         disabled={disabled}
+        autoFocus={true}
       />
     </div>
   );

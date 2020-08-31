@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { gitDirectorySelector } from './store/repo/RepoSelector';
 import RightHandSide from './views/rightHandSide/RightHandSide';
 import { LeftHandSide } from './views/leftHandSide/LestHandSide';
+import { OmniBarTest } from './components/omniBar/OmniBar';
 
 const contentStyle = {
   display: 'flex',
@@ -15,14 +16,16 @@ const App = () => {
 
   return (
     <div style={{ height: '100%' }}>
-      <AppBar />
+      <OmniBarTest>
+        <AppBar />
 
-      <div style={contentStyle}>
-        <LeftHandSide />
-        <RightHandSide />
-      </div>
+        <div style={contentStyle}>
+          <LeftHandSide />
+          <RightHandSide />
+        </div>
 
-      {hasFilePath ? null : <SelectRepoPopUp />}
+        {hasFilePath ? null : <SelectRepoPopUp />}
+      </OmniBarTest>
     </div>
   );
 };
