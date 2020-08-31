@@ -268,7 +268,13 @@ export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
  * @return {Promise<string>}
  */
 export const loadWorkingFileChanges = async (gitDir, filePath) => {
-  const contents = fs.readFileSync(gitDir + '/' + filePath);
-
-  return new TextDecoder().decode(contents);
+  try {
+    const contents = fs.readFileSync(gitDir + '/' + filePath);
+    return new TextDecoder().decode(contents);
+  } catch (err) {
+    console.error(
+      `Failed to load file ${filePath} as it likely does not exist`
+    );
+    return '';
+  }
 };

@@ -15,7 +15,7 @@ class OmniBarTest extends React.Component {
   };
 
   handlers = {
-    OPEN_OMNI_BAR: (event) => {
+    OPEN_OMNI_BAR: () => {
       const { isOpen } = this.state;
       this.setState({ isOpen: !isOpen });
       console.log('hit!!');
@@ -31,7 +31,7 @@ class OmniBarTest extends React.Component {
     EXIT_OMNI: 'escape',
   };
 
-  renderItem = (item) => {
+  renderItem = (item: string) => {
     return <MenuItem key={item} text={item} />;
   };
 
