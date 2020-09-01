@@ -13,6 +13,7 @@ const buttonStyle = {
   display: 'flex',
   justifyContent: 'flex-start',
   alignContent: 'center',
+  height: '40px',
 };
 
 const spacerStyle = {
@@ -48,7 +49,7 @@ export const CollapseHeader = ({ title, children, rightButtons = null }) => {
       <div style={containerStyle}>
         <div onClick={() => setOpen(!isOpen)} style={buttonStyle}>
           <div
-            style={{ padding: '5px', display: 'flex', alignItems: 'center' }}
+            style={{ padding: '10px', display: 'flex', alignItems: 'center' }}
           >
             <Icon icon={icon} color={'#647C90'} />
           </div>
