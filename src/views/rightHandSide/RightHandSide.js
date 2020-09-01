@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileChangesView } from './fileChanges/FileChangesView';
-import { CommitMessage } from '../../components/commitMessage/CommitMessage';
+import CommitMessage from '../../components/commitMessage/CommitMessage';
 import { connect } from 'react-redux';
 import { getSelectedCommitSelector } from '../../store/view/ViewSelector';
 
