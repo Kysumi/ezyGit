@@ -8,8 +8,6 @@ import {
 } from './RepoSelector';
 import { getFileStateChanges } from '../../git/committedFiles';
 
-const _ = require('lodash');
-
 // Slice
 const slice = createSlice({
   name: 'repo',

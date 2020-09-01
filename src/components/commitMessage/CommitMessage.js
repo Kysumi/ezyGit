@@ -24,7 +24,7 @@ export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
   return (
     <textarea
       className={classNames(Classes.INPUT, Classes.FILL)}
-      readOnly={disabled}
+      disabled={disabled}
       ref={inputRef}
       autoFocus={true}
       defaultValue={message}

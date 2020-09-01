@@ -59,8 +59,10 @@ class DiffList extends React.Component {
         return this.stagedChangesButtons(filePath);
       case 'untracked':
         return this.untrackedFilesButtons(filePath);
+
+      // This case is for showing diff history
       default:
-        throw 'Unsupported diff type was provided';
+        return null;
     }
   };
 
