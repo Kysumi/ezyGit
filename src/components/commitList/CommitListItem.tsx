@@ -3,20 +3,10 @@ import { Classes, Text } from '@blueprintjs/core';
 import { useSelector } from 'react-redux';
 import { stringToColour } from '../../helper/stringToColor';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
-import styled, { ThemeProvider } from 'styled-components';
 import { CommitObject } from 'isomorphic-git';
+import { CommitListItemStyle } from './CommitListItemStyle';
 
 const classNames = require('classnames');
-
-const StyledDiv = styled.div`
-  margin: 5px;
-  box-shadow: 10px 20px 32px -5px rgba(194, 190, 194, 1);
-  border-left: 10px solid ${(props) => props.theme.color};
-  border-radius: 5px;
-  background-color: ${(props) =>
-    props.theme.selected ? '#e6eaed' : '#ffffff'};
-  padding: 20px;
-`;
 
 interface CommitListItemProps {
   isSelected: boolean;
@@ -31,19 +21,16 @@ export const CommitListItem = ({
 }: CommitListItemProps) => {
   const color = stringToColour(useSelector(getBranchNameSelector));
 
-  const themeSettings = {
-    color: color,
-    selected: isSelected,
-  };
-
   return (
-    <ThemeProvider theme={themeSettings}>
-      <StyledDiv onClick={onClick} color={color}>
-        <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
-          {commit.committer.name}
-        </Text>
-        <Text ellipsize={true}>{commit.message}</Text>
-      </StyledDiv>
-    </ThemeProvider>
+    <CommitListItemStyle
+      color={color}
+      isSelected={isSelected}
+      onClick={onClick}
+    >
+      <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
+        {commit.committer.name}
+      </Text>
+      <Text ellipsize={true}>{commit.message}</Text>
+    </CommitListItemStyle>
   );
 };

@@ -1,0 +1,7 @@
+export const COLORS = {
+  TRIM: '#ECECEC',
+  BACKGROUND: '#212121',
+  PRIMARY: '#529ED1',
+  OTHER: '#3E79A1',
+  WHITE: '#FFFFFF',
+};
