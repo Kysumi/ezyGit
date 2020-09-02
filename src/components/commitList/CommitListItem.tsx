@@ -8,7 +8,7 @@ import { CommitObject } from 'isomorphic-git';
 
 const classNames = require('classnames');
 
-const Thingy = styled.div`
+const StyledDiv = styled.div`
   margin: 5px;
   box-shadow: 10px 20px 32px -5px rgba(194, 190, 194, 1);
   border-left: 10px solid ${(props) => props.theme.color};
@@ -38,12 +38,12 @@ export const CommitListItem = ({
 
   return (
     <ThemeProvider theme={themeSettings}>
-      <Thingy onClick={onClick} color={color}>
+      <StyledDiv onClick={onClick} color={color}>
         <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
           {commit.committer.name}
         </Text>
         <Text ellipsize={true}>{commit.message}</Text>
-      </Thingy>
+      </StyledDiv>
     </ThemeProvider>
   );
 };
