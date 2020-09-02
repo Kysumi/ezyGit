@@ -4,7 +4,9 @@ import {
 } from './stagedFiles';
 import { loadUntrackedFilesContents } from './untrackedFiles';
 
-const git = require('isomorphic-git');
+import git, { StatusRow } from 'isomorphic-git';
+
+// const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
 const _ = require('lodash');
@@ -54,10 +56,10 @@ export const STAGE_INDEX = 3;
  * Creates an array of the filePaths to files that currently have
  * uncommitted changes in them
  *
- * @param  {Array}
+ * @param  {Array<StatusRow>}
  * @return {Array}
  */
-const getWorkingFilePaths = (matrix: any) => {
+const getWorkingFilePaths = (matrix: Array<StatusRow>) => {
   const filePath = matrix
     .filter((row: any) => row[WORKDIR_INDEX] !== row[STAGE_INDEX])
     .map((row: any) => row[FILE_INDEX]);
@@ -69,14 +71,14 @@ const getWorkingFilePaths = (matrix: any) => {
  * Creates an array of the filePaths to files that are currently
  * untracked
  *
- * @param  {Array}
+ * @param  {Array<StatusRow>}
  * @return {Array}
  */
-const getUntrackedFilePaths = (matrix: any) => {
+const getUntrackedFilePaths = (matrix: Array<StatusRow>) => {
   const filePath = matrix
     // Filtering to only files that are not in the HEAD_INDEX and not staged
-    .filter((row: any) => row[HEAD_INDEX] === 0 && row[STAGE_INDEX] === 0)
-    .map((row: any) => row[FILE_INDEX]);
+    .filter((row: StatusRow) => row[HEAD_INDEX] === 0 && row[STAGE_INDEX] === 0)
+    .map((row: StatusRow) => row[FILE_INDEX]);
 
   return filePath;
 };
@@ -85,14 +87,16 @@ const getUntrackedFilePaths = (matrix: any) => {
  * Creates an array of the filePaths to files that are currently
  * staged
  *
- * @param  {Array} matrix
+ * @param  {Array<StatusRow>} matrix
  *
  * @return {Array}
  */
-const getStagedFilePaths = (matrix: any) => {
+const getStagedFilePaths = (matrix: Array<StatusRow>) => {
   const filePath = matrix
-    .filter((row: any) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2)
-    .map((row: any) => row[FILE_INDEX]);
+    .filter(
+      (row: StatusRow) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2
+    )
+    .map((row: StatusRow) => row[FILE_INDEX]);
 
   return filePath;
 };
