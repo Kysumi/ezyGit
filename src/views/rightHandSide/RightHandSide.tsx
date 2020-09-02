@@ -12,7 +12,11 @@ const rightHandSideStyle = {
   minHeight: 'calc(100vh - 60px)',
 };
 
-export const RightHandSide = ({ message }) => {
+interface RightHandSideProps {
+  message: string;
+}
+
+export const RightHandSide = ({ message }: RightHandSideProps) => {
   return (
     <div style={rightHandSideStyle}>
       <CommitMessage message={message} disabled={message !== ''} />
@@ -21,7 +25,7 @@ export const RightHandSide = ({ message }) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
   const selectedCommit = getSelectedCommitSelector(state);
 
   return {
