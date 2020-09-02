@@ -13,10 +13,11 @@ const buttonStyle = {
   display: 'flex',
   justifyContent: 'flex-start',
   alignContent: 'center',
+  height: '40px',
 };
 
 const spacerStyle = {
-  width: '2px',
+  width: '3px',
   backgroundColor: '#767A76',
   marginRight: '10px',
 };
@@ -44,11 +45,13 @@ export const CollapseHeader = ({ title, children, rightButtons = null }) => {
   const icon = isOpen ? 'chevron-down' : 'chevron-right';
 
   return (
-    <div style={{ backgroundColor: '#e6eaed' }}>
+    <div style={{ backgroundColor: '#e6eaed', borderRadius: '5px' }}>
       <div style={containerStyle}>
         <div onClick={() => setOpen(!isOpen)} style={buttonStyle}>
-          <div style={{ padding: '10px' }}>
-            <Icon icon={icon} iconSize={24} color={'#647C90'} />
+          <div
+            style={{ padding: '10px', display: 'flex', alignItems: 'center' }}
+          >
+            <Icon icon={icon} color={'#647C90'} />
           </div>
           <div style={spacerStyle} />
           <span style={titleStyle}>

@@ -8,8 +8,6 @@ import {
 } from './RepoSelector';
 import { getFileStateChanges } from '../../git/committedFiles';
 
-const _ = require('lodash');
-
 // Slice
 const slice = createSlice({
   name: 'repo',
@@ -86,7 +84,7 @@ export const loadCommits = () => async (dispatch, getState) => {
 
 export const loadPendingDiff = () => async (dispatch, getState) => {
   const gitDir = gitDirectorySelector(getState());
-  const commitHash = getCommitsSelector(getState())[1];
+  const commitHash = getCommitsSelector(getState())[0];
 
   const {
     untrackedFileContents,

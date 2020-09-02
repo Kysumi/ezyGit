@@ -15,6 +15,7 @@ const slice = createSlice({
       },
     },
     pendingCommitMessage: '',
+    omniBarIsOpen: false,
   },
   reducers: {
     selectCommit: (state, action) => {
@@ -23,12 +24,16 @@ const slice = createSlice({
     setPendingCommitMessage: (state, action) => {
       state.pendingCommitMessage = action.payload;
     },
+    setOmniBarIsOpen: (state, action) => {
+      state.omniBarIsOpen = action.payload;
+    },
   },
 });
 
-export default slice.reducer;
+const { selectCommit, setOmniBarIsOpen } = slice.actions;
 
-const { selectCommit } = slice.actions;
+export default slice.reducer;
+export { setOmniBarIsOpen };
 
 export const handleSelectingCommit = (commitDetails) => async (
   dispatch,

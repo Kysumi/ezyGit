@@ -2,27 +2,36 @@ import { configure, HotKeys } from 'react-hotkeys';
 import React from 'react';
 import { Omnibar } from '@blueprintjs/select';
 import { MenuItem } from '@blueprintjs/core';
+import { connect } from 'react-redux';
+import { setOmniBarIsOpen } from '../../store/view/View';
 
 configure({
-  ignoreEventsCondition: (event) => {
+  ignoreEventsCondition: () => {
     return false;
   },
 });
 
-class OmniBarTest extends React.Component {
+export interface OmniBarProps {
+  setOmnibarOpen: (shouldOpen: boolean) => void;
+}
+
+class OmniBar extends React.Component<OmniBarProps> {
   state = {
     isOpen: false,
   };
 
   handlers = {
-    OPEN_OMNI_BAR: (event) => {
-      const { isOpen } = this.state;
-      this.setState({ isOpen: !isOpen });
-      console.log('hit!!');
+    OPEN_OMNI_BAR: () => {
+      const { setOmnibarOpen } = this.props;
+      setOmnibarOpen(true);
+
+      this.setState({ isOpen: true });
     },
     EXIT_OMNI: () => {
+      const { setOmnibarOpen } = this.props;
+      setOmnibarOpen(false);
+
       this.setState({ isOpen: false });
-      console.log('escaping');
     },
   };
 
@@ -31,7 +40,7 @@ class OmniBarTest extends React.Component {
     EXIT_OMNI: 'escape',
   };
 
-  renderItem = (item) => {
+  renderItem = (item: string) => {
     return <MenuItem key={item} text={item} />;
   };
 
@@ -56,4 +65,13 @@ class OmniBarTest extends React.Component {
   }
 }
 
-export { OmniBarTest };
+export { OmniBar };
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setOmnibarOpen: (shouldOpen: boolean) =>
+      dispatch(setOmniBarIsOpen(shouldOpen)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(OmniBar);

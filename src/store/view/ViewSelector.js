@@ -27,3 +27,8 @@ export const pendingCommitMessageSelector = createSelector(
   viewSelector,
   (viewState) => viewState.pendingCommitMessage
 );
+
+export const omniBarIsOpenSelector = createSelector(
+  viewSelector,
+  (viewState) => viewState.omniBarIsOpen
+);

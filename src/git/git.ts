@@ -4,7 +4,9 @@ import {
 } from './stagedFiles';
 import { loadUntrackedFilesContents } from './untrackedFiles';
 
-const git = require('isomorphic-git');
+import git, { StatusRow } from 'isomorphic-git';
+
+// const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
 const _ = require('lodash');
@@ -12,13 +14,17 @@ const _ = require('lodash');
 /**
  * Returns the previous commits from the provided branch
  *
- * @param {string} filePath
+ * @param {string} gitDir
  * @param {string} branch
  */
-export const getCommitLog = async (filePath, branch, depth = 50) => {
+export const getCommitLog = async (
+  gitDir: string,
+  branch: string,
+  depth = 50
+) => {
   return await git.log({
     fs,
-    dir: filePath,
+    dir: gitDir,
     depth: depth,
     ref: branch,
   });
@@ -27,13 +33,13 @@ export const getCommitLog = async (filePath, branch, depth = 50) => {
 /**
  * Returns the string name of the current checked out branch
  *
- * @param {string} filePath
+ * @param {string} gitDir
  * @returns {Promise<string|void>}
  */
-export const getCurrentBranch = async (filePath) => {
+export const getCurrentBranch = async (gitDir: string) => {
   return await git.currentBranch({
     fs,
-    dir: filePath,
+    dir: gitDir,
     fullname: false,
   });
 };
@@ -50,13 +56,13 @@ export const STAGE_INDEX = 3;
  * Creates an array of the filePaths to files that currently have
  * uncommitted changes in them
  *
- * @param  {Array}
+ * @param  {Array<StatusRow>}
  * @return {Array}
  */
-const getWorkingFilePaths = (matrix) => {
+const getWorkingFilePaths = (matrix: Array<StatusRow>) => {
   const filePath = matrix
-    .filter((row) => row[WORKDIR_INDEX] !== row[STAGE_INDEX])
-    .map((row) => row[FILE_INDEX]);
+    .filter((row: any) => row[WORKDIR_INDEX] !== row[STAGE_INDEX])
+    .map((row: any) => row[FILE_INDEX]);
 
   return filePath;
 };
@@ -65,14 +71,14 @@ const getWorkingFilePaths = (matrix) => {
  * Creates an array of the filePaths to files that are currently
  * untracked
  *
- * @param  {Array}
+ * @param  {Array<StatusRow>}
  * @return {Array}
  */
-const getUntrackedFilePaths = (matrix) => {
+const getUntrackedFilePaths = (matrix: Array<StatusRow>) => {
   const filePath = matrix
     // Filtering to only files that are not in the HEAD_INDEX and not staged
-    .filter((row) => row[HEAD_INDEX] === 0 && row[STAGE_INDEX] === 0)
-    .map((row) => row[FILE_INDEX]);
+    .filter((row: StatusRow) => row[HEAD_INDEX] === 0 && row[STAGE_INDEX] === 0)
+    .map((row: StatusRow) => row[FILE_INDEX]);
 
   return filePath;
 };
@@ -81,14 +87,16 @@ const getUntrackedFilePaths = (matrix) => {
  * Creates an array of the filePaths to files that are currently
  * staged
  *
- * @param  {Array} matrix
+ * @param  {Array<StatusRow>} matrix
  *
  * @return {Array}
  */
-const getStagedFilePaths = (matrix) => {
+const getStagedFilePaths = (matrix: Array<StatusRow>) => {
   const filePath = matrix
-    .filter((row) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2)
-    .map((row) => row[FILE_INDEX]);
+    .filter(
+      (row: StatusRow) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2
+    )
+    .map((row: StatusRow) => row[FILE_INDEX]);
 
   return filePath;
 };
@@ -101,7 +109,11 @@ const getStagedFilePaths = (matrix) => {
  * @param {string} gitDir
  * @param {string} commitHash
  */
-const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
+const loadWorkingFileContents = async (
+  filePaths: Array<string>,
+  gitDir: string,
+  commitHash: string
+) => {
   const fileDiffs = await Promise.all(
     filePaths.map(async (filePath) => {
       const newFileChanges = await loadWorkingFileChanges(gitDir, filePath);
@@ -141,7 +153,10 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
  *
  * @return {Promise<boolean>}
  */
-export const stageFile = async (gitDir, filePath) => {
+export const stageFile = async (
+  gitDir: string,
+  filePath: string
+): Promise<boolean> => {
   try {
     await git.add({ fs, dir: gitDir, filepath: filePath });
     return true;
@@ -151,7 +166,16 @@ export const stageFile = async (gitDir, filePath) => {
   }
 };
 
-export const discardFile = async (gitDir, filePath) => {
+/**
+ * Will discard the current unstaged changes in the file
+ *
+ * @param gitDir the file path to the gitDir
+ * @param filePath the releative file path to the file
+ */
+export const discardFile = async (
+  gitDir: string,
+  filePath: string
+): Promise<void> => {
   await git.checkout({
     fs,
     dir: gitDir,
@@ -160,7 +184,17 @@ export const discardFile = async (gitDir, filePath) => {
   });
 };
 
-export const unstageFile = async (gitDir, filePath) => {
+/**
+ * Will remove the currently staged changes from the gitIndex and put
+ * the file back into the "working" state
+ *
+ * @param gitDir the file path to the gitDir
+ * @param filePath the releative file path to the file
+ */
+export const unstageFile = async (
+  gitDir: string,
+  filePath: string
+): Promise<boolean> => {
   try {
     await git.remove({ fs, dir: gitDir, filepath: filePath });
     return true;
@@ -170,7 +204,13 @@ export const unstageFile = async (gitDir, filePath) => {
   }
 };
 
-export const deleteFile = async (gitDir, filePath) => {
+/**
+ * Will delete the file from the file system
+ *
+ * @param gitDir the file path to the gitDir
+ * @param filePath the releative file path to the file
+ */
+export const deleteFile = (gitDir: string, filePath: string): boolean => {
   try {
     fs.unlinkSync(`${gitDir}/${filePath}`);
     return true;
@@ -180,7 +220,7 @@ export const deleteFile = async (gitDir, filePath) => {
   }
 };
 
-export const getFilePathsSplitByStatus = async (gitDir) => {
+export const getFilePathsSplitByStatus = async (gitDir: string) => {
   const matrix = await git.statusMatrix({ dir: gitDir, fs });
 
   const untracked = getUntrackedFilePaths(matrix);
@@ -188,7 +228,7 @@ export const getFilePathsSplitByStatus = async (gitDir) => {
   // isomorphic-git as a working change as well
   const working = _.filter(
     getWorkingFilePaths(matrix),
-    (filePath) => !untracked.includes(filePath)
+    (filePath: string) => !untracked.includes(filePath)
   );
 
   return {
@@ -205,7 +245,7 @@ export const getFilePathsSplitByStatus = async (gitDir) => {
  * @param {string} gitDir
  * @param {string} commitHash
  */
-export const getGitStatus = async (gitDir, commitHash) => {
+export const getGitStatus = async (gitDir: string, commitHash: string) => {
   const filesPaths = await getFilePathsSplitByStatus(gitDir);
 
   const [
@@ -230,6 +270,13 @@ export const getGitStatus = async (gitDir, commitHash) => {
   return result;
 };
 
+interface readBlobInterface {
+  fs: any;
+  dir: string;
+  oid: string;
+  filepath?: string;
+}
+
 /**
  * Reads the contents of a file from the OID hash or from a combonation
  * of the filePath and commit hash
@@ -240,8 +287,12 @@ export const getGitStatus = async (gitDir, commitHash) => {
  *
  * @return {Promise<string>}
  */
-export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
-  let config = {
+export const readContentsFromHash = async (
+  hash: string,
+  gitDir: string,
+  filePath?: string
+) => {
+  let config: readBlobInterface = {
     fs,
     dir: gitDir,
     oid: hash,
@@ -267,8 +318,17 @@ export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
  *
  * @return {Promise<string>}
  */
-export const loadWorkingFileChanges = async (gitDir, filePath) => {
-  const contents = fs.readFileSync(gitDir + '/' + filePath);
-
-  return new TextDecoder().decode(contents);
+export const loadWorkingFileChanges = async (
+  gitDir: string,
+  filePath: string
+) => {
+  try {
+    const contents = fs.readFileSync(gitDir + '/' + filePath);
+    return new TextDecoder().decode(contents);
+  } catch (err) {
+    console.error(
+      `Failed to load file ${filePath} as it likely does not exist`
+    );
+    return '';
+  }
 };
