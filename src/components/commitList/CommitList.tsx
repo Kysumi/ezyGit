@@ -6,21 +6,22 @@ import { getCommitListItems } from '../../store/repo/RepoSelector';
 import { getSelectdCommitHashSelector } from '../../store/view/ViewSelector';
 import { handleSelectingCommit } from '../../store/view/View';
 import PendingCommitItem from './PendingCommitItem';
+import styled from 'styled-components';
 
-const listStyle = {
-  overflow: 'auto',
-  maxHeight: 'calc(100vh - 60px)',
-  minHeight: 'calc(100vh - 60px)',
-};
+const StyledDiv = styled.div`
+  overflow: auto;
+  max-height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
+`;
 
 export const CommitList = () => {
+  const dispatch = useDispatch();
   const commits = useSelector(getCommitListItems);
   const selectedHash = useSelector(getSelectdCommitHashSelector);
 
-  const dispatch = useDispatch();
-
-  const renderItem = (index, key) => {
+  const renderItem = (index: number, key: number | string) => {
     const commit = commits[index];
+
     const onClick = () => {
       dispatch(handleSelectingCommit(commit));
     };
@@ -47,13 +48,13 @@ export const CommitList = () => {
 
   if (commits.length !== 1) {
     return (
-      <div style={listStyle}>
+      <StyledDiv>
         <ReactList
           itemRenderer={renderItem}
           length={commits.length}
           type="uniform"
         />
-      </div>
+      </StyledDiv>
     );
   } else {
     return 'No Commits';
