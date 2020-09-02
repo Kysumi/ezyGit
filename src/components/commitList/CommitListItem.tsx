@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { Classes, Text } from '@blueprintjs/core';
 import { useSelector } from 'react-redux';
 import { stringToColour } from '../../helper/stringToColor';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
 import styled, { ThemeProvider } from 'styled-components';
+import { CommitObject } from 'isomorphic-git';
 
 const classNames = require('classnames');
 
@@ -17,7 +18,17 @@ const Thingy = styled.div`
   padding: 20px;
 `;
 
-export const CommitListItem = ({ isSelected, commit, onClick }) => {
+interface CommitListItemProps {
+  isSelected: boolean;
+  onClick: MouseEventHandler;
+  commit: CommitObject;
+}
+
+export const CommitListItem = ({
+  isSelected,
+  commit,
+  onClick,
+}: CommitListItemProps) => {
   const color = stringToColour(useSelector(getBranchNameSelector));
 
   const themeSettings = {
