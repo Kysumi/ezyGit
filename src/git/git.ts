@@ -12,13 +12,17 @@ const _ = require('lodash');
 /**
  * Returns the previous commits from the provided branch
  *
- * @param {string} filePath
+ * @param {string} gitDir
  * @param {string} branch
  */
-export const getCommitLog = async (filePath, branch, depth = 50) => {
+export const getCommitLog = async (
+  gitDir: string,
+  branch: string,
+  depth = 50
+) => {
   return await git.log({
     fs,
-    dir: filePath,
+    dir: gitDir,
     depth: depth,
     ref: branch,
   });
@@ -27,13 +31,13 @@ export const getCommitLog = async (filePath, branch, depth = 50) => {
 /**
  * Returns the string name of the current checked out branch
  *
- * @param {string} filePath
+ * @param {string} gitDir
  * @returns {Promise<string|void>}
  */
-export const getCurrentBranch = async (filePath) => {
+export const getCurrentBranch = async (gitDir: string) => {
   return await git.currentBranch({
     fs,
-    dir: filePath,
+    dir: gitDir,
     fullname: false,
   });
 };
@@ -53,10 +57,10 @@ export const STAGE_INDEX = 3;
  * @param  {Array}
  * @return {Array}
  */
-const getWorkingFilePaths = (matrix) => {
+const getWorkingFilePaths = (matrix: any) => {
   const filePath = matrix
-    .filter((row) => row[WORKDIR_INDEX] !== row[STAGE_INDEX])
-    .map((row) => row[FILE_INDEX]);
+    .filter((row: any) => row[WORKDIR_INDEX] !== row[STAGE_INDEX])
+    .map((row: any) => row[FILE_INDEX]);
 
   return filePath;
 };
@@ -68,11 +72,11 @@ const getWorkingFilePaths = (matrix) => {
  * @param  {Array}
  * @return {Array}
  */
-const getUntrackedFilePaths = (matrix) => {
+const getUntrackedFilePaths = (matrix: any) => {
   const filePath = matrix
     // Filtering to only files that are not in the HEAD_INDEX and not staged
-    .filter((row) => row[HEAD_INDEX] === 0 && row[STAGE_INDEX] === 0)
-    .map((row) => row[FILE_INDEX]);
+    .filter((row: any) => row[HEAD_INDEX] === 0 && row[STAGE_INDEX] === 0)
+    .map((row: any) => row[FILE_INDEX]);
 
   return filePath;
 };
@@ -85,10 +89,10 @@ const getUntrackedFilePaths = (matrix) => {
  *
  * @return {Array}
  */
-const getStagedFilePaths = (matrix) => {
+const getStagedFilePaths = (matrix: any) => {
   const filePath = matrix
-    .filter((row) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2)
-    .map((row) => row[FILE_INDEX]);
+    .filter((row: any) => row[STAGE_INDEX] === 3 || row[STAGE_INDEX] === 2)
+    .map((row: any) => row[FILE_INDEX]);
 
   return filePath;
 };
@@ -101,7 +105,11 @@ const getStagedFilePaths = (matrix) => {
  * @param {string} gitDir
  * @param {string} commitHash
  */
-const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
+const loadWorkingFileContents = async (
+  filePaths: Array<string>,
+  gitDir: string,
+  commitHash: string
+) => {
   const fileDiffs = await Promise.all(
     filePaths.map(async (filePath) => {
       const newFileChanges = await loadWorkingFileChanges(gitDir, filePath);
@@ -141,7 +149,7 @@ const loadWorkingFileContents = async (filePaths, gitDir, commitHash) => {
  *
  * @return {Promise<boolean>}
  */
-export const stageFile = async (gitDir, filePath) => {
+export const stageFile = async (gitDir: string, filePath: string) => {
   try {
     await git.add({ fs, dir: gitDir, filepath: filePath });
     return true;
@@ -151,7 +159,7 @@ export const stageFile = async (gitDir, filePath) => {
   }
 };
 
-export const discardFile = async (gitDir, filePath) => {
+export const discardFile = async (gitDir: string, filePath: string) => {
   await git.checkout({
     fs,
     dir: gitDir,
@@ -160,7 +168,7 @@ export const discardFile = async (gitDir, filePath) => {
   });
 };
 
-export const unstageFile = async (gitDir, filePath) => {
+export const unstageFile = async (gitDir: string, filePath: string) => {
   try {
     await git.remove({ fs, dir: gitDir, filepath: filePath });
     return true;
@@ -170,7 +178,7 @@ export const unstageFile = async (gitDir, filePath) => {
   }
 };
 
-export const deleteFile = async (gitDir, filePath) => {
+export const deleteFile = async (gitDir: string, filePath: string) => {
   try {
     fs.unlinkSync(`${gitDir}/${filePath}`);
     return true;
@@ -180,7 +188,7 @@ export const deleteFile = async (gitDir, filePath) => {
   }
 };
 
-export const getFilePathsSplitByStatus = async (gitDir) => {
+export const getFilePathsSplitByStatus = async (gitDir: string) => {
   const matrix = await git.statusMatrix({ dir: gitDir, fs });
 
   const untracked = getUntrackedFilePaths(matrix);
@@ -188,7 +196,7 @@ export const getFilePathsSplitByStatus = async (gitDir) => {
   // isomorphic-git as a working change as well
   const working = _.filter(
     getWorkingFilePaths(matrix),
-    (filePath) => !untracked.includes(filePath)
+    (filePath: string) => !untracked.includes(filePath)
   );
 
   return {
@@ -205,7 +213,7 @@ export const getFilePathsSplitByStatus = async (gitDir) => {
  * @param {string} gitDir
  * @param {string} commitHash
  */
-export const getGitStatus = async (gitDir, commitHash) => {
+export const getGitStatus = async (gitDir: string, commitHash: string) => {
   const filesPaths = await getFilePathsSplitByStatus(gitDir);
 
   const [
@@ -230,6 +238,13 @@ export const getGitStatus = async (gitDir, commitHash) => {
   return result;
 };
 
+interface readBlobInterface {
+  fs: any;
+  dir: string;
+  oid: string;
+  filepath?: string;
+}
+
 /**
  * Reads the contents of a file from the OID hash or from a combonation
  * of the filePath and commit hash
@@ -240,8 +255,12 @@ export const getGitStatus = async (gitDir, commitHash) => {
  *
  * @return {Promise<string>}
  */
-export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
-  let config = {
+export const readContentsFromHash = async (
+  hash: string,
+  gitDir: string,
+  filePath?: string
+) => {
+  let config: readBlobInterface = {
     fs,
     dir: gitDir,
     oid: hash,
@@ -267,7 +286,10 @@ export const readContentsFromHash = async (hash, gitDir, filePath = null) => {
  *
  * @return {Promise<string>}
  */
-export const loadWorkingFileChanges = async (gitDir, filePath) => {
+export const loadWorkingFileChanges = async (
+  gitDir: string,
+  filePath: string
+) => {
   try {
     const contents = fs.readFileSync(gitDir + '/' + filePath);
     return new TextDecoder().decode(contents);
