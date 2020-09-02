@@ -1,6 +1,9 @@
 {
   "name": "ezygit",
   "version": "0.1.0",
+  "author": {
+    "name": "Scott Maunder"
+  },
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^3.31.0",
@@ -17,9 +20,6 @@
     "@types/styled-components": "^5.1.2",
     "classnames": "^2.2.6",
     "concurrently": "^5.3.0",
-    "electron": "^9.2.1",
-    "electron-builder": "^22.8.0",
-    "electron-devtools-installer": "^3.1.1",
     "electron-is-dev": "^1.2.0",
     "isomorphic-git": "^1.7.4",
     "lodash": "^4.17.20",
@@ -39,12 +39,29 @@
   },
   "main": "./electron/main.js",
   "homepage": "./",
+  "build": {
+    "extraMetadata": {
+      "main": "build/electron/main.js"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "ezyGit",
+      "owner": "Maunder"
+    },
+    "win": {
+      "target": "portable"
+    }
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "ebuild": "npm run build && node_modules/.bin/build",
+    "ebuild": "npm run build && robocopy electron build/electron /S && node_modules\\.bin\\electron-builder build -w",
     "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
@@ -63,6 +80,9 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.1.1"
+    "electron-builder": "^22.8.0",
+    "prettier": "^2.1.1",
+    "electron-devtools-installer": "^3.1.1",
+    "electron": "^9.2.1"
   }
 }
