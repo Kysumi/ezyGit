@@ -153,7 +153,10 @@ const loadWorkingFileContents = async (
  *
  * @return {Promise<boolean>}
  */
-export const stageFile = async (gitDir: string, filePath: string) => {
+export const stageFile = async (
+  gitDir: string,
+  filePath: string
+): Promise<boolean> => {
   try {
     await git.add({ fs, dir: gitDir, filepath: filePath });
     return true;
@@ -163,7 +166,16 @@ export const stageFile = async (gitDir: string, filePath: string) => {
   }
 };
 
-export const discardFile = async (gitDir: string, filePath: string) => {
+/**
+ * Will discard the current unstaged changes in the file
+ *
+ * @param gitDir the file path to the gitDir
+ * @param filePath the releative file path to the file
+ */
+export const discardFile = async (
+  gitDir: string,
+  filePath: string
+): Promise<void> => {
   await git.checkout({
     fs,
     dir: gitDir,
@@ -172,7 +184,17 @@ export const discardFile = async (gitDir: string, filePath: string) => {
   });
 };
 
-export const unstageFile = async (gitDir: string, filePath: string) => {
+/**
+ * Will remove the currently staged changes from the gitIndex and put
+ * the file back into the "working" state
+ *
+ * @param gitDir the file path to the gitDir
+ * @param filePath the releative file path to the file
+ */
+export const unstageFile = async (
+  gitDir: string,
+  filePath: string
+): Promise<boolean> => {
   try {
     await git.remove({ fs, dir: gitDir, filepath: filePath });
     return true;
@@ -182,7 +204,13 @@ export const unstageFile = async (gitDir: string, filePath: string) => {
   }
 };
 
-export const deleteFile = async (gitDir: string, filePath: string) => {
+/**
+ * Will delete the file from the file system
+ *
+ * @param gitDir the file path to the gitDir
+ * @param filePath the releative file path to the file
+ */
+export const deleteFile = (gitDir: string, filePath: string): boolean => {
   try {
     fs.unlinkSync(`${gitDir}/${filePath}`);
     return true;

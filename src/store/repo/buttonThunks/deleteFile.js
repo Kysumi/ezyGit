@@ -8,7 +8,7 @@ import { setUntrackedFiles } from '../Repo';
 const _ = require('lodash');
 
 export const deleteFileThunk = (filePath) => async (dispatch, getState) => {
-  const result = await deleteFile(gitDirectorySelector(getState()), filePath);
+  const result = deleteFile(gitDirectorySelector(getState()), filePath);
 
   // If it failed to delete the fail bail out.
   // TODO display notification we couldn't delete the fiel
