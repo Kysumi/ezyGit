@@ -10,17 +10,31 @@ import { stageFileThunk } from '../../store/repo/buttonThunks/stageFile';
 import { deleteFileThunk } from '../../store/repo/buttonThunks/deleteFile';
 import { unstageFileThunk } from '../../store/repo/buttonThunks/unstageFile';
 import { discardFileThunk } from '../../store/repo/buttonThunks/discardFile';
+import { CommitDiff } from './type';
+import styled from 'styled-components';
+import { COLORS } from '../../styles/style';
 
-class DiffList extends React.Component {
-  constructor(props) {
-    super(props);
+export enum DiffTypeEnum {
+  staged,
+  working,
+  untracked,
+}
 
-    this.state = {
-      width: 0,
-    };
-  }
+interface DiffListProps {
+  deleteFile: (filePath: string) => void;
+  stageFile: (filePath: string) => void;
+  unstageFile: (filePath: string) => void;
+  discardFile: (filePath: string) => void;
+  diffType: DiffTypeEnum;
+  items: Array<CommitDiff>;
+}
 
-  workingChangesButtons = (filePath) => {
+const StyledDiv = styled.div`
+  background-color: ${COLORS.WHITE};
+`;
+
+class DiffList extends React.Component<DiffListProps> {
+  workingChangesButtons = (filePath: string) => {
     const { stageFile, discardFile } = this.props;
     return (
       <>
@@ -30,7 +44,7 @@ class DiffList extends React.Component {
     );
   };
 
-  stagedChangesButtons = (filePath) => {
+  stagedChangesButtons = (filePath: string) => {
     const { unstageFile } = this.props;
     return (
       <>
@@ -39,7 +53,7 @@ class DiffList extends React.Component {
     );
   };
 
-  untrackedFilesButtons = (filePath) => {
+  untrackedFilesButtons = (filePath: string) => {
     const { stageFile, deleteFile } = this.props;
     return (
       <>
@@ -49,15 +63,15 @@ class DiffList extends React.Component {
     );
   };
 
-  getButtons = (filePath) => {
+  getButtons = (filePath: string) => {
     const { diffType } = this.props;
 
     switch (diffType) {
-      case 'working':
+      case DiffTypeEnum.working:
         return this.workingChangesButtons(filePath);
-      case 'staged':
+      case DiffTypeEnum.staged:
         return this.stagedChangesButtons(filePath);
-      case 'untracked':
+      case DiffTypeEnum.untracked:
         return this.untrackedFilesButtons(filePath);
 
       // This case is for showing diff history
@@ -66,36 +80,25 @@ class DiffList extends React.Component {
     }
   };
 
-  renderItem = (index, key) => {
+  renderItem = (index: number, key: number | string) => {
     const { items } = this.props;
-    const { width } = this.state;
 
     const diff = items[index];
 
     return (
       <div key={key}>
-        <DiffListItem
-          diff={diff}
-          viewStyle={width > 1000 ? 'split' : 'unified'}
-        >
+        <DiffListItem diff={diff} viewStyle={'unified'}>
           {this.getButtons(diff.filePath)}
         </DiffListItem>
       </div>
     );
   };
 
-  componentDidMount() {
-    this.setState({ width: this.divRef.clientWidth });
-  }
-
   render() {
     const { items } = this.props;
 
     return (
-      <div
-        ref={(element) => (this.divRef = element)}
-        style={{ backgroundColor: '#ffffff' }}
-      >
+      <StyledDiv>
         {items ? (
           <ReactList
             itemRenderer={this.renderItem}
@@ -103,17 +106,17 @@ class DiffList extends React.Component {
             type="simple"
           />
         ) : null}
-      </div>
+      </StyledDiv>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
-    stageFile: (filePath) => dispatch(stageFileThunk(filePath)),
-    deleteFile: (filePath) => dispatch(deleteFileThunk(filePath)),
-    unstageFile: (filePath) => dispatch(unstageFileThunk(filePath)),
-    discardFile: (filePath) => dispatch(discardFileThunk(filePath)),
+    stageFile: (filePath: string) => dispatch(stageFileThunk(filePath)),
+    deleteFile: (filePath: string) => dispatch(deleteFileThunk(filePath)),
+    unstageFile: (filePath: string) => dispatch(unstageFileThunk(filePath)),
+    discardFile: (filePath: string) => dispatch(discardFileThunk(filePath)),
   };
 };
 
