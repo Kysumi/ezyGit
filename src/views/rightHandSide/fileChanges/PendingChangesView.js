@@ -6,6 +6,7 @@ import {
   getStagedFilesSelector,
 } from '../../../store/repo/RepoSelector';
 import { DiffCollection } from '../../../components/diffList/DiffCollection';
+import { DiffTypeEnum } from '../../../components/diffList/DiffList';
 
 export const PendingChangesView = () => {
   const diffs = useSelector(getCurrentBranchDiffs);
@@ -17,17 +18,17 @@ export const PendingChangesView = () => {
       <DiffCollection
         title={'Working Changes'}
         diffs={diffs}
-        diffType={'working'}
+        diffType={DiffTypeEnum.working}
       />
       <DiffCollection
         title={'Staged Changes'}
         diffs={stagedFiles}
-        diffType={'staged'}
+        diffType={DiffTypeEnum.staged}
       />
       <DiffCollection
         title={'Untracked Files'}
         diffs={pendingFiles}
-        diffType={'untracked'}
+        diffType={DiffTypeEnum.untracked}
       />
     </div>
   );
