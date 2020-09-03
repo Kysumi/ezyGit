@@ -1,6 +1,7 @@
 import React, { ReactNode, MouseEventHandler } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { COLORS } from '../../styles/style';
+import { StyledCard } from '../../styles/StyledCard';
 
 interface CommitListItemStyleProps {
   color: string;
@@ -9,11 +10,9 @@ interface CommitListItemStyleProps {
   onClick: MouseEventHandler;
 }
 
-const StyledDiv = styled.div`
+const StyledDiv = styled(StyledCard)`
   margin: 5px;
-  box-shadow: 10px 20px 32px -5px rgba(194, 190, 194, 1);
   border-left: 10px solid ${(props) => props.theme.color};
-  border-radius: 5px;
   background-color: ${(props) =>
     props.theme.selected ? COLORS.TRIM : COLORS.WHITE};
   padding: 20px;
