@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 
 const _ = require('lodash');
+
+interface ConfirmationButtonProps {
+  onClick: () => void;
+  intent: Intent;
+  text: string;
+  confirmationText?: string;
+}
 
 export const ConfirmationButton = ({
   onClick,
   intent,
   text,
   confirmationText = 'Confirm!',
-}) => {
+}: ConfirmationButtonProps) => {
   const [pendingConfirmation, setPendingConfirmation] = useState(true);
 
   const onClickWrapper = () => {

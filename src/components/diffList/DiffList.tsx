@@ -1,11 +1,7 @@
 import React from 'react';
 import ReactList from 'react-list';
 import DiffListItem from './DiffListItem';
-import { StageButton } from './buttons/StageButton';
-import { DiscardButton } from './buttons/DiscardButton';
 import { connect } from 'react-redux';
-import { UnstageButton } from './buttons/UnstageButton';
-import { DeleteButton } from './buttons/DeleteButton';
 import { stageFileThunk } from '../../store/repo/buttonThunks/stageFile';
 import { deleteFileThunk } from '../../store/repo/buttonThunks/deleteFile';
 import { unstageFileThunk } from '../../store/repo/buttonThunks/unstageFile';
@@ -13,6 +9,12 @@ import { discardFileThunk } from '../../store/repo/buttonThunks/discardFile';
 import { CommitDiff } from './type';
 import styled from 'styled-components';
 import { COLORS } from '../../styles/style';
+import {
+  StageButton,
+  DiscardButton,
+  UnstageButton,
+  DeleteButton,
+} from './buttons/GitButtons';
 
 export enum DiffTypeEnum {
   staged,
