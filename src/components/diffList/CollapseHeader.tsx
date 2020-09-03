@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { Collapse, Icon } from '@blueprintjs/core';
+import { CardStyle } from '../../styles/CardStyle';
 
-const containerStyle = {
-  boxShadow: '2px 2px 9px 0px rgba(50, 50, 50, 0.4)',
-  borderRadius: '5px',
-  backgroundColor: '#ffffff',
-  marginBottom: '6px',
-};
+// const containerStyle = {
+//   boxShadow: '2px 2px 9px 0px rgba(50, 50, 50, 0.4)',
+//   borderRadius: '5px',
+//   backgroundColor: '#ffffff',
+//   marginBottom: '6px',
+// };
 
 const buttonStyle = {
   width: '100%',
@@ -40,13 +41,23 @@ const rightButtonsStyle = {
   width: '30%',
 };
 
-export const CollapseHeader = ({ title, children, rightButtons = null }) => {
+interface CollapseHeaderProps {
+  title: string;
+  children: ReactNode;
+  rightButtons?: ReactNode;
+}
+
+export const CollapseHeader = ({
+  title,
+  children,
+  rightButtons = null,
+}: CollapseHeaderProps) => {
   const [isOpen, setOpen] = useState(true);
   const icon = isOpen ? 'chevron-down' : 'chevron-right';
 
   return (
     <div style={{ backgroundColor: '#e6eaed', borderRadius: '5px' }}>
-      <div style={containerStyle}>
+      <CardStyle>
         <div onClick={() => setOpen(!isOpen)} style={buttonStyle}>
           <div
             style={{ padding: '10px', display: 'flex', alignItems: 'center' }}
@@ -63,7 +74,7 @@ export const CollapseHeader = ({ title, children, rightButtons = null }) => {
         <Collapse isOpen={isOpen} keepChildrenMounted={true}>
           {children}
         </Collapse>
-      </div>
+      </CardStyle>
     </div>
   );
 };
