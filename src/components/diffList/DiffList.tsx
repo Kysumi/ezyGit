@@ -89,7 +89,7 @@ class DiffList extends React.Component<DiffListProps> {
 
     return (
       <div key={key}>
-        <DiffListItem diff={diff} viewStyle={'unified'}>
+        <DiffListItem diff={diff} viewStyle={'split'}>
           {this.getButtons(diff.filePath)}
         </DiffListItem>
       </div>
