@@ -160,8 +160,16 @@ export const stageFile = async (
   try {
     await git.add({ fs, dir: gitDir, filepath: filePath });
     return true;
-  } catch (e) {
-    console.log(`Something went wrong trying to stage ${filePath}`, e);
+  } catch (error) {
+    // Dealing with a edge case and potential bug in isomorphic-git when attempting to stage a
+    // removed file it will throw a "NotFoundError" exception
+    // https://github.com/isomorphic-git/isomorphic-git/issues/1099
+    if (error.code === 'NotFoundError') {
+      await git.remove({ fs, dir: gitDir, filepath: filePath });
+      return true;
+    }
+
+    console.log(`Something went wrong trying to stage ${filePath}`, error);
     return false;
   }
 };
