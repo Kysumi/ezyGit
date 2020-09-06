@@ -37,7 +37,7 @@ export const CommitListItem = ({
       <Text color="muted">{commit.committer.name}</Text>
 
       <StyledTextField>
-        <Paragraph>{commit.message} </Paragraph>
+        <Paragraph>{commit.message}</Paragraph>
       </StyledTextField>
     </CommitListItemStyle>
   );
