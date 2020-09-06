@@ -1,8 +1,7 @@
 import React, { useRef } from 'react';
-import { Classes } from '@blueprintjs/core';
 import { omniBarIsOpenSelector } from '../../store/view/ViewSelector';
 import { connect } from 'react-redux';
-const classNames = require('classnames');
+import { Pane, Label, Textarea } from 'evergreen-ui';
 
 //TODO move out
 const useFocus = () => {
@@ -22,13 +21,18 @@ export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
   }
 
   return (
-    <textarea
-      className={classNames(Classes.INPUT, Classes.FILL)}
-      disabled={disabled}
-      ref={inputRef}
-      autoFocus={true}
-      defaultValue={message}
-    />
+    <Pane>
+      <Label htmlFor="commitMessageField" marginBottom={4} display="block">
+        Commit Message
+      </Label>
+      <textarea
+        id="commitMessageField"
+        disabled={disabled}
+        ref={inputRef}
+        autoFocus={true}
+        defaultValue={message}
+      />
+    </Pane>
   );
 };
 

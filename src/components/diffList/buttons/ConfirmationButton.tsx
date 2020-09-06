@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import { Button, IntentTypes } from 'evergreen-ui';
 
 const _ = require('lodash');
 
 interface ConfirmationButtonProps {
   onClick: () => void;
-  intent: Intent;
+  intent: IntentTypes;
   text: string;
   confirmationText?: string;
 }
@@ -28,11 +28,8 @@ export const ConfirmationButton = ({
   };
 
   return (
-    <Button
-      text={pendingConfirmation ? text : confirmationText}
-      intent={intent}
-      onClick={onClickWrapper}
-      style={{ margin: '5px' }}
-    />
+    <Button intent={intent} onClick={onClickWrapper} style={{ margin: '5px' }}>
+      {pendingConfirmation ? text : confirmationText}
+    </Button>
   );
 };

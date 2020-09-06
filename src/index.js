@@ -4,7 +4,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store/Store';
-import '@blueprintjs/core/lib/css/blueprint.css';
+// import '@blueprintjs/core/lib/css/blueprint.css';
 import 'react-diff-view/style/index.css';
 
 import { setFilePath, initialise } from './store/repo/Repo';

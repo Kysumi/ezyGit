@@ -1,6 +1,7 @@
 import React, { useState, ReactNode } from 'react';
-import { Collapse, Icon } from '@blueprintjs/core';
 import { StyledCard } from '../../styles/StyledCard';
+import { Collapse } from 'react-collapse';
+import { Icon, ChevronDownIcon, ChevronRightIcon } from 'evergreen-ui';
 
 const buttonStyle = {
   width: '100%',
@@ -46,7 +47,7 @@ export const CollapseHeader = ({
   rightButtons = null,
 }: CollapseHeaderProps) => {
   const [isOpen, setOpen] = useState(true);
-  const icon = isOpen ? 'chevron-down' : 'chevron-right';
+  const icon = isOpen ? ChevronDownIcon : ChevronRightIcon;
 
   return (
     <StyledCard>
@@ -61,9 +62,7 @@ export const CollapseHeader = ({
         <div style={rightButtonsStyle}>{rightButtons}</div>
       </div>
       {isOpen ? <div style={horizontalStyle} /> : null}
-      <Collapse isOpen={isOpen} keepChildrenMounted={true}>
-        {children}
-      </Collapse>
+      <Collapse isOpened={isOpen}>{children}</Collapse>
     </StyledCard>
   );
 };
