@@ -35,9 +35,10 @@ export const CommitListItem = ({
       onClick={onClick}
     >
       <Text color="muted">{commit.committer.name}</Text>
-      <Paragraph>
-        <StyledTextField>{commit.message}</StyledTextField>
-      </Paragraph>
+
+      <StyledTextField>
+        <Paragraph>{commit.message} </Paragraph>
+      </StyledTextField>
     </CommitListItemStyle>
   );
 };
