@@ -14,3 +14,5 @@ export const StyledCard = styled.div`
 export const StyledStyleCard = styled(StyledCard)`
   background-color: ${COLORS.PRIMARY};
 `;
+
+// https://yoksel.github.io/flex-cheatsheet/

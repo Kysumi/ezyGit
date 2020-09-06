@@ -1,7 +1,7 @@
 import React, { useState, ReactNode } from 'react';
 import { StyledCard } from '../../styles/StyledCard';
 import { Collapse } from 'react-collapse';
-import { Icon, ChevronDownIcon, ChevronRightIcon } from 'evergreen-ui';
+import { Icon, ChevronDownIcon, ChevronRightIcon, Text } from 'evergreen-ui';
 
 const buttonStyle = {
   width: '100%',
@@ -57,7 +57,9 @@ export const CollapseHeader = ({
         </div>
         <div style={spacerStyle} />
         <span style={titleStyle}>
-          <b>{title}</b>
+          <Text>
+            <b>{title}</b>
+          </Text>
         </span>
         <div style={rightButtonsStyle}>{rightButtons}</div>
       </div>

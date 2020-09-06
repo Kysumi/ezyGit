@@ -16,7 +16,7 @@ const StyledDiv = styled(StyledCard)`
   background-color: ${(props) =>
     props.theme.selected ? COLORS.TRIM : COLORS.WHITE};
   padding: 20px;
-  height: 60px;
+  height: 40px;
 `;
 
 export const CommitListItemStyle = ({

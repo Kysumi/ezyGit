@@ -16,7 +16,7 @@ interface CommitListItemProps {
 export const StyledTextField = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
 `;
