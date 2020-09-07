@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 import { omniBarIsOpenSelector } from '../../store/view/ViewSelector';
 import { connect } from 'react-redux';
-import { Pane, Label, Textarea } from 'evergreen-ui';
+import { Pane, Label } from 'evergreen-ui';
+import styled from 'styled-components';
 
 //TODO move out
 const useFocus = () => {
@@ -12,6 +13,16 @@ const useFocus = () => {
 
   return [htmlElRef, setFocus];
 };
+
+const StyledTextArea = styled.span`
+  width: 100%;
+  box-shadow: rgba(67, 90, 111, 0.3) 0px 0px 0px 1px inset,
+    rgba(67, 90, 111, 0.14) 0px 1px 2px inset;
+  min-height: 40px;
+  border: 1px;
+  display: block;
+  padding: 5px;
+`;
 
 export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
   const [inputRef, setFocus] = useFocus();
@@ -25,13 +36,16 @@ export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
       <Label htmlFor="commitMessageField" marginBottom={4} display="block">
         Commit Message
       </Label>
-      <textarea
-        id="commitMessageField"
-        disabled={disabled}
+
+      <StyledTextArea
+        role="textbox"
+        contentEditable
+        // disabled={disabled}
         ref={inputRef}
         autoFocus={true}
-        defaultValue={message}
-      />
+      >
+        {message}
+      </StyledTextArea>
     </Pane>
   );
 };
