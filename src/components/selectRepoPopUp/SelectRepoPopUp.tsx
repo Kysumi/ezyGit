@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
-import { Button, toaster, Dialog } from 'evergreen-ui';
+import { Button, toaster, Dialog, Heading } from 'evergreen-ui';
 import { connect } from 'react-redux';
 import { setFilePath, initialise } from '../../store/repo/Repo';
-import styled from 'styled-components';
-import { COLORS } from '../../styles/style';
 
 const { dialog } = window.require('electron').remote;
-
-const StyledDiv = styled.div`
-  left: calc(50vw - 200px);
-  margin: 10vh 0;
-  top: 0;
-  width: 400px;
-  background-color: ${COLORS.WHITE};
-`;
 
 interface SelectRepoPopUpProps {
   setReduxFilePath: (filePath: string) => Promise<void>;
@@ -33,7 +23,7 @@ const handleOpenPopUp = (callBack: (filePath: string) => void) => {
 
 const handleClosePopup = (filePath: string, success: () => void) => {
   if (filePath === '') {
-    toaster.danger('You must select a directory');
+    toaster.danger('You must select git directory');
   } else {
     success();
   }
@@ -46,30 +36,24 @@ const SelectRepoPopUp = ({
   const [filePath, setFilePath] = useState('');
 
   return (
-    <Dialog isShown={true}>
-      <StyledDiv>
-        <div>
-          <h3>Select repo directory</h3>
-          <Button intent={'none'} onClick={() => handleOpenPopUp(setFilePath)}>
-            Select Git Repo
-          </Button>
-          <h5>Current Path: {filePath}</h5>
-        </div>
+    <Dialog
+      isShown={true}
+      shouldCloseOnOverlayClick={false}
+      hasCancel={false}
+      hasClose={false}
+      hasHeader={false}
+      onConfirm={() => {
+        handleClosePopup(filePath, () => {
+          setReduxFilePath(filePath);
+          initialise();
+        });
+      }}
+    >
+      <Button intent={'success'} onClick={() => handleOpenPopUp(setFilePath)}>
+        Select Git Repo
+      </Button>
 
-        <div>
-          <Button
-            intent={'success'}
-            onClick={() => {
-              handleClosePopup(filePath, () => {
-                setReduxFilePath(filePath);
-                initialise();
-              });
-            }}
-          >
-            Confirm
-          </Button>
-        </div>
-      </StyledDiv>
+      <Heading>Current Path: {filePath}</Heading>
     </Dialog>
   );
 };
