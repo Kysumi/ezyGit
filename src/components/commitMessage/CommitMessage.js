@@ -3,6 +3,7 @@ import { omniBarIsOpenSelector } from '../../store/view/ViewSelector';
 import { connect } from 'react-redux';
 import { Pane, Label } from 'evergreen-ui';
 import styled from 'styled-components';
+import { COLORS } from '../../styles/style';
 
 //TODO move out
 const useFocus = () => {
@@ -22,6 +23,24 @@ const StyledTextArea = styled.span`
   border: 1px;
   display: block;
   padding: 5px;
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  box-sizing: border-box;
+
+  &:empty:before {
+    content: attr(placeholder);
+    color: #888;
+    font-style: italic;
+  }
+
+  &[contentEditable='false'] {
+    background-color: ${COLORS.TRIM};
+  }
 `;
 
 export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
@@ -36,11 +55,10 @@ export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
       <Label htmlFor="commitMessageField" marginBottom={4} display="block">
         Commit Message
       </Label>
-
       <StyledTextArea
         role="textbox"
-        contentEditable
-        // disabled={disabled}
+        contentEditable={!disabled}
+        placeholder={'Enter commit message here..'}
         ref={inputRef}
         autoFocus={true}
       >
