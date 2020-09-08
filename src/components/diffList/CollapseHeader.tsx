@@ -2,6 +2,7 @@ import React, { useState, ReactNode } from 'react';
 import { StyledCard } from '../../styles/StyledCard';
 import { Collapse } from 'react-collapse';
 import { Icon, ChevronDownIcon, ChevronRightIcon, Text } from 'evergreen-ui';
+import { COLORS } from '../../styles/style';
 
 const buttonStyle = {
   width: '100%',
@@ -13,14 +14,14 @@ const buttonStyle = {
 
 const spacerStyle = {
   width: '3px',
-  backgroundColor: '#767A76',
+  backgroundColor: COLORS.TRIM,
   marginRight: '10px',
 };
 
 const horizontalStyle = {
   width: '100%',
   height: '2px',
-  backgroundColor: '#767A76',
+  backgroundColor: COLORS.TRIM,
 };
 
 const titleStyle = {
@@ -48,6 +49,8 @@ export const CollapseHeader = ({
 }: CollapseHeaderProps) => {
   const [isOpen, setOpen] = useState(true);
   const icon = isOpen ? ChevronDownIcon : ChevronRightIcon;
+
+  //.
 
   return (
     <StyledCard>
