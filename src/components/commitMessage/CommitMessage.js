@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Pane, Label } from 'evergreen-ui';
 import styled from 'styled-components';
 import { COLORS } from '../../styles/style';
+import TextareaAutosize from 'react-textarea-autosize';
 
 //TODO move out
 const useFocus = () => {
@@ -40,7 +41,12 @@ const StyledTextArea = styled.span`
 
   &[contentEditable='false'] {
     background-color: ${COLORS.TRIM};
+    color: ${COLORS.MUTED_FONT_COLOUR};
   }
+`;
+
+const styledTemp = styled.div`
+  width: 100%;
 `;
 
 export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
@@ -55,15 +61,15 @@ export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
       <Label htmlFor="commitMessageField" marginBottom={4} display="block">
         Commit Message
       </Label>
-      <StyledTextArea
-        role="textbox"
-        contentEditable={!disabled}
-        placeholder={'Enter commit message here..'}
+      <TextareaAutosize
+        style={{ width: '100%' }}
         ref={inputRef}
         autoFocus={true}
-      >
-        {message}
-      </StyledTextArea>
+        placeholder={'Enter commit message here..'}
+        minRows={4}
+        value={message ?? ''}
+        disabled={disabled}
+      />
     </Pane>
   );
 };
