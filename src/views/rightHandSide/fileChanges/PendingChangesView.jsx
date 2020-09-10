@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import {
   getCurrentBranchDiffs,
   getUntrackedFilesSelector,
@@ -13,8 +14,13 @@ export const PendingChangesView = () => {
   const pendingFiles = useSelector(getUntrackedFilesSelector);
   const stagedFiles = useSelector(getStagedFilesSelector);
 
+  const CollectionsContainer = styled.div`
+    display: grid;
+    grid-row-gap: 1rem;
+  `;
+
   return (
-    <div>
+    <CollectionsContainer>
       <DiffCollection
         title={'Working Changes'}
         diffs={diffs}
@@ -30,6 +36,6 @@ export const PendingChangesView = () => {
         diffs={pendingFiles}
         diffType={DiffTypeEnum.untracked}
       />
-    </div>
+    </CollectionsContainer>
   );
 };

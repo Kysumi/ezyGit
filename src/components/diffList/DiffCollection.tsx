@@ -10,10 +10,6 @@ const StyledDiv = styled.div`
   background-color: ${COLORS.TRIM};
 `;
 
-const StyledContainer = styled.div`
-  padding-bottom: 20px;
-`;
-
 interface DiffCollectionProps {
   title: string;
   diffs: Array<CommitDiff>;
@@ -26,12 +22,10 @@ export const DiffCollection = ({
   diffType,
 }: DiffCollectionProps) => {
   return (
-    <StyledContainer>
-      <CollapseHeader title={title}>
-        <StyledDiv>
-          <DiffList items={diffs} diffType={diffType} />
-        </StyledDiv>
-      </CollapseHeader>
-    </StyledContainer>
+    <CollapseHeader title={title}>
+      <StyledDiv>
+        <DiffList items={diffs} diffType={diffType} />
+      </StyledDiv>
+    </CollapseHeader>
   );
 };
