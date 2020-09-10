@@ -22,22 +22,28 @@ const StyledDiv = styled.div`
   background-color: ${(props) => props.theme.mainColor};
 `;
 
+const WrapperPadding = styled.div`
+  padding: 15px;
+`;
+
 const App = () => {
   const hasFilePath = useSelector(gitDirectorySelector);
 
   return (
     <ThemeProvider theme={theme}>
       <StyledDiv>
-        <OmniBar>
-          <AppBar />
+        <WrapperPadding>
+          <OmniBar>
+            <AppBar />
 
-          <div style={contentStyle}>
-            <LeftHandSide />
-            <RightHandSide />
-          </div>
+            <div style={contentStyle}>
+              <LeftHandSide />
+              <RightHandSide />
+            </div>
 
-          {hasFilePath ? null : <SelectRepoPopUp />}
-        </OmniBar>
+            {hasFilePath ? null : <SelectRepoPopUp />}
+          </OmniBar>
+        </WrapperPadding>
       </StyledDiv>
     </ThemeProvider>
   );

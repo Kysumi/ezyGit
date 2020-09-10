@@ -9,8 +9,8 @@ const RigthHandSideDiv = styled.div`
   padding: 10px;
   width: 100%;
   overflow: auto;
-  max-height: calc(100vh - 60px);
-  min-height: calc(100vh - 60px);
+  max-height: calc(100vh - 90px);
+  min-height: calc(100vh - 90px);
 `;
 
 const Spacing = styled.div`
