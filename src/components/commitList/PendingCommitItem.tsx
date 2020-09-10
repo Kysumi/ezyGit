@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from 'react';
-import { Classes, Text } from '@blueprintjs/core';
+import { Text } from 'evergreen-ui';
 import { connect } from 'react-redux';
 import { stringToColour } from '../../helper/stringToColor';
 import {
@@ -7,8 +7,6 @@ import {
   getStagedFilesCount,
 } from '../../store/repo/RepoSelector';
 import { CommitListItemStyle } from './CommitListItemStyle';
-
-const classNames = require('classnames');
 
 interface PendingCommitItemProps {
   isSelected: boolean;
@@ -29,10 +27,10 @@ export const PendingCommitItem = ({
       isSelected={isSelected}
       onClick={onClick}
     >
-      <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
+      <Text color="muted">
         {stagedChangesCount ? `(${stagedChangesCount}) Staged Changes` : null}
       </Text>
-      <Text ellipsize={true}>Pending Changes</Text>
+      <Text>Pending Changes</Text>
     </CommitListItemStyle>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConfirmationButton } from './ConfirmationButton';
-import { Button, Intent } from '@blueprintjs/core';
+import { Button } from 'evergreen-ui';
 
 interface GitButtonProps {
   onClick: () => void;
@@ -27,32 +27,35 @@ export const DeleteButton = ({ onClick }: GitButtonProps) => {
 export const UnstageButton = ({ onClick }: GitButtonProps) => {
   return (
     <Button
-      text="Unstage"
-      intent={Intent.WARNING}
+      intent="warning"
       onClick={handleButtonClick(onClick)}
       style={{ margin: '5px' }}
-    />
+    >
+      Unstage
+    </Button>
   );
 };
 
 export const DiscardButton = ({ onClick }: GitButtonProps) => {
   return (
     <Button
-      text="Discard"
-      intent={Intent.DANGER}
+      intent="danger"
       onClick={handleButtonClick(onClick)}
       style={{ margin: '5px' }}
-    />
+    >
+      Discard
+    </Button>
   );
 };
 
 export const StageButton = ({ onClick }: GitButtonProps) => {
   return (
     <Button
-      text="Stage"
-      intent={Intent.PRIMARY}
+      intent="none"
       style={{ margin: '5px' }}
       onClick={handleButtonClick(onClick)}
-    />
+    >
+      Stage
+    </Button>
   );
 };

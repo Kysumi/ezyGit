@@ -33,6 +33,10 @@ interface DiffListProps {
 
 const StyledDiv = styled.div`
   background-color: ${COLORS.WHITE};
+  & > div {
+    display: grid;
+    grid-row-gap: 1rem;
+  }
 `;
 
 class DiffList extends React.Component<DiffListProps> {

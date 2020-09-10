@@ -1,7 +1,5 @@
 import { configure, HotKeys } from 'react-hotkeys';
 import React from 'react';
-import { Omnibar } from '@blueprintjs/select';
-import { MenuItem } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { setOmniBarIsOpen } from '../../store/view/View';
 
@@ -40,24 +38,12 @@ class OmniBar extends React.Component<OmniBarProps> {
     EXIT_OMNI: 'escape',
   };
 
-  renderItem = (item: string) => {
-    return <MenuItem key={item} text={item} />;
-  };
-
   render() {
     const { isOpen } = this.state;
 
     return (
       <div>
         <HotKeys keyMap={this.keyMap} handlers={this.handlers}>
-          <Omnibar
-            onItemSelect={() => console.log('Temp')}
-            items={['fetch', 'pull', 'push', 'create branch']}
-            itemRenderer={this.renderItem}
-            isOpen={isOpen}
-            noResults={<MenuItem disabled={true} text="No results." />}
-          />
-
           {this.props.children}
         </HotKeys>
       </div>

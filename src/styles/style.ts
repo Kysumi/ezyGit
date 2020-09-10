@@ -4,4 +4,5 @@ export const COLORS = {
   PRIMARY: '#529ED1',
   OTHER: '#3E79A1',
   WHITE: '#FFFFFF',
+  MUTED_FONT_COLOUR: '#425A70',
 };

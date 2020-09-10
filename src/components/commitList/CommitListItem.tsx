@@ -1,18 +1,25 @@
 import React, { MouseEventHandler } from 'react';
-import { Classes, Text } from '@blueprintjs/core';
 import { useSelector } from 'react-redux';
 import { stringToColour } from '../../helper/stringToColor';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
 import { CommitObject } from 'isomorphic-git';
 import { CommitListItemStyle } from './CommitListItemStyle';
-
-const classNames = require('classnames');
+import { Text, Paragraph } from 'evergreen-ui';
+import styled from 'styled-components';
 
 interface CommitListItemProps {
   isSelected: boolean;
   onClick: MouseEventHandler;
   commit: CommitObject;
 }
+
+export const StyledTextField = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+`;
 
 export const CommitListItem = ({
   isSelected,
@@ -27,10 +34,11 @@ export const CommitListItem = ({
       isSelected={isSelected}
       onClick={onClick}
     >
-      <Text className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
-        {commit.committer.name}
-      </Text>
-      <Text ellipsize={true}>{commit.message}</Text>
+      <Text color="muted">{commit.committer.name}</Text>
+
+      <StyledTextField>
+        <Paragraph>{commit.message}</Paragraph>
+      </StyledTextField>
     </CommitListItemStyle>
   );
 };

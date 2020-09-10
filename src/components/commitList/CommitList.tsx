@@ -10,8 +10,8 @@ import styled from 'styled-components';
 
 const StyledDiv = styled.div`
   overflow: auto;
-  max-height: calc(100vh - 60px);
-  min-height: calc(100vh - 60px);
+  max-height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
 `;
 
 export const CommitList = () => {

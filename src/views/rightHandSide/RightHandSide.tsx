@@ -3,14 +3,19 @@ import { FileChangesView } from './fileChanges/FileChangesView';
 import CommitMessage from '../../components/commitMessage/CommitMessage';
 import { connect } from 'react-redux';
 import { getSelectedCommitSelector } from '../../store/view/ViewSelector';
+import styled from 'styled-components';
 
-const rightHandSideStyle = {
-  padding: '10px',
-  width: '100%',
-  overflow: 'auto',
-  maxHeight: 'calc(100vh - 60px)',
-  minHeight: 'calc(100vh - 60px)',
-};
+const RigthHandSideDiv = styled.div`
+  padding: 10px;
+  width: 100%;
+  overflow: auto;
+  max-height: calc(100vh - 90px);
+  min-height: calc(100vh - 90px);
+`;
+
+const Spacing = styled.div`
+  padding-bottom: 20px;
+`;
 
 interface RightHandSideProps {
   message: string;
@@ -18,10 +23,12 @@ interface RightHandSideProps {
 
 export const RightHandSide = ({ message }: RightHandSideProps) => {
   return (
-    <div style={rightHandSideStyle}>
-      <CommitMessage message={message} disabled={message !== ''} />
+    <RigthHandSideDiv>
+      <Spacing>
+        <CommitMessage message={message} disabled={message !== ''} />
+      </Spacing>
       <FileChangesView />
-    </div>
+    </RigthHandSideDiv>
   );
 };
 
