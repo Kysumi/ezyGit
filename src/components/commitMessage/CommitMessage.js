@@ -2,8 +2,6 @@ import React, { useRef } from 'react';
 import { omniBarIsOpenSelector } from '../../store/view/ViewSelector';
 import { connect } from 'react-redux';
 import { Pane, Label } from 'evergreen-ui';
-import styled from 'styled-components';
-import { COLORS } from '../../styles/style';
 import TextareaAutosize from 'react-textarea-autosize';
 
 //TODO move out
@@ -16,38 +14,18 @@ const useFocus = () => {
   return [htmlElRef, setFocus];
 };
 
-const StyledTextArea = styled.span`
-  width: 100%;
-  box-shadow: rgba(67, 90, 111, 0.3) 0px 0px 0px 1px inset,
-    rgba(67, 90, 111, 0.14) 0px 1px 2px inset;
-  min-height: 40px;
-  border: 1px;
-  display: block;
-  padding: 5px;
-  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol';
-
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  box-sizing: border-box;
-
-  &:empty:before {
-    content: attr(placeholder);
-    color: #888;
-    font-style: italic;
-  }
-
-  &[contentEditable='false'] {
-    background-color: ${COLORS.TRIM};
-    color: ${COLORS.MUTED_FONT_COLOUR};
-  }
-`;
-
-const styledTemp = styled.div`
-  width: 100%;
-`;
+const Style = {
+  fontWeight: 400,
+  fontSize: '14px',
+  lineHeight: '20px',
+  boxSizing: 'border-box',
+  fontFamily: `'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+  'Segoe UI Symbol'`,
+  boxShadow:
+    'rgba(67, 90, 111, 0.3) 0px 0px 0px 1px inset, rgba(67, 90, 111, 0.14) 0px 1px 2px inset',
+  width: '100%',
+};
 
 export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
   const [inputRef, setFocus] = useFocus();
@@ -63,6 +41,7 @@ export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
       </Label>
       <styledTemp>
         <TextareaAutosize
+          style={Style}
           ref={inputRef}
           autoFocus={true}
           placeholder={'Enter commit message here..'}
