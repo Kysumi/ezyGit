@@ -9,6 +9,10 @@ import PendingCommitItem from './PendingCommitItem';
 import styled from 'styled-components';
 
 const StyledDiv = styled.div`
+  box-sizing: border-box;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   overflow: auto;
   max-height: calc(100vh - 70px);
   min-height: calc(100vh - 70px);
@@ -57,6 +61,6 @@ export const CommitList = () => {
       </StyledDiv>
     );
   } else {
-    return 'No Commits';
+    return <StyledDiv>'No Commits'</StyledDiv>;
   }
 };

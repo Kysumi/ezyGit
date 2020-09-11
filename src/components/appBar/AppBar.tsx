@@ -7,7 +7,6 @@ import styled from 'styled-components';
 const AppBarContainer = styled.div`
   background-color: ${(props) => props.theme.mainColor};
   box-shadow: 2px 2px 9px 0px rgba(50, 50, 50, 0.4);
-  margin-bottom: 20px;
 `;
 
 const AppTitle = styled.div`

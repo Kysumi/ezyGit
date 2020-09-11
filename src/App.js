@@ -19,12 +19,10 @@ const theme = {
 };
 
 const StyledDiv = styled.div`
-  height: 100%;
+  height: 100vh;
   background-color: ${(props) => props.theme.mainColor};
-`;
-
-const WrapperPadding = styled.div`
-  padding: 15px;
+  padding: 1rem;
+  box-sizing: border-box;
 `;
 
 const App = () => {
@@ -33,18 +31,16 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <StyledDiv>
-        <WrapperPadding>
-          <OmniBar>
-            <AppBar />
+        <OmniBar>
+          <AppBar />
 
-            <Container>
-              <LeftHandSide />
-              <RightHandSide />
-            </Container>
+          <Container>
+            <LeftHandSide />
+            <RightHandSide />
+          </Container>
 
-            {hasFilePath ? null : <SelectRepoPopUp />}
-          </OmniBar>
-        </WrapperPadding>
+          {hasFilePath ? null : <SelectRepoPopUp />}
+        </OmniBar>
       </StyledDiv>
     </ThemeProvider>
   );

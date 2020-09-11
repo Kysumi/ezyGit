@@ -6,15 +6,14 @@ import { getSelectedCommitSelector } from '../../store/view/ViewSelector';
 import styled from 'styled-components';
 
 const RigthHandSideDiv = styled.div`
+  box-sizing: border-box;
+  display: grid;
+  grid-row-gap: 1rem;
   padding: 10px;
   width: 100%;
   overflow: auto;
   max-height: calc(100vh - 90px);
   min-height: calc(100vh - 90px);
-`;
-
-const Spacing = styled.div`
-  padding-bottom: 20px;
 `;
 
 interface RightHandSideProps {
@@ -24,9 +23,7 @@ interface RightHandSideProps {
 export const RightHandSide = ({ message }: RightHandSideProps) => {
   return (
     <RigthHandSideDiv>
-      <Spacing>
-        <CommitMessage message={message} disabled={message !== ''} />
-      </Spacing>
+      <CommitMessage message={message} disabled={message !== ''} />
       <FileChangesView />
     </RigthHandSideDiv>
   );

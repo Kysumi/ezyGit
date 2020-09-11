@@ -11,12 +11,12 @@ interface CommitListItemStyleProps {
 }
 
 const StyledDiv = styled(StyledCard)`
-  margin: 5px;
   border-left: 10px solid ${(props) => props.theme.color};
   background-color: ${(props) =>
     props.theme.selected ? COLORS.TRIM : COLORS.WHITE};
   padding: 20px;
   height: 40px;
+  margin-bottom: 0.5rem;
 `;
 
 export const CommitListItemStyle = ({

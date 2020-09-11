@@ -61,15 +61,16 @@ export const CommitMessage = ({ message, disabled, omniBarIsOpen }) => {
       <Label htmlFor="commitMessageField" marginBottom={4} display="block">
         Commit Message
       </Label>
-      <TextareaAutosize
-        style={{ width: '100%' }}
-        ref={inputRef}
-        autoFocus={true}
-        placeholder={'Enter commit message here..'}
-        minRows={4}
-        value={message ?? ''}
-        disabled={disabled}
-      />
+      <styledTemp>
+        <TextareaAutosize
+          ref={inputRef}
+          autoFocus={true}
+          placeholder={'Enter commit message here..'}
+          minRows={4}
+          value={message ?? ''}
+          disabled={disabled}
+        />
+      </styledTemp>
     </Pane>
   );
 };
