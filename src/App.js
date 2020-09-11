@@ -14,6 +14,10 @@ const Container = styled.div`
   grid-template-columns: 30% 70%;
 `;
 
+const AppBarContainer = styled.div`
+  padding-bottom: 1rem;
+`;
+
 const theme = {
   mainColor: COLORS.WHITE,
 };
@@ -32,8 +36,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <StyledDiv>
         <OmniBar>
-          <AppBar />
-
+          <AppBarContainer>
+            <AppBar />
+          </AppBarContainer>
           <Container>
             <LeftHandSide />
             <RightHandSide />

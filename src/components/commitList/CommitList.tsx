@@ -14,8 +14,8 @@ const StyledDiv = styled.div`
   padding-top: 1rem;
   padding-bottom: 1rem;
   overflow: auto;
-  max-height: calc(100vh - 70px);
-  min-height: calc(100vh - 70px);
+  max-height: calc(100vh - 75px);
+  min-height: calc(100vh - 75px);
 `;
 
 export const CommitList = () => {
