@@ -9,9 +9,10 @@ import OmniBar from './components/omniBar/OmniBar';
 import styled, { ThemeProvider } from 'styled-components';
 import { COLORS } from './styles/style';
 
-const contentStyle = {
-  display: 'flex',
-};
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 30% 70%;
+`;
 
 const theme = {
   mainColor: COLORS.WHITE,
@@ -36,10 +37,10 @@ const App = () => {
           <OmniBar>
             <AppBar />
 
-            <div style={contentStyle}>
+            <Container>
               <LeftHandSide />
               <RightHandSide />
-            </div>
+            </Container>
 
             {hasFilePath ? null : <SelectRepoPopUp />}
           </OmniBar>
