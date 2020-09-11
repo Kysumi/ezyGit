@@ -6,10 +6,11 @@ import { getSelectedCommitSelector } from '../../store/view/ViewSelector';
 import styled from 'styled-components';
 
 const RigthHandSideDiv = styled.div`
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
-  display: grid;
   grid-row-gap: 1rem;
-  padding: 10px;
+  padding: 0.3rem;
   width: 100%;
   overflow: auto;
 `;
