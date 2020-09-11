@@ -12,8 +12,6 @@ const RigthHandSideDiv = styled.div`
   padding: 10px;
   width: 100%;
   overflow: auto;
-  max-height: calc(100vh - 75px);
-  min-height: calc(100vh - 75px);
 `;
 
 interface RightHandSideProps {
