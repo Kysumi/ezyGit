@@ -180,6 +180,13 @@ export const stageFile = async (
 };
 
 /**
+ * Will commit the currently staged changes in the repo with the provided message
+ */
+export const commitChanges = async (gitDir: string, message: string) => {
+  await git.commit({ fs, dir: gitDir, message });
+};
+
+/**
  * Will discard the current unstaged changes in the file
  *
  * @param gitDir the file path to the gitDir

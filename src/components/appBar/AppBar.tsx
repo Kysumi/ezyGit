@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
-import { Button, GitCommitIcon, Heading } from 'evergreen-ui';
+import { Button, ArrowUpIcon, Heading, ArrowDownIcon } from 'evergreen-ui';
 import styled from 'styled-components';
 
 const AppBarContainer = styled.div`
@@ -61,7 +61,10 @@ export const AppBar = () => {
         </CentreContent>
 
         <RightHandSide>
-          <Button iconBefore={GitCommitIcon}>Commit</Button>
+          <Button iconBefore={ArrowDownIcon} style={{ marginRight: '5px' }}>
+            Pull
+          </Button>
+          <Button iconBefore={ArrowUpIcon}>Push</Button>
         </RightHandSide>
       </ContentContainer>
     </AppBarContainer>
