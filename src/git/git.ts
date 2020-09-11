@@ -6,6 +6,7 @@ import { loadUntrackedFilesContents } from './untrackedFiles';
 
 import git, { StatusRow } from 'isomorphic-git';
 import { CommitDiff, ModificationType } from '../components/diffList/type';
+import { isLargeFile } from '../helper/lineCount';
 
 // const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
@@ -135,14 +136,12 @@ const loadWorkingFileContents = async (
           );
         }
 
-        const linesCount = newFileChanges.split(/\r\n|\r|\n/);
-
         return {
           filePath: filePath,
           modificationType: ModificationType.added,
           afterFileState: commitedState,
           beforeFileState: newFileChanges,
-          largeFileDiff: linesCount.length > 2000,
+          largeFileDiff: isLargeFile(newFileChanges),
         };
       }
     )
