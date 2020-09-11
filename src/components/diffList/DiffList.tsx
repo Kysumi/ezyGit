@@ -35,7 +35,7 @@ const StyledDiv = styled.div`
   background-color: ${COLORS.WHITE};
   & > div {
     display: grid;
-    grid-row-gap: 1rem;
+    grid-row-gap: 0.5rem;
   }
 `;
 

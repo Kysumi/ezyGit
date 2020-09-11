@@ -9,15 +9,15 @@ import {
 import { DiffCollection } from '../../../components/diffList/DiffCollection';
 import { DiffTypeEnum } from '../../../components/diffList/DiffList';
 
+const CollectionsContainer = styled.div`
+  display: grid;
+  grid-row-gap: 1rem;
+`;
+
 export const PendingChangesView = () => {
   const diffs = useSelector(getCurrentBranchDiffs);
   const pendingFiles = useSelector(getUntrackedFilesSelector);
   const stagedFiles = useSelector(getStagedFilesSelector);
-
-  const CollectionsContainer = styled.div`
-    display: grid;
-    grid-row-gap: 1rem;
-  `;
 
   return (
     <CollectionsContainer>
