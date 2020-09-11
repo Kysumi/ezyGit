@@ -268,7 +268,7 @@ export const getGitStatus = async (gitDir: string, commitHash: string) => {
     untrackedFileContents,
   ] = await Promise.all([
     loadWorkingFileContents(filesPaths.working, gitDir, commitHash),
-    loadStagedDetails(gitDir, filesPaths.staged, commitHash),
+    loadStagedDetails(filesPaths.staged, gitDir, commitHash),
     loadUntrackedFilesContents(filesPaths.untracked, gitDir),
   ]);
 

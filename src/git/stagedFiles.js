@@ -64,10 +64,10 @@ const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
 /**
  * Loads the staged file contents
  *
- * @param {string} gitDir
  * @param {Array} stagedFiles
+ * @param {string} gitDir
  */
-export const loadStagedDetails = async (gitDir, stagedFiles, commitHash) => {
+export const loadStagedDetails = async (stagedFiles, gitDir, commitHash) => {
   const stagedFileContents = await getStagedFileContents(gitDir, stagedFiles);
 
   const linkedStagedContents = await Promise.all(
