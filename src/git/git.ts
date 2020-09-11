@@ -5,6 +5,7 @@ import {
 import { loadUntrackedFilesContents } from './untrackedFiles';
 
 import git, { StatusRow } from 'isomorphic-git';
+import { CommitDiff, ModificationType } from '../components/diffList/type';
 
 // const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
@@ -113,33 +114,38 @@ const loadWorkingFileContents = async (
   filePaths: Array<string>,
   gitDir: string,
   commitHash: string
-) => {
+): Promise<Array<CommitDiff>> => {
   const fileDiffs = await Promise.all(
-    filePaths.map(async (filePath) => {
-      const newFileChanges = await loadWorkingFileChanges(gitDir, filePath);
+    filePaths.map(
+      async (filePath): Promise<CommitDiff> => {
+        const newFileChanges = await loadWorkingFileChanges(gitDir, filePath);
 
-      // Because we are looking at pending changes we won't have a commit hash.
-      // So we will use the first hash from the store
-      let commitedState = '';
-      try {
-        commitedState = await readContentsFromHash(
-          commitHash,
-          gitDir,
-          filePath
-        );
-      } catch {
-        console.log(
-          `failed to load the commited verions of ${filePath}. This is likely because it was committed in the previous commit`
-        );
+        // Because we are looking at pending changes we won't have a commit hash.
+        // So we will use the first hash from the store
+        let commitedState = '';
+        try {
+          commitedState = await readContentsFromHash(
+            commitHash,
+            gitDir,
+            filePath
+          );
+        } catch {
+          console.log(
+            `failed to load the commited verions of ${filePath}. This is likely because it was committed in the previous commit`
+          );
+        }
+
+        const linesCount = newFileChanges.split(/\r\n|\r|\n/);
+
+        return {
+          filePath: filePath,
+          modificationType: ModificationType.added,
+          afterFileState: commitedState,
+          beforeFileState: newFileChanges,
+          largeFileDiff: linesCount.length > 2000,
+        };
       }
-
-      return {
-        filePath: filePath,
-        modificationType: 'added',
-        afterFileState: commitedState,
-        beforeFileState: newFileChanges,
-      };
-    })
+    )
   );
 
   return fileDiffs;

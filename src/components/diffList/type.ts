@@ -1,4 +1,4 @@
-enum ModificationType {
+export enum ModificationType {
   equal = 'equal',
   added = 'added',
   modified = 'modified',
@@ -10,4 +10,5 @@ export interface CommitDiff {
   modificationType: ModificationType;
   afterFileState: string;
   beforeFileState: string;
+  largeFileDiff: boolean;
 }
