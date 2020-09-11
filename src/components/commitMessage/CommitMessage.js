@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { omniBarIsOpenSelector } from '../../store/view/ViewSelector';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import {
   Pane,
   TextareaField,
@@ -8,9 +8,9 @@ import {
   GitCommitIcon,
   toaster,
 } from 'evergreen-ui';
-import { commitChanges } from '../../git/git';
 import { getStagedFilesCount } from '../../store/repo/RepoSelector';
 import { HotKeys } from 'react-hotkeys';
+import { commitThunk } from '../../store/repo/gitThunks';
 
 //TODO move out
 const useFocus = () => {
@@ -33,7 +33,8 @@ export const CommitMessage = ({
   hasStagedFiles,
 }) => {
   const [inputRef, setFocus] = useFocus();
-  const [stateMessgage, updateMessage] = useState(message);
+  const [stateMessage, updateMessage] = useState(message);
+  const dispatch = useDispatch();
 
   if (omniBarIsOpen === false) {
     setFocus();
@@ -47,7 +48,7 @@ export const CommitMessage = ({
       return;
     }
 
-    commitChanges();
+    dispatch(commitThunk(stateMessage));
   };
 
   const handlers = {
@@ -66,7 +67,7 @@ export const CommitMessage = ({
           placeholder="Commit message goes in here..."
           spellCheck={true}
           disabled={disabled}
-          value={stateMessgage}
+          value={stateMessage}
           onChange={(e) => updateMessage(e.target.value)}
           style={{ resize: 'none' }}
         />

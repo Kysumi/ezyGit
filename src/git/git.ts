@@ -7,9 +7,10 @@ import { loadUntrackedFilesContents } from './untrackedFiles';
 import git, { StatusRow } from 'isomorphic-git';
 import { CommitDiff, ModificationType } from '../components/diffList/type';
 import { isLargeFile } from '../helper/lineCount';
+import * as ini from 'ini';
 
 // const git = require('isomorphic-git');
-const remote = window.require('electron').remote;
+const { remote } = window.require('electron');
 const fs = remote.require('fs');
 const _ = require('lodash');
 
@@ -183,7 +184,16 @@ export const stageFile = async (
  * Will commit the currently staged changes in the repo with the provided message
  */
 export const commitChanges = async (gitDir: string, message: string) => {
-  await git.commit({ fs, dir: gitDir, message });
+  const homeDir = remote.app.getPath('home');
+  const fileContents = await loadWorkingFileChanges(homeDir, '.gitconfig');
+
+  if (fileContents === '') {
+    throw `Could not find .gitconfig in home DIR: ${homeDir}`;
+  }
+
+  const config = ini.parse(fileContents);
+
+  await git.commit({ fs, dir: gitDir, message, author: config.user });
 };
 
 /**

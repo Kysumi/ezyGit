@@ -1,4 +1,10 @@
-import { unstageFile, stageFile, discardFile, deleteFile } from '../../git/git';
+import {
+  unstageFile,
+  stageFile,
+  discardFile,
+  deleteFile,
+  commitChanges,
+} from '../../git/git';
 import {
   gitDirectorySelector,
   getUntrackedFilesSelector,
@@ -66,4 +72,13 @@ export const deleteFileThunk = (filePath: string) => async (
   );
 
   dispatch(setUntrackedFiles(newUntrackedFilesState));
+};
+
+export const commitThunk = (message: string) => async (
+  dispatch: any,
+  getState: any
+) => {
+  await commitChanges(gitDirectorySelector(getState()), message);
+
+  dispatch(loadPendingDiff());
 };
