@@ -1,20 +1,34 @@
 import { readContentsFromHash } from './git';
+import git, { WalkerEntry } from 'isomorphic-git';
+import { CommitDiff, ModificationType } from '../components/diffList/type';
+import { isLargeFile } from '../helper/lineCount';
 
 const _ = require('lodash');
-const git = require('isomorphic-git');
 const remote = window.require('electron').remote;
 const fs = remote.require('fs');
 
+interface StagedFileContents {
+  filePath: string;
+  contents: string;
+}
+
 /**
  * Helper function that loads the contents of all of the staged files
- *
- * @param {string} gitDir
- * @param {Array} stagedFilePaths
  */
-const getStagedFileContents = async (gitDir, stagedFilePaths) => {
-  const map = async (filePath, [A]) => {
+const getStagedFileContents = async (
+  gitDir: string,
+  stagedFilePaths: Array<string>
+): Promise<Array<StagedFileContents>> => {
+  const map = async (filePath: string, entries: WalkerEntry[] | null) => {
+    if (entries === null) {
+      return;
+    }
+
     if (stagedFilePaths.includes(filePath)) {
-      const contents = await readContentsFromHash(await A.oid(), gitDir);
+      const contents = await readContentsFromHash(
+        await entries[0].oid(),
+        gitDir
+      );
 
       return {
         filePath: filePath,
@@ -33,12 +47,12 @@ const getStagedFileContents = async (gitDir, stagedFilePaths) => {
 
 /**
  * Loads the contents of a file from the hash
- *
- * @param {Object} staged
- * @param {string} commitHash
- * @param {string} gitDir
  */
-const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
+const loadContentsFromPreviousCommit = async (
+  staged: StagedFileContents,
+  commitHash: string,
+  gitDir: string
+): Promise<CommitDiff> => {
   let commitedState = '';
   try {
     commitedState = await readContentsFromHash(
@@ -55,19 +69,21 @@ const loadContentsFromPreviousCommit = async (staged, commitHash, gitDir) => {
 
   return {
     filePath: staged.filePath,
-    modificationType: 'added',
+    modificationType: ModificationType.added,
     afterFileState: commitedState,
     beforeFileState: staged.contents,
+    largeFileDiff: isLargeFile(staged.contents),
   };
 };
 
 /**
  * Loads the staged file contents
- *
- * @param {Array} stagedFiles
- * @param {string} gitDir
  */
-export const loadStagedDetails = async (stagedFiles, gitDir, commitHash) => {
+export const loadStagedDetails = async (
+  stagedFiles: Array<string>,
+  gitDir: string,
+  commitHash: string
+) => {
   const stagedFileContents = await getStagedFileContents(gitDir, stagedFiles);
 
   const linkedStagedContents = await Promise.all(
@@ -83,16 +99,11 @@ export const loadStagedDetails = async (stagedFiles, gitDir, commitHash) => {
  * Will move the workingFileContents comparison from the previously
  * committed state of the file to compare against the currently staged
  * state.
- *
- * @param {Array} stagedFileContents
- * @param {Array} workingFileContents
- *
- * @returns {Array}
  */
 export const mapWorkingChangesToStagedChanges = (
-  stagedFileContents,
-  workingFileContents
-) => {
+  stagedFileContents: Array<CommitDiff>,
+  workingFileContents: Array<CommitDiff>
+): Array<CommitDiff> => {
   const newWorkingChanges = workingFileContents.map((workingChanges) => {
     const stagedChanges = _.find(stagedFileContents, {
       filePath: workingChanges.filePath,
