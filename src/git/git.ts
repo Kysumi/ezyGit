@@ -4,10 +4,10 @@ import {
 } from './stagedFiles';
 import { loadUntrackedFilesContents } from './untrackedFiles';
 import git, { StatusRow } from 'isomorphic-git';
-import HttpClient from 'isomorphic-git/http/node';
 import { CommitDiff, ModificationType } from '../components/diffList/type';
 import { isLargeFile } from '../helper/lineCount';
 import * as ini from 'ini';
+import http from 'isomorphic-git/http/node';
 
 // const git = require('isomorphic-git');
 const { remote } = window.require('electron');
@@ -195,7 +195,7 @@ export const pullChanges = async (
   const author = await getGitAuthor(gitDir);
   await git.pull({
     fs,
-    http: HttpClient,
+    http: http,
     dir: gitDir,
     singleBranch: true,
     fastForwardOnly,
