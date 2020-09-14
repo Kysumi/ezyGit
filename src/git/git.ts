@@ -190,16 +190,13 @@ export const commitChanges = async (gitDir: string, message: string) => {
 
 export const pullChanges = async (
   gitDir: string,
-  branchName: string,
   fastForwardOnly: boolean = true
 ): Promise<void> => {
   const author = await getGitAuthor();
-
   await git.pull({
     fs,
     http: HttpClient,
     dir: gitDir,
-    ref: branchName,
     singleBranch: true,
     fastForwardOnly,
     author: author,
@@ -227,7 +224,7 @@ const getGitConfig = async () => {
 
 const getGitAuthor = async (): Promise<Author> => {
   const config = await getGitConfig();
-  return config.author;
+  return config.user;
 };
 
 /**
