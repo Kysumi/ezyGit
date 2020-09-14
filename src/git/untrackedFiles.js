@@ -1,4 +1,4 @@
-import { loadWorkingFileChanges } from './git';
+import { loadFileContentsFromPath } from './git';
 
 export const loadUntrackedFilesContents = async (
   untrackedFilePaths,
@@ -6,7 +6,7 @@ export const loadUntrackedFilesContents = async (
 ) => {
   const unTrackedFiles = await Promise.all(
     untrackedFilePaths.map(async (filePath) => {
-      const contents = await loadWorkingFileChanges(gitDir, filePath);
+      const contents = await loadFileContentsFromPath(gitDir, filePath);
       return {
         filePath: filePath,
         modificationType: 'added',

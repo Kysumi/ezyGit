@@ -3,7 +3,6 @@ import {
   mapWorkingChangesToStagedChanges,
 } from './stagedFiles';
 import { loadUntrackedFilesContents } from './untrackedFiles';
-
 import git, { StatusRow } from 'isomorphic-git';
 import { CommitDiff, ModificationType } from '../components/diffList/type';
 import { isLargeFile } from '../helper/lineCount';
@@ -120,7 +119,7 @@ const loadWorkingFileContents = async (
   const fileDiffs = await Promise.all(
     filePaths.map(
       async (filePath): Promise<CommitDiff> => {
-        const newFileChanges = await loadWorkingFileChanges(gitDir, filePath);
+        const newFileChanges = await loadFileContentsFromPath(gitDir, filePath);
 
         // Because we are looking at pending changes we won't have a commit hash.
         // So we will use the first hash from the store
@@ -185,7 +184,9 @@ export const stageFile = async (
  */
 export const commitChanges = async (gitDir: string, message: string) => {
   const homeDir = remote.app.getPath('home');
-  const fileContents = await loadWorkingFileChanges(homeDir, '.gitconfig');
+
+  // TODO attempt to load the local repo config first and then default back to the global settings
+  const fileContents = await loadFileContentsFromPath(homeDir, '.gitconfig');
 
   if (fileContents === '') {
     throw `Could not find .gitconfig in home DIR: ${homeDir}`;
