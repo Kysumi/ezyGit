@@ -183,8 +183,37 @@ export const stageFile = async (
  * Will commit the currently staged changes in the repo with the provided message
  */
 export const commitChanges = async (gitDir: string, message: string) => {
-  const homeDir = remote.app.getPath('home');
+  const author = await getGitAuthor();
+  await git.commit({ fs, dir: gitDir, message, author: author });
+};
 
+export const pullChanges = async (
+  gitDir: string,
+  branchName: string,
+  fastForwardOnly: boolean = true
+): Promise<void> => {
+  const author = await getGitAuthor();
+
+  await git.pull({
+    fs,
+    http: HttpClient,
+    dir: gitDir,
+    ref: branchName,
+    singleBranch: true,
+    fastForwardOnly,
+    author: author,
+  });
+};
+
+interface Author {
+  name?: string;
+  email?: string;
+  timestamp?: number;
+  timezoneOffset?: number;
+}
+
+const getGitConfig = async () => {
+  const homeDir = remote.app.getPath('home');
   // TODO attempt to load the local repo config first and then default back to the global settings
   const fileContents = await loadFileContentsFromPath(homeDir, '.gitconfig');
 
@@ -192,9 +221,12 @@ export const commitChanges = async (gitDir: string, message: string) => {
     throw `Could not find .gitconfig in home DIR: ${homeDir}`;
   }
 
-  const config = ini.parse(fileContents);
+  return ini.parse(fileContents);
+};
 
-  await git.commit({ fs, dir: gitDir, message, author: config.user });
+const getGitAuthor = async (): Promise<Author> => {
+  const config = await getGitConfig();
+  return config.author;
 };
 
 /**
