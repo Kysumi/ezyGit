@@ -1,6 +1,8 @@
 # ezyGit
 
-This project is a git client focused on ease of use.
+![alt text](https://github.com/Kysumi/ezyGit/raw/master/screenshots/ezyGit.png "ezyGit UI")
+
+This project is a git client focused on ease of use and getting users comfortable with using git
 
 ## Getting started
 
