@@ -4,6 +4,7 @@ import {
 } from './stagedFiles';
 import { loadUntrackedFilesContents } from './untrackedFiles';
 import git, { StatusRow } from 'isomorphic-git';
+import HttpClient from 'isomorphic-git/http/node';
 import { CommitDiff, ModificationType } from '../components/diffList/type';
 import { isLargeFile } from '../helper/lineCount';
 import * as ini from 'ini';

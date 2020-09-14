@@ -4,10 +4,12 @@ import {
   discardFile,
   deleteFile,
   commitChanges,
+  pullChanges,
 } from '../../git/git';
 import {
   gitDirectorySelector,
   getUntrackedFilesSelector,
+  getBranchNameSelector,
 } from './RepoSelector';
 import { loadPendingDiff, setUntrackedFiles } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
@@ -82,8 +84,24 @@ export const commitThunk = (message: string) => async (
   try {
     await commitChanges(gitDirectorySelector(getState()), message);
   } catch (error) {
-    toaster.warning(error);
+    toaster.warning(error.message);
   }
+
+  dispatch(loadPendingDiff());
+};
+
+export const pullThunk = () => async (dispatch: any, getState: any) => {
+  try {
+    await pullChanges(
+      gitDirectorySelector(getState()),
+      getBranchNameSelector(getState())
+    );
+  } catch (error) {
+    toaster.warning(error.message);
+    return;
+  }
+
+  toaster.success('Pulled the latest changes!');
 
   dispatch(loadPendingDiff());
 };

@@ -1,8 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
 import { Button, ArrowUpIcon, Heading, ArrowDownIcon } from 'evergreen-ui';
 import styled from 'styled-components';
+import { pullThunk } from '../../store/repo/gitThunks';
 
 const AppBarContainer = styled.div`
   background-color: ${(props) => props.theme.mainColor};
@@ -44,6 +45,7 @@ const ContentContainer = styled.div`
 
 export const AppBar = () => {
   const branchName = useSelector(getBranchNameSelector);
+  const dispatch = useDispatch();
 
   return (
     <AppBarContainer>
@@ -61,7 +63,11 @@ export const AppBar = () => {
         </CentreContent>
 
         <RightHandSide>
-          <Button iconBefore={ArrowDownIcon} style={{ marginRight: '5px' }}>
+          <Button
+            iconBefore={ArrowDownIcon}
+            style={{ marginRight: '5px' }}
+            onClick={() => dispatch(pullThunk())}
+          >
             Pull
           </Button>
           <Button iconBefore={ArrowUpIcon}>Push</Button>
