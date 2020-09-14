@@ -349,7 +349,7 @@ export const readContentsFromHash = async (
  *
  * @return {Promise<string>}
  */
-export const loadWorkingFileChanges = async (
+export const loadFileContentsFromPath = async (
   gitDir: string,
   filePath: string
 ) => {
