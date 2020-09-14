@@ -11,6 +11,7 @@ import {
 } from './RepoSelector';
 import { loadPendingDiff, setUntrackedFiles } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
+import { toaster } from 'evergreen-ui';
 
 const _ = require('lodash');
 
@@ -78,7 +79,11 @@ export const commitThunk = (message: string) => async (
   dispatch: any,
   getState: any
 ) => {
-  await commitChanges(gitDirectorySelector(getState()), message);
+  try {
+    await commitChanges(gitDirectorySelector(getState()), message);
+  } catch (error) {
+    toaster.warning(error);
+  }
 
   dispatch(loadPendingDiff());
 };
