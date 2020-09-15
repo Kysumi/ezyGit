@@ -130,6 +130,12 @@ export class CommitMessage extends Component<
       COMMIT: this.handleCommit,
     };
 
+    let disableButton = disabled;
+    // We want to disabled the button if they do not have any files staged
+    if (!disabled && !hasStagedFiles) {
+      disableButton = true;
+    }
+
     return (
       <div>
         <HotKeys keyMap={keyMap} handlers={handlers}>
@@ -143,8 +149,12 @@ export class CommitMessage extends Component<
             disabled={disabled}
           />
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button iconBefore={GitCommitIcon} onClick={this.handleCommit}>
-              {hasStagedFiles ? 'Commit' : 'No Files To Commit'}
+            <Button
+              iconBefore={GitCommitIcon}
+              onClick={this.handleCommit}
+              disabled={disableButton}
+            >
+              Commit
             </Button>
           </div>
         </HotKeys>
