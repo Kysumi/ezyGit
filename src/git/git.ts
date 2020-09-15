@@ -184,7 +184,7 @@ export const stageFile = async (
  * Will commit the currently staged changes in the repo with the provided message
  */
 export const commitChanges = async (gitDir: string, message: string) => {
-  const author = await getGitAuthor();
+  const author = await getGitAuthor(gitDir);
   await git.commit({ fs, dir: gitDir, message, author: author });
 };
 
@@ -192,7 +192,7 @@ export const pullChanges = async (
   gitDir: string,
   fastForwardOnly: boolean = true
 ): Promise<void> => {
-  const author = await getGitAuthor();
+  const author = await getGitAuthor(gitDir);
   await git.pull({
     fs,
     http: HttpClient,
@@ -210,21 +210,33 @@ interface Author {
   timezoneOffset?: number;
 }
 
-const getGitConfig = async () => {
-  const homeDir = remote.app.getPath('home');
-  // TODO attempt to load the local repo config first and then default back to the global settings
-  const fileContents = await loadFileContentsFromPath(homeDir, '.gitconfig');
-
-  if (fileContents === '') {
-    throw `Could not find .gitconfig in home DIR: ${homeDir}`;
-  }
-
-  return ini.parse(fileContents);
+const getHomeDirectory = () => {
+  return remote.app.getPath('home');
 };
 
-const getGitAuthor = async (): Promise<Author> => {
-  const config = await getGitConfig();
-  return config.user;
+const getGitConfig = async (gitDir: string, attribute: string) => {
+  const localSettings = await loadFileContentsFromPath(
+    gitDir + '/.git/',
+    'config'
+  );
+  const globalSettings = await loadFileContentsFromPath(
+    getHomeDirectory(),
+    '.gitconfig'
+  );
+
+  if (globalSettings === '' && localSettings === '') {
+    throw new Error(
+      `Could not find .gitconfig in home DIR: ${getHomeDirectory()} or in local git repo`
+    );
+  }
+
+  const localIni = ini.parse(localSettings);
+  const globalIni = ini.parse(globalSettings);
+  return localIni[attribute] ?? globalIni[attribute];
+};
+
+const getGitAuthor = async (gitDir: string): Promise<Author> => {
+  return await getGitConfig(gitDir, 'user');
 };
 
 /**
