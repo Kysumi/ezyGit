@@ -11,7 +11,7 @@ import {
   getUntrackedFilesSelector,
   getBranchNameSelector,
 } from './RepoSelector';
-import { loadPendingDiff, setUntrackedFiles } from './Repo';
+import { loadPendingDiff, setUntrackedFiles, loadCommits } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
 import { toaster } from 'evergreen-ui';
 
@@ -87,6 +87,7 @@ export const commitThunk = (message: string) => async (
     toaster.warning(error.message);
   }
 
+  dispatch(loadCommits());
   dispatch(loadPendingDiff());
 };
 
