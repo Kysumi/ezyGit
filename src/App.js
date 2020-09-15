@@ -13,6 +13,8 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 30% 70%;
   grid-template-rows: 92vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
 `;
 
 const AppBarContainer = styled.div`
@@ -26,7 +28,6 @@ const theme = {
 const StyledDiv = styled.div`
   height: 100vh;
   background-color: ${(props) => props.theme.mainColor};
-  padding: 1rem;
   box-sizing: border-box;
 `;
 
