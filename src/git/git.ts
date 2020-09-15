@@ -233,11 +233,22 @@ const getGitConfig = async (gitDir: string, attribute: string) => {
   const localIni = ini.parse(localSettings);
   const globalIni = ini.parse(globalSettings);
 
-  return localIni[attribute] ?? globalIni[attribute];
+  if (localIni[attribute]) {
+    return localIni;
+  }
+
+  if (globalIni[attribute]) {
+    return globalIni;
+  }
+
+  throw new Error(
+    `Neither the global or local settings had the attribute ${attribute}`
+  );
 };
 
 const getGitAuthor = async (gitDir: string): Promise<Author> => {
-  return await getGitConfig(gitDir, 'user');
+  const gitConfig = await getGitConfig(gitDir, 'user');
+  return gitConfig.user;
 };
 
 /**
