@@ -3,17 +3,12 @@ import {
   omniBarIsOpenSelector,
   hasSelectedCommitSelector,
 } from '../../store/view/ViewSelector';
-import { connect, useDispatch } from 'react-redux';
-import {
-  Pane,
-  TextareaField,
-  Button,
-  GitCommitIcon,
-  toaster,
-} from 'evergreen-ui';
+import { connect } from 'react-redux';
+import { Button, GitCommitIcon, toaster } from 'evergreen-ui';
 import { getStagedFilesCount } from '../../store/repo/RepoSelector';
 import { HotKeys } from 'react-hotkeys';
 import { commitThunk } from '../../store/repo/gitThunks';
+import styled from 'styled-components';
 
 //TODO move out
 // const useFocus = () => {
@@ -37,6 +32,46 @@ interface CommitMessageProps {
   selectedCommit: boolean;
   dispatchCommitChanges: (message: string) => void;
 }
+
+const StyledTextArea = styled.textarea`
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  background-color: white;
+  box-shadow: inset 0 0 0 1px rgba(67, 90, 111, 0.3),
+    inset 0 1px 2px rgba(67, 90, 111, 0.14);
+
+  -webkit-appearance: none;
+  resize: none;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 10px;
+  padding-left: 10px;
+
+  border-bottom-left-radius: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+
+  min-height: 80px;
+
+  /* FONT */
+  font-weight: 400;
+  font-size: 14px;
+  color: #425a70;
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  line-height: 20px;
+  letter-spacing: -0.05px;
+
+  &:disabled {
+    cursor: not-allowed;
+    box-shadow: inset 0 0 0 1px rgba(67, 90, 111, 0.14);
+    background-color: #f5f6f7;
+  }
+`;
 
 interface CommitMessageState {
   currentMessage: string;
@@ -96,25 +131,24 @@ export class CommitMessage extends Component<
     };
 
     return (
-      <Pane>
-        <Button iconBefore={GitCommitIcon} onClick={this.handleCommit}>
-          {hasStagedFiles ? 'Commit' : 'No Files To Commit'}
-        </Button>
+      <div>
         <HotKeys keyMap={keyMap} handlers={handlers}>
-          <TextareaField
-            // ref={inputRef}
-            label="Commit Message"
-            placeholder="Commit message goes in here..."
-            spellCheck={true}
-            disabled={disabled}
+          <StyledTextArea
             value={currentMessage}
+            placeholder={'Commit message goes in here...'}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               this.setState({ currentMessage: e.target.value });
             }}
-            style={{ resize: 'none' }}
+            spellCheck={true}
+            disabled={disabled}
           />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button iconBefore={GitCommitIcon} onClick={this.handleCommit}>
+              {hasStagedFiles ? 'Commit' : 'No Files To Commit'}
+            </Button>
+          </div>
         </HotKeys>
-      </Pane>
+      </div>
     );
   }
 }
