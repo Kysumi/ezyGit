@@ -89,7 +89,7 @@ export class CommitMessage extends Component<
 
   render() {
     const { currentMessage } = this.state;
-    const { hasStagedFiles, disabled, message, selectedCommit } = this.props;
+    const { hasStagedFiles, disabled } = this.props;
 
     const handlers = {
       COMMIT: this.handleCommit,
