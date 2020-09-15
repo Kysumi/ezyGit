@@ -119,59 +119,6 @@ export class CommitMessage extends Component<
   }
 }
 
-// export const CommitMessage = ({
-//   message,
-//   disabled,
-//   omniBarIsOpen,
-//   hasStagedFiles,
-// }) => {
-//   const [inputRef, setFocus] = useFocus();
-//   const [stateMessage, updateMessage] = useState(message);
-//   const dispatch = useDispatch();
-
-//   if (omniBarIsOpen === false) {
-//     setFocus();
-//   }
-
-//   const handleCommit = () => {
-//     if (!hasStagedFiles) {
-//       toaster.warning(
-//         'There is currently no files to commit. Please stage some files'
-//       );
-//       return;
-//     }
-
-//     dispatch(commitThunk(stateMessage));
-//   };
-
-//   const handlers = {
-//     COMMIT: handleCommit,
-//   };
-
-//   return (
-//     <Pane>
-//       <Button iconBefore={GitCommitIcon} onClick={handleCommit}>
-//         {hasStagedFiles ? 'Commit' : 'No Files To Commit'}
-//       </Button>
-//       <HotKeys keyMap={keyMap} handlers={handlers}>
-//         <TextareaField
-//           // ref={inputRef}
-//           label="Commit Message"
-//           placeholder="Commit message goes in here..."
-//           spellCheck={true}
-//           disabled={disabled}
-//           value={message}
-//           onChange={(e) => {
-//             console.log('woah');
-//             updateMessage(e.target.value);
-//           }}
-//           style={{ resize: 'none' }}
-//         />
-//       </HotKeys>
-//     </Pane>
-//   );
-// };
-
 const mapStateToProps = (state: any) => {
   return {
     omniBarIsOpen: omniBarIsOpenSelector(state),
