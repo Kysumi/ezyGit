@@ -232,6 +232,7 @@ const getGitConfig = async (gitDir: string, attribute: string) => {
 
   const localIni = ini.parse(localSettings);
   const globalIni = ini.parse(globalSettings);
+
   return localIni[attribute] ?? globalIni[attribute];
 };
 
