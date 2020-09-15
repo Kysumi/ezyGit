@@ -61,6 +61,8 @@ export class CommitMessage extends Component<
       return;
     }
 
+    this.setState({ currentMessage: '' });
+
     dispatchCommitChanges(currentMessage);
   };
 
