@@ -4,7 +4,7 @@ import {
   hasSelectedCommitSelector,
 } from '../../store/view/ViewSelector';
 import { connect } from 'react-redux';
-import { Button, GitCommitIcon, toaster } from 'evergreen-ui';
+import { Button, GitCommitIcon, toaster, Tooltip } from 'evergreen-ui';
 import { getStagedFilesCount } from '../../store/repo/RepoSelector';
 import { HotKeys } from 'react-hotkeys';
 import { commitThunk } from '../../store/repo/gitThunks';
@@ -149,13 +149,15 @@ export class CommitMessage extends Component<
             disabled={disabled}
           />
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-              iconBefore={GitCommitIcon}
-              onClick={this.handleCommit}
-              disabled={disableButton}
-            >
-              Commit
-            </Button>
+            <Tooltip content="Saves your changes to the local repository">
+              <Button
+                iconBefore={GitCommitIcon}
+                onClick={this.handleCommit}
+                disabled={disableButton}
+              >
+                Commit
+              </Button>
+            </Tooltip>
           </div>
         </HotKeys>
       </div>
