@@ -14,6 +14,7 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
+      webSecurity: false,
     },
   });
 
@@ -36,3 +37,10 @@ app.whenReady().then(() => {
     .then((name) => console.log(`Added Extension:  ${name}`))
     .catch((err) => console.log('An error occurred: ', err));
 });
+
+/**
+ * Waiting of this bug in electron v9 to be resolved then this can be removed.
+ *
+ * @link https://github.com/electron/electron/issues/23664
+ */
+app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
