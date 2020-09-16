@@ -92,17 +92,30 @@ export const commitThunk = (message: string) => async (
 };
 
 export const pullThunk = () => async (dispatch: any, getState: any) => {
-  try {
-    await pullChanges(
-      gitDirectorySelector(getState()),
-      getBranchNameSelector(getState())
-    );
-  } catch (error) {
-    toaster.warning(error.message);
-    return;
-  }
+  const worker = new Worker('pull.worker.js');
+  worker.onmessage = (e) => {
+    const message = e.data;
+    console.log(`[From Worker]: ${message}`);
+  };
 
-  toaster.success('Pulled the latest changes!');
+  const data = {
+    gitDir: gitDirectorySelector(getState()),
+    gitBranch: getBranchNameSelector(getState()),
+  };
 
-  dispatch(loadPendingDiff());
+  worker.postMessage(JSON.stringify(data));
+
+  // try {
+  //   await pullChanges(
+  //     gitDirectorySelector(getState()),
+  //     getBranchNameSelector(getState())
+  //   );
+  // } catch (error) {
+  //   toaster.warning(error.message);
+  //   return;
+  // }
+
+  // toaster.success('Pulled the latest changes!');
+
+  // dispatch(loadPendingDiff());
 };
