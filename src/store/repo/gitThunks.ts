@@ -103,6 +103,7 @@ export const pullThunk = () => async (dispatch: any, getState: any) => {
   ipc.once('gitPullCompleted', (event: any, args: any) => {
     if (args.success) {
       toaster.success('Pulled the latest changes!');
+      dispatch(loadCommits());
       dispatch(loadPendingDiff());
     } else {
       toaster.warning(args.message);
