@@ -79,3 +79,27 @@ ipc.on('gitPull', async (event, args) => {
     message: ':)',
   });
 });
+
+ipc.on('gitPush', async (event, args) => {
+  const git = require('isomorphic-git');
+  const fs = require('fs');
+  const http = require('isomorphic-git/http/node');
+
+  try {
+    await git.push({
+      fs,
+      http: http,
+      dir: args.gitDir,
+    });
+  } catch (error) {
+    event.sender.send('gitPushCompleted', {
+      success: false,
+      message: error.message,
+    });
+  }
+
+  event.sender.send('gitPushCompleted', {
+    success: true,
+    message: ':)',
+  });
+});

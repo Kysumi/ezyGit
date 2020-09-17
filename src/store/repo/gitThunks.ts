@@ -100,10 +100,28 @@ export const pullThunk = () => async (dispatch: any, getState: any) => {
     gitDir: gitDirectorySelector(getState()),
   });
 
-  ipc.on('gitPullCompleted', (event: any, args: any) => {
+  ipc.once('gitPullCompleted', (event: any, args: any) => {
     if (args.success) {
       toaster.success('Pulled the latest changes!');
       dispatch(loadPendingDiff());
+    } else {
+      toaster.warning(args.message);
+    }
+  });
+};
+
+export const pushThunk = () => async (dispatch: any, getState: any) => {
+  const electron = window.require('electron');
+  const ipc = electron.ipcRenderer;
+
+  toaster.notify('Pushing latest changes to remote');
+  ipc.send('gitPush', {
+    gitDir: gitDirectorySelector(getState()),
+  });
+
+  ipc.once('gitPushCompleted', (event: any, args: any) => {
+    if (args.success) {
+      toaster.success('Pushed the latest changes!');
     } else {
       toaster.warning(args.message);
     }
