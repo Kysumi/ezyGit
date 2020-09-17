@@ -15,6 +15,9 @@ import { loadPendingDiff, setUntrackedFiles, loadCommits } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
 import { toaster } from 'evergreen-ui';
 
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Worker from 'worker-loader!./pull.worker';
+
 const _ = require('lodash');
 
 export const unstageFileThunk = (filePath: string) => async (
@@ -92,10 +95,11 @@ export const commitThunk = (message: string) => async (
 };
 
 export const pullThunk = () => async (dispatch: any, getState: any) => {
-  const worker = new Worker('pull.worker.js');
-  worker.onmessage = (e) => {
-    const message = e.data;
-    console.log(`[From Worker]: ${message}`);
+  const worker = new Worker();
+
+  worker.onmessage = (event: any) => {
+    console.log(event.data);
+    console.log('Message came back we looooooooooooooooooooooooooooooping');
   };
 
   const data = {
