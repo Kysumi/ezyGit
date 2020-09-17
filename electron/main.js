@@ -44,3 +44,38 @@ app.whenReady().then(() => {
  * @link https://github.com/electron/electron/issues/23664
  */
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+
+const ipc = require('electron').ipcMain;
+
+ipc.on('gitPull', async (event, args) => {
+  const git = require('isomorphic-git');
+  const fs = require('fs');
+  const http = require('isomorphic-git/http/node');
+
+  console.log('pullling!!!');
+  try {
+    await git.pull({
+      fs,
+      http: http,
+      dir: args.gitDir,
+      singleBranch: true,
+      fastForwardOnly: true,
+      author: {
+        email: 'asdas',
+        name: 'asdasd',
+      },
+    });
+  } catch (error) {
+    console.log('FAILED TO PULL CHANGES!!!!!!!!!!!!');
+    event.sender.send('gitPullCompleted', {
+      success: false,
+      message: error.message,
+    });
+  }
+  console.log('done pulling');
+
+  event.sender.send('gitPullCompleted', {
+    success: true,
+    message: ':)',
+  });
+});

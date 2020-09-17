@@ -92,31 +92,20 @@ export const commitThunk = (message: string) => async (
 };
 
 export const pullThunk = () => async (dispatch: any, getState: any) => {
-  const worker = new Worker();
+  const electron = window.require('electron');
+  const ipc = electron.ipcRenderer;
 
-  worker.onmessage = (event: any) => {
-    console.log(event.data);
-    console.log('Message came back we looooooooooooooooooooooooooooooping');
-  };
-
-  const data = {
+  toaster.notify('Pulling latest changes from remote');
+  ipc.send('gitPull', {
     gitDir: gitDirectorySelector(getState()),
-    gitBranch: getBranchNameSelector(getState()),
-  };
+  });
 
-  worker.postMessage(JSON.stringify(data));
-
-  // try {
-  //   await pullChanges(
-  //     gitDirectorySelector(getState()),
-  //     getBranchNameSelector(getState())
-  //   );
-  // } catch (error) {
-  //   toaster.warning(error.message);
-  //   return;
-  // }
-
-  // toaster.success('Pulled the latest changes!');
-
-  // dispatch(loadPendingDiff());
+  ipc.on('gitPullCompleted', (event: any, args: any) => {
+    if (args.success) {
+      toaster.success('Pulled the latest changes!');
+      dispatch(loadPendingDiff());
+    } else {
+      toaster.warning(args.message);
+    }
+  });
 };
