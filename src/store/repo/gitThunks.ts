@@ -15,9 +15,6 @@ import { loadPendingDiff, setUntrackedFiles, loadCommits } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
 import { toaster } from 'evergreen-ui';
 
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import Worker from 'worker-loader!./pull.worker';
-
 const _ = require('lodash');
 
 export const unstageFileThunk = (filePath: string) => async (

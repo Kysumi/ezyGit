@@ -18,10 +18,6 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      {
-        test: /\.worker\.js$/,
-        use: { loader: 'worker-loader' },
-      },
     ],
   },
   devServer: {
