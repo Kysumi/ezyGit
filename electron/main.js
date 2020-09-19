@@ -8,10 +8,10 @@ const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
 
-let mainWindow;
+require('./registerIpcHooks');
 
 const createWindow = () => {
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
@@ -25,17 +25,30 @@ const createWindow = () => {
   mainWindow.loadURL(startURL);
 
   mainWindow.once('ready-to-show', () => mainWindow.show());
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
 };
 
-app.on('ready', createWindow);
-
 app.whenReady().then(() => {
+  createWindow();
   installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
     .then((name) => console.log(`Added Extension:  ${name}`))
     .catch((err) => console.log('An error occurred: ', err));
+});
+
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+app.on('activate', () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
 
 /**
@@ -44,62 +57,3 @@ app.whenReady().then(() => {
  * @link https://github.com/electron/electron/issues/23664
  */
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
-
-const ipc = require('electron').ipcMain;
-
-ipc.on('gitPull', async (event, args) => {
-  const git = require('isomorphic-git');
-  const fs = require('fs');
-  const http = require('isomorphic-git/http/node');
-
-  console.log('pullling!!!');
-  try {
-    await git.pull({
-      fs,
-      http: http,
-      dir: args.gitDir,
-      singleBranch: true,
-      fastForwardOnly: true,
-      author: {
-        email: 'asdas',
-        name: 'asdasd',
-      },
-    });
-  } catch (error) {
-    console.log('FAILED TO PULL CHANGES!!!!!!!!!!!!');
-    event.sender.send('gitPullCompleted', {
-      success: false,
-      message: error.message,
-    });
-  }
-  console.log('done pulling');
-
-  event.sender.send('gitPullCompleted', {
-    success: true,
-    message: ':)',
-  });
-});
-
-ipc.on('gitPush', async (event, args) => {
-  const git = require('isomorphic-git');
-  const fs = require('fs');
-  const http = require('isomorphic-git/http/node');
-
-  try {
-    await git.push({
-      fs,
-      http: http,
-      dir: args.gitDir,
-    });
-  } catch (error) {
-    event.sender.send('gitPushCompleted', {
-      success: false,
-      message: error.message,
-    });
-  }
-
-  event.sender.send('gitPushCompleted', {
-    success: true,
-    message: ':)',
-  });
-});
