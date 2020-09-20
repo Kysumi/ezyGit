@@ -5,17 +5,16 @@ import {
   deleteFile,
   commitChanges,
   pullChanges,
+  pushChanges,
 } from '../../git/git';
 import {
   gitDirectorySelector,
   getUntrackedFilesSelector,
-  getBranchNameSelector,
 } from './RepoSelector';
 import { loadPendingDiff, setUntrackedFiles, loadCommits } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
 import { toaster } from 'evergreen-ui';
-
-const _ = require('lodash');
+import * as _ from 'lodash';
 
 export const unstageFileThunk = (filePath: string) => async (
   dispatch: any,
@@ -92,39 +91,26 @@ export const commitThunk = (message: string) => async (
 };
 
 export const pullThunk = () => async (dispatch: any, getState: any) => {
-  const electron = window.require('electron');
-  const ipc = electron.ipcRenderer;
-
   toaster.notify('Pulling latest changes from remote');
-  ipc.send('gitPull', {
-    gitDir: gitDirectorySelector(getState()),
-  });
 
-  ipc.once('gitPullCompleted', (event: any, args: any) => {
-    if (args.success) {
-      toaster.success('Pulled the latest changes!');
-      dispatch(loadCommits());
-      dispatch(loadPendingDiff());
-    } else {
-      toaster.warning(args.message);
-    }
-  });
+  try {
+    await pullChanges(gitDirectorySelector(getState()));
+    toaster.success('Pulled the latest changes!');
+
+    dispatch(loadCommits());
+    dispatch(loadPendingDiff());
+  } catch (error) {
+    toaster.warning(error.message);
+  }
 };
 
 export const pushThunk = () => async (dispatch: any, getState: any) => {
-  const electron = window.require('electron');
-  const ipc = electron.ipcRenderer;
-
   toaster.notify('Pushing latest changes to remote');
-  ipc.send('gitPush', {
-    gitDir: gitDirectorySelector(getState()),
-  });
 
-  ipc.once('gitPushCompleted', (event: any, args: any) => {
-    if (args.success) {
-      toaster.success('Pushed the latest changes!');
-    } else {
-      toaster.warning(args.message);
-    }
-  });
+  try {
+    toaster.success('Pushed the latest changes!');
+    await pushChanges(gitDirectorySelector(getState()));
+  } catch (error) {
+    toaster.warning(error.message);
+  }
 };

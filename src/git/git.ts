@@ -4,15 +4,11 @@ import {
 } from './stagedFiles';
 import { loadUntrackedFilesContents } from './untrackedFiles';
 import git, { StatusRow } from 'isomorphic-git';
-import { CommitDiff, ModificationType } from '../components/diffList/type';
-import { isLargeFile } from '../helper/lineCount';
-import * as ini from 'ini';
 import http from 'isomorphic-git/http/node';
-
-// const git = require('isomorphic-git');
-const { remote } = window.require('electron');
-const fs = remote.require('fs');
-const _ = require('lodash');
+import * as fs from 'fs';
+import * as _ from 'lodash';
+import { getGitAuthor } from './gitIni';
+import { loadWorkingFileContents } from './workingFiles';
 
 /**
  * Returns the previous commits from the provided branch
@@ -105,53 +101,6 @@ const getStagedFilePaths = (matrix: Array<StatusRow>) => {
 };
 
 /**
- * Loads the contents of the files from the directory and will
- * link it against the previously committed version if it is present
- *
- * @param {Array} filePaths
- * @param {string} gitDir
- * @param {string} commitHash
- */
-const loadWorkingFileContents = async (
-  filePaths: Array<string>,
-  gitDir: string,
-  commitHash: string
-): Promise<Array<CommitDiff>> => {
-  const fileDiffs = await Promise.all(
-    filePaths.map(
-      async (filePath): Promise<CommitDiff> => {
-        const newFileChanges = await loadFileContentsFromPath(gitDir, filePath);
-
-        // Because we are looking at pending changes we won't have a commit hash.
-        // So we will use the first hash from the store
-        let commitedState = '';
-        try {
-          commitedState = await readContentsFromHash(
-            commitHash,
-            gitDir,
-            filePath
-          );
-        } catch {
-          console.log(
-            `failed to load the commited verions of ${filePath}. This is likely because it was committed in the previous commit`
-          );
-        }
-
-        return {
-          filePath: filePath,
-          modificationType: ModificationType.added,
-          afterFileState: commitedState,
-          beforeFileState: newFileChanges,
-          largeFileDiff: isLargeFile(newFileChanges),
-        };
-      }
-    )
-  );
-
-  return fileDiffs;
-};
-
-/**
  * Will stage the file AKA add into the git index.
  *
  * @param  {string} gitDir
@@ -203,52 +152,12 @@ export const pullChanges = async (
   });
 };
 
-interface Author {
-  name?: string;
-  email?: string;
-  timestamp?: number;
-  timezoneOffset?: number;
-}
-
-const getHomeDirectory = () => {
-  return remote.app.getPath('home');
-};
-
-const getGitConfig = async (gitDir: string, attribute: string) => {
-  const localSettings = await loadFileContentsFromPath(
-    gitDir + '/.git/',
-    'config'
-  );
-  const globalSettings = await loadFileContentsFromPath(
-    getHomeDirectory(),
-    '.gitconfig'
-  );
-
-  if (globalSettings === '' && localSettings === '') {
-    throw new Error(
-      `Could not find .gitconfig in home DIR: ${getHomeDirectory()} or in local git repo`
-    );
-  }
-
-  const localIni = ini.parse(localSettings);
-  const globalIni = ini.parse(globalSettings);
-
-  if (localIni[attribute]) {
-    return localIni;
-  }
-
-  if (globalIni[attribute]) {
-    return globalIni;
-  }
-
-  throw new Error(
-    `Neither the global or local settings had the attribute ${attribute}`
-  );
-};
-
-const getGitAuthor = async (gitDir: string): Promise<Author> => {
-  const gitConfig = await getGitConfig(gitDir, 'user');
-  return gitConfig.user;
+export const pushChanges = async (gitDir: string) => {
+  await git.push({
+    fs,
+    http: http,
+    dir: gitDir,
+  });
 };
 
 /**
@@ -393,27 +302,4 @@ export const readContentsFromHash = async (
   const { blob } = await git.readBlob(config);
 
   return new TextDecoder().decode(blob);
-};
-
-/**
- * Reads the contents of a file at the filePath provided
- *
- * @param {string} gitDir The filePath to the repo
- * @param {string} filePath The path to the file relative to the gitDir
- *
- * @return {Promise<string>}
- */
-export const loadFileContentsFromPath = async (
-  gitDir: string,
-  filePath: string
-) => {
-  try {
-    const contents = fs.readFileSync(gitDir + '/' + filePath);
-    return new TextDecoder().decode(contents);
-  } catch (err) {
-    console.error(
-      `Failed to load file ${filePath} as it likely does not exist`
-    );
-    return '';
-  }
 };

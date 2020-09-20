@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, IntentTypes } from 'evergreen-ui';
 
-const _ = require('lodash');
+import * as _ from 'lodash';
 
 interface ConfirmationButtonProps {
   onClick: () => void;

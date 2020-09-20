@@ -1,8 +1,7 @@
 import { readContentsFromHash } from './git';
+import * as fs from 'fs';
 
 const git = require('isomorphic-git');
-const remote = window.require('electron').remote;
-const fs = remote.require('fs');
 
 const FILE_EQUAL = 'equal';
 const FILE_MODIFIED = 'modified';

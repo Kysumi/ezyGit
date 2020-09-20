@@ -1,11 +1,11 @@
-import { loadFileContentsFromPath } from './git';
+import { loadFileContentsFromPath } from './fileSystem';
 
 export const loadUntrackedFilesContents = async (
-  untrackedFilePaths,
-  gitDir
+  untrackedFilePaths: Array<string>,
+  gitDir: string
 ) => {
   const unTrackedFiles = await Promise.all(
-    untrackedFilePaths.map(async (filePath) => {
+    untrackedFilePaths.map(async (filePath: string) => {
       const contents = await loadFileContentsFromPath(gitDir, filePath);
       return {
         filePath: filePath,

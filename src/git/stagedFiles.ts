@@ -2,10 +2,8 @@ import { readContentsFromHash } from './git';
 import git, { WalkerEntry } from 'isomorphic-git';
 import { CommitDiff, ModificationType } from '../components/diffList/type';
 import { isLargeFile } from '../helper/lineCount';
-
-const _ = require('lodash');
-const remote = window.require('electron').remote;
-const fs = remote.require('fs');
+import * as fs from 'fs';
+import * as _ from 'lodash';
 
 interface StagedFileContents {
   filePath: string;
