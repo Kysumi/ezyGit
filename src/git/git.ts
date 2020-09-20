@@ -200,6 +200,14 @@ export const pullChanges = async (
   });
 };
 
+export const pushChanges = async (gitDir: string) => {
+  await git.push({
+    fs,
+    http: http,
+    dir: gitDir,
+  });
+};
+
 interface Author {
   name?: string;
   email?: string;
