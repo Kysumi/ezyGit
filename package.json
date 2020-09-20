@@ -19,14 +19,11 @@
     "@types/react-redux": "^7.1.9",
     "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^5.1.3",
-    "classnames": "^2.2.6",
-    "concurrently": "^5.3.0",
-    "electron-is-dev": "^1.2.0",
     "evergreen-ui": "^5.0.6",
     "ini": "^1.3.5",
     "isomorphic-git": "^1.7.6",
     "lodash": "^4.17.20",
-    "re-resizable": "^6.5.5",
+    "nw-react-scripts": "^3.4.1",
     "react": "^16.13.1",
     "react-collapse": "^5.0.1",
     "react-diff-view": "^2.4.6",
@@ -34,42 +31,14 @@
     "react-hotkeys": "^2.0.0",
     "react-list": "^0.8.15",
     "react-redux": "^7.2.1",
-    "react-scripts": "^3.4.3",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.0",
     "typescript": "^4.0.2",
-    "unidiff": "^1.0.2",
-    "wait-on": "^5.2.0"
+    "unidiff": "^1.0.2"
   },
-  "main": "./electron/main.js",
-  "homepage": "./",
-  "build": {
-    "extraMetadata": {
-      "main": "build/electron/main.js"
-    },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
-    "publish": {
-      "provider": "github",
-      "repo": "ezyGit",
-      "owner": "Maunder"
-    },
-    "win": {
-      "target": "portable"
-    }
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "ebuild": "npm run build && robocopy electron build/electron /S && node_modules\\.bin\\electron-builder build -w",
-    "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\""
-  },
+  "main": "index.html",
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "nw-react-app"
   },
   "browserslist": {
     "production": [
@@ -84,9 +53,25 @@
     ]
   },
   "devDependencies": {
-    "electron": "^9.3.0",
-    "electron-builder": "^22.8.0",
-    "electron-devtools-installer": "^3.1.1",
     "prettier": "^2.1.1"
+  },
+  "scripts": {
+    "start": "nw-react-scripts start",
+    "build": "nw-react-scripts build",
+    "test": "nw-react-scripts test",
+    "eject": "nw-react-scripts eject"
+  },
+  "nwBuilder": {
+    "//": "https://github.com/nwjs-community/nw-builder",
+    "platforms": [
+      "osx64",
+      "win32",
+      "win64"
+    ],
+    "version": "latest",
+    "flavor": "normal",
+    "buildDir": "./build",
+    "cacheDir": "./cache",
+    "macIcns": "./src/logo.icns"
   }
 }
