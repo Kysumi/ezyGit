@@ -8,10 +8,7 @@ import { CommitDiff, ModificationType } from '../components/diffList/type';
 import { isLargeFile } from '../helper/lineCount';
 import * as ini from 'ini';
 import http from 'isomorphic-git/http/node';
-
-// const git = require('isomorphic-git');
-const { remote } = window.require('electron');
-const fs = remote.require('fs');
+import * as fs from 'fs';
 const _ = require('lodash');
 
 /**
@@ -211,7 +208,7 @@ interface Author {
 }
 
 const getHomeDirectory = () => {
-  return remote.app.getPath('home');
+  return require('os').homedir();
 };
 
 const getGitConfig = async (gitDir: string, attribute: string) => {
