@@ -1,24 +1,39 @@
-import React, { useState } from 'react';
-import { Button, toaster, Dialog, Heading } from 'evergreen-ui';
+import React, { ChangeEvent, useRef, useState } from 'react';
+import { toaster, Dialog, Heading } from 'evergreen-ui';
 import { connect } from 'react-redux';
 import { setFilePath, initialise } from '../../store/repo/Repo';
-
-const { dialog } = window.require('electron').remote;
+import FileInput from './FileInput';
 
 interface SelectRepoPopUpProps {
   setReduxFilePath: (filePath: string) => Promise<void>;
   initialise: () => Promise<void>;
 }
 
-const handleOpenPopUp = (callBack: (filePath: string) => void) => {
-  dialog
-    .showOpenDialog({
-      title: 'Select a folder',
-      properties: ['openDirectory'],
-    })
-    .then(({ filePaths }: any) => {
-      callBack(filePaths[0]);
-    });
+// const handleOpenPopUp = (callBack: (filePath: string) => void) => {
+//   dialog
+//     .showOpenDialog({
+//       title: 'Select a folder',
+//       properties: ['openDirectory'],
+//     })
+//     .then(({ filePaths }: any) => {
+//       callBack(filePaths[0]);
+//     });
+// };
+
+const onChangeFile = (
+  event: ChangeEvent<HTMLInputElement>,
+  setFilePathState: (filePath: string) => void
+) => {
+  event.stopPropagation();
+  event.preventDefault();
+
+  const files = event.target.files;
+
+  if (files) {
+    console.log(files);
+
+    // setFilePathState(files[0]);
+  }
 };
 
 const handleClosePopup = (filePath: string, success: () => void) => {
@@ -34,6 +49,11 @@ const SelectRepoPopUp = ({
   initialise,
 }: SelectRepoPopUpProps) => {
   const [filePath, setFilePath] = useState('');
+  const fileInputRef = useRef(null);
+
+  const callback = (event: ChangeEvent<HTMLInputElement>) => {
+    onChangeFile(event, setFilePath);
+  };
 
   return (
     <Dialog
@@ -49,9 +69,7 @@ const SelectRepoPopUp = ({
         });
       }}
     >
-      <Button intent={'success'} onClick={() => handleOpenPopUp(setFilePath)}>
-        Select Git Repo
-      </Button>
+      <FileInput onSelection={callback} />
 
       <Heading>Current Path: {filePath}</Heading>
     </Dialog>
