@@ -1,6 +1,5 @@
 import { Button } from 'evergreen-ui';
 import React, { ChangeEvent } from 'react';
-import ReactDOM from 'react-dom';
 
 interface FileInputProps {
   onSelection: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -16,22 +15,28 @@ export default class FileInput extends React.Component<FileInputProps> {
   }
 
   componentDidMount() {
-    this.inputRef.current.webkitdirectory = true;
-    this.inputRef.current.directory = true;
+    this.inputRef.current.nwdirectory = true;
+    // this.inputRef.current.directory = true;
   }
 
   handleOpenPopUp = () => {
-    console.log(this.inputRef.current);
     this.inputRef.current.click();
   };
 
   render() {
+    const { onSelection } = this.props;
+
     return (
       <>
         <Button intent={'success'} onClick={this.handleOpenPopUp}>
           Select Git Repo
         </Button>
-        <input style={{ display: 'none' }} type="file" ref={this.inputRef} />
+        <input
+          onChange={onSelection}
+          style={{ display: 'none' }}
+          type="file"
+          ref={this.inputRef}
+        />
       </>
     );
   }

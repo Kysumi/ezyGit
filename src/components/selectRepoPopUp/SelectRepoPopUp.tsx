@@ -9,17 +9,6 @@ interface SelectRepoPopUpProps {
   initialise: () => Promise<void>;
 }
 
-// const handleOpenPopUp = (callBack: (filePath: string) => void) => {
-//   dialog
-//     .showOpenDialog({
-//       title: 'Select a folder',
-//       properties: ['openDirectory'],
-//     })
-//     .then(({ filePaths }: any) => {
-//       callBack(filePaths[0]);
-//     });
-// };
-
 const onChangeFile = (
   event: ChangeEvent<HTMLInputElement>,
   setFilePathState: (filePath: string) => void
@@ -30,9 +19,9 @@ const onChangeFile = (
   const files = event.target.files;
 
   if (files) {
-    console.log(files);
-
-    // setFilePathState(files[0]);
+    // Need to cast to any to deal with TS not knowing about this property
+    const file = files[0] as any;
+    setFilePathState(file.path);
   }
 };
 
@@ -49,7 +38,6 @@ const SelectRepoPopUp = ({
   initialise,
 }: SelectRepoPopUpProps) => {
   const [filePath, setFilePath] = useState('');
-  const fileInputRef = useRef(null);
 
   const callback = (event: ChangeEvent<HTMLInputElement>) => {
     onChangeFile(event, setFilePath);
