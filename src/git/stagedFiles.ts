@@ -3,8 +3,7 @@ import git, { WalkerEntry } from 'isomorphic-git';
 import { CommitDiff, ModificationType } from '../components/diffList/type';
 import { isLargeFile } from '../helper/lineCount';
 import * as fs from 'fs';
-
-const _ = require('lodash');
+import * as _ from 'lodash';
 
 interface StagedFileContents {
   filePath: string;

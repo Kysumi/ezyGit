@@ -14,8 +14,7 @@ import {
 import { loadPendingDiff, setUntrackedFiles, loadCommits } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
 import { toaster } from 'evergreen-ui';
-
-const _ = require('lodash');
+import * as _ from 'lodash';
 
 export const unstageFileThunk = (filePath: string) => async (
   dispatch: any,

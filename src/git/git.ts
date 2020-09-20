@@ -9,7 +9,7 @@ import { isLargeFile } from '../helper/lineCount';
 import * as ini from 'ini';
 import http from 'isomorphic-git/http/node';
 import * as fs from 'fs';
-const _ = require('lodash');
+import * as _ from 'lodash';
 
 /**
  * Returns the previous commits from the provided branch
