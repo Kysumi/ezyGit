@@ -4,14 +4,10 @@ import {
 } from './stagedFiles';
 import { loadUntrackedFilesContents } from './untrackedFiles';
 import git, { StatusRow } from 'isomorphic-git';
-import { CommitDiff, ModificationType } from '../components/diffList/type';
-import { isLargeFile } from '../helper/lineCount';
-
 import http from 'isomorphic-git/http/node';
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import { getGitAuthor } from './gitIni';
-import { loadFileContentsFromPath } from './fileSystem';
 import { loadWorkingFileContents } from './workingFiles';
 
 /**
