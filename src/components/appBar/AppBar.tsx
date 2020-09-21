@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
 import { Button, ArrowUpIcon, Heading, ArrowDownIcon } from 'evergreen-ui';
@@ -44,8 +44,18 @@ const ContentContainer = styled.div`
 `;
 
 export const AppBar = () => {
+  const [auth, setAuth] = useState(false);
   const branchName = useSelector(getBranchNameSelector);
   const dispatch = useDispatch();
+
+  const handlePull = () => {
+    dispatch(pullThunk());
+  };
+
+  const handlePush = () => {
+    // @ts-ignore
+    dispatch(pushThunk()).then((res) => setAuth(res));
+  };
 
   return (
     <AppBarContainer>
@@ -66,14 +76,11 @@ export const AppBar = () => {
           <Button
             iconBefore={ArrowDownIcon}
             style={{ marginRight: '5px' }}
-            onClick={() => dispatch(pullThunk())}
+            onClick={handlePull}
           >
             Pull
           </Button>
-          <Button
-            iconBefore={ArrowUpIcon}
-            onClick={() => dispatch(pushThunk())}
-          >
+          <Button iconBefore={ArrowUpIcon} onClick={handlePush}>
             Push
           </Button>
         </RightHandSide>
