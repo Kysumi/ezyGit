@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { getBranchNameSelector } from '../../store/repo/RepoSelector';
-import { Button, ArrowUpIcon, Heading, ArrowDownIcon } from 'evergreen-ui';
+import { Heading } from 'evergreen-ui';
 import styled from 'styled-components';
-import { pullThunk, pushThunk } from '../../store/repo/gitThunks';
+import { RightHandSide } from './RightHandSide';
 
 const AppBarContainer = styled.div`
   background-color: ${(props) => props.theme.mainColor};
@@ -26,14 +26,6 @@ const CentreContent = styled.div`
   align-items: center;
 `;
 
-const RightHandSide = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 25%;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
 const ContentContainer = styled.div`
   padding-left: 20px;
   padding-right: 20px;
@@ -44,18 +36,7 @@ const ContentContainer = styled.div`
 `;
 
 export const AppBar = () => {
-  const [auth, setAuth] = useState(false);
   const branchName = useSelector(getBranchNameSelector);
-  const dispatch = useDispatch();
-
-  const handlePull = () => {
-    dispatch(pullThunk());
-  };
-
-  const handlePush = () => {
-    // @ts-ignore
-    dispatch(pushThunk()).then((res) => setAuth(res));
-  };
 
   return (
     <AppBarContainer>
@@ -72,18 +53,7 @@ export const AppBar = () => {
           </Heading>
         </CentreContent>
 
-        <RightHandSide>
-          <Button
-            iconBefore={ArrowDownIcon}
-            style={{ marginRight: '5px' }}
-            onClick={handlePull}
-          >
-            Pull
-          </Button>
-          <Button iconBefore={ArrowUpIcon} onClick={handlePush}>
-            Push
-          </Button>
-        </RightHandSide>
+        <RightHandSide />
       </ContentContainer>
     </AppBarContainer>
   );

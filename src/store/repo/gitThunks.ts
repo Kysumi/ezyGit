@@ -108,8 +108,8 @@ export const pushThunk = () => async (dispatch: any, getState: any) => {
   toaster.notify('Pushing latest changes to remote');
 
   try {
-    toaster.success('Pushed the latest changes!');
     await pushChanges(gitDirectorySelector(getState()));
+    toaster.success('Pushed the latest changes!');
   } catch (error) {
     toaster.warning(error.message);
   }
