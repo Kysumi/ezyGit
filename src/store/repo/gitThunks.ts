@@ -15,6 +15,7 @@ import { loadPendingDiff, setUntrackedFiles, loadCommits } from './Repo';
 import { CommitDiff } from '../../components/diffList/type';
 import { toaster } from 'evergreen-ui';
 import * as _ from 'lodash';
+import { setAuthenticated } from '../view/View';
 
 export const unstageFileThunk = (filePath: string) => async (
   dispatch: any,
@@ -112,5 +113,6 @@ export const pushThunk = () => async (dispatch: any, getState: any) => {
     toaster.success('Pushed the latest changes!');
   } catch (error) {
     toaster.warning(error.message);
+    dispatch(setAuthenticated(false));
   }
 };
