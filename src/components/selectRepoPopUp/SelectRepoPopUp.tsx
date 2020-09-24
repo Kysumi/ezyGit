@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { toaster, Dialog, Heading } from 'evergreen-ui';
 import { connect } from 'react-redux';
 import { setFilePath, initialise } from '../../store/repo/Repo';
