@@ -1,17 +1,17 @@
 # ezyGit
 
-![alt text](https://github.com/Kysumi/ezyGit/raw/master/screenshots/ezyGit.png 'ezyGit UI')
+An electron based git client focused on providing a simple way for interacting with a git repository.
 
-This project is a git client focused on ease of use and getting users comfortable with using git
+## Building the project
 
-## Getting started
+whenever you install a new npm package, rerun electron-rebuild:
 
-Clone this repository and run `npm i` inside of the directory to pull the dependencies
+```
+$(npm bin)/electron-rebuild
+```
 
-## Available Scripts
+Or if you're on Windows:
 
-In the project directory, you can run:
-
-### `npm run start`
-
-Launches the application inside of NW.js window
+```
+.\node_modules\.bin\electron-rebuild.cmd
+```
