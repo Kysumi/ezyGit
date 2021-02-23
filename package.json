@@ -13,6 +13,7 @@
     "try": "run-s clean build dist:dir open"
   },
   "dependencies": {
+    "@types/styled-components": "^5.1.7",
     "electron-snowpack": "*",
     "nodegit": "^0.27.0",
     "react": "^17.0.1",
