@@ -1,12 +1,16 @@
-import { Button } from "~/components/button";
+import { useState } from "react";
+import { HomePage } from "~/module/HomePage/HomePage";
+import { OpenDirectoryContext } from "~/module/OpenDirectory/DirectoryContext";
 
 export default function Index() {
+  const [dir, setDir] = useState("");
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1 className="text-3xl font-bold text-teal-600">Welcome to Remix</h1>
-      <Button />
-      Some changes
-    
+    <div className="bg-gradient-to-br from-indigo-500 to-purple-500 font-sans text-base text-slate-50 min-h-screen">
+      <OpenDirectoryContext.Provider
+        value={{ dir: dir, onChangeDirectory: setDir }}
+      >
+        <HomePage />
+      </OpenDirectoryContext.Provider>
     </div>
   );
 }

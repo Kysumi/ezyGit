@@ -1,17 +1,27 @@
-import { invoke } from "@tauri-apps/api/tauri"
+import { FC, ButtonHTMLAttributes, PropsWithChildren } from "react";
 
-export const Button = () => {
-  
-  const callOS = () => {
-    // now we can call our Command!
-    // Right-click the application background and open the developer tools.
-    // You will see "Hello, World!" printed in the console!
-    invoke('greet', { name: 'World' })
-      .then(console.log)
-      .catch(console.error)
-    
-    console.log('is clicked')
-  }
-  
-  return <button onClick={callOS}>WEOW</button>
+const Variants = {
+  danger:
+    "bg-gradient-to-r from-red-400 via-red-500 to-red-600 focus:bg-red-500 active:bg-red-600",
+  primary:
+    "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-600",
+};
+
+const base =
+  "inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-sm hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 transition duration-150 ease-in-out active:shadow-lg";
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: keyof typeof Variants;
 }
+
+export const Button: FC<PropsWithChildren<ButtonProps>> = ({
+  variant = "primary",
+  ...props
+}) => {
+  const appliedVariant = Variants[variant];
+  return (
+    <button {...props} className={`${base} ${appliedVariant}`}>
+      {props.children}
+    </button>
+  );
+};
