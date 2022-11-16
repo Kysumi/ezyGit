@@ -60,7 +60,6 @@ export async function watch(
   const unlisten = await w.listen<DebouncedEvent>(
     `watcher://debounced-event/${id}`,
     (event) => {
-      console.log("event");
       cb(event.payload);
     }
   );

@@ -3,6 +3,25 @@ import { useOpenDirectoryContext } from "../OpenDirectory/DirectoryContext";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { Button } from "~/components/button";
 import { useState } from "react";
+import {
+  DebouncedEvent,
+  DebouncedWatchOptions,
+} from "~/module/FileWatcher/FileWatcher";
+
+type Watcher = (
+  paths: string | string[],
+  options: DebouncedWatchOptions,
+  cb: (event: DebouncedEvent) => void
+) => Promise<() => Promise<void>>;
+
+const startWatcher = async (dir: string) => {
+  const { watch } = require("~/module/FileWatcher") as { watch: Watcher };
+
+  return watch(dir, { recursive: true }, (event: DebouncedEvent) => {
+    const { type, payload } = event;
+    console.log(type, payload);
+  });
+};
 
 export const OpenFolder = () => {
   const { onChangeDirectory } = useOpenDirectoryContext();
@@ -18,8 +37,7 @@ export const OpenFolder = () => {
     if (selected === null) {
       setAlertOpen(true);
     } else if (typeof selected === "string") {
-      onChangeDirectory(selected);
-      console.log(selected);
+      onChangeDirectory(selected, await startWatcher(selected));
     }
   };
 
