@@ -1,0 +1,3 @@
+[submodule "tauri-plugin-fs-watch"]
+	path = tauri-plugin-fs-watch
+	url = https://github.com/tauri-apps/tauri-plugin-fs-watch
